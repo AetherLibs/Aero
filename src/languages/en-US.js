@@ -13,7 +13,7 @@ module.exports = class extends Language {
 			PREFIX_REMINDER: (prefix = `@${this.client.user.tag}`) => `The prefix${Array.isArray(prefix)
 				? `es for this guild are: ${prefix.map(pre => `\`${pre}\``).join(', ')}`
 				: ` in this guild is set to: \`${prefix}\``
-			}`,
+				}`,
 
 			ERROR_GENERIC: (err) => `An error occurred: ${err}`,
 
@@ -386,6 +386,7 @@ module.exports = class extends Language {
 			COMMAND_REPORT_ONGOING: 'Please finish your current report first. If you made an error, just type "cancel" to stop the report and try again.',
 			COMMAND_KSOFT_POWEREDBY: 'powered by api.ksoft.si',
 			COMMAND_MEME_DESCRIPTION: 'Fetches a random meme from reddit.',
+			COMMAND_VOICEKICK_DESCRIPTION: 'Voice kicks the mentioned member.',
 
 			// events
 			EVENT_JOIN_PERSISTREASON: 'Role persistency - member had those roles before leaving.',
