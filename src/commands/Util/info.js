@@ -271,7 +271,7 @@ module.exports = class extends Command {
 				`Explicit filter: ${this.filterLevels[msg.guild.explicitContentFilter]}`
 			].join('\n'));
 		const icon = msg.guild.iconURL({ format: 'png' });
-		if (icon) embed.setColor(await req(this.client.config.colorgenURL).path('dominant').query('image', icon).send().then(res => res.text));
+		if (icon) embed.setColor(await req(this.client.config.colorgenURL).path('dominant').query('image', icon).text());
 		return msg.sendEmbed(embed);
 	}
 

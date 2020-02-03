@@ -16,8 +16,7 @@ module.exports = class extends Command {
 		const { key } = await req(url, 'POST')
 			.path('documents')
 			.body(code)
-			.send()
-			.then(res => res.json);
+			.json();
 		return msg.send(`${url}/${key}`);
 	}
 

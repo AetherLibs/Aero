@@ -24,7 +24,7 @@ module.exports = class extends Command {
 		const level = member.settings.get('level');
 		const nextLevel = this.client.monitors.get('points').xpNeeded(level + 1);
 
-		const { body } = await req(avatar).send();
+		const avatar = await req(avatar).body();
 		const progBar = Math.max((points / nextLevel) * 296, 10);
 		const canvas = new Canvas(500, 200);
 		const bg = await readFile(`${process.cwd()}/assets/backgrounds/clouds.jpg`);
@@ -32,8 +32,7 @@ module.exports = class extends Command {
 		const dominant = await req(this.client.config.colorgenURL)
 			.path('dominant')
 			.query('image', avatar)
-			.send()
-			.then(res => res.text);
+			.text();
 
 		canvas
 			.addTextFont('assets/fonts/quicksand.ttf', 'Quicksand')
@@ -53,7 +52,7 @@ module.exports = class extends Command {
 			.setColor(`#${dominant}`)
 			.addRect(0, 0, 8, 200)
 			.restore()
-			.addCircularImage(body, 90, 125, 60, true)
+			.addCircularImage(avatar, 90, 125, 60, true)
 			.setColor('#FFFFFF')
 			.addBeveledRect(177, 117, 306, 26, 16)
 			.restore()

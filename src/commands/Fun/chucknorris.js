@@ -13,8 +13,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const { json } = await req('https://api.icndb.com/jokes/random').send();
-		return msg.sendMessage(`📢 Chuck Norris joke: **${new AllHtmlEntities().decode(json.value.joke)}**`);
+		const res = await req('https://api.icndb.com/jokes/random').json();
+		return msg.sendMessage(`📢 Chuck Norris joke: **${new AllHtmlEntities().decode(res.value.joke)}**`);
 	}
 
 };

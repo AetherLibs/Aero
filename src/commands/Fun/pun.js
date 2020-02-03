@@ -11,11 +11,11 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const { json } = await req('https://icanhazdadjoke.com')
+		const res = await req('https://icanhazdadjoke.com')
 			.header('Accept', 'application/json')
-			.send()
+			.json()
 			.catch(() => { throw msg.language.get('COMMAND_PUN_APIDOWN'); });
-		return msg.sendMessage(msg.language.get('COMMAND_PUN_REPLY', json.joke));
+		return msg.sendMessage(msg.language.get('COMMAND_PUN_REPLY', res.joke));
 	}
 
 };

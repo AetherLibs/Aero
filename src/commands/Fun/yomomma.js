@@ -12,8 +12,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const { json } = await req('https://api.yomomma.info').send();
-		return msg.sendMessage(bold`📢 Yomomma joke: *${json.joke}*`);
+		const res = await req('https://api.yomomma.info').json();
+		return msg.sendMessage(bold`📢 Yomomma joke: *${res.joke}*`);
 	}
 
 };

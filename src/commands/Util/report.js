@@ -145,8 +145,7 @@ module.exports = class extends Command {
 				.path('album')
 				.path(album.exec(url)[1])
 				.path('images')
-				.send()
-				.then(data => data.json);
+				.json();
 			if (!res.success || !res.data[0]) throw 'Failed fetching from imgur.';
 			return res.data[0].link;
 		}
@@ -154,8 +153,7 @@ module.exports = class extends Command {
 			.header('Authorization', `Client-ID ${process.env.IMGUR_TOKEN}`)
 			.path('/image')
 			.body({ image: url })
-			.send()
-			.then(data => data.json);
+			.json();
 		if (!res.success) throw 'Failed uploading to imgur.';
 		return res.data.link;
 	}

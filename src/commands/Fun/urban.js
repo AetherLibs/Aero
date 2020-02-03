@@ -27,7 +27,7 @@ module.exports = class extends Command {
 
 	async run(msg, [search, resultNum = 0]) {
 		const url = `http://api.urbandictionary.com/v0/define?term=${search}`;
-		const body = await req(url).send().then(data => data.json);
+		const body = await req(url).json();
 		if (resultNum > 1) resultNum--;
 
 		const result = body.list[resultNum];

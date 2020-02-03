@@ -22,8 +22,7 @@ module.exports = class extends Command {
 	async run(msg) {
 		const overview = await req(url)
 			.path('summary.json')
-			.send()
-			.then(res => res.json);
+			.json();
 
 		const embed = new MessageEmbed()
 			.setTitle(overview.status.description)
@@ -39,8 +38,7 @@ module.exports = class extends Command {
 
 		const incident = await req(url)
 			.path('incidents.json')
-			.send()
-			.then(res => res.json)
+			.json()
 			.then(res => res.incidents[0]);
 
 		embed.addField('Latest Incident', `[${incident.name}](${incident.shortlink}) (${incident.status})`);
