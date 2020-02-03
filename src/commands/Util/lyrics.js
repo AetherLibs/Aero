@@ -35,7 +35,6 @@ module.exports = class extends Command {
 		}
 
 		return msg.sendEmbed(embed).catch(() => msg.responder.error(msg.language.get('COMMAND_LYRICS_FAILED', track.url)));
-
 	}
 
 };

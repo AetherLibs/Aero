@@ -153,17 +153,17 @@ module.exports = class extends Command {
 		const roleString = roles
 			.array()
 			.filter(role => role.id !== msg.guild.id)
-			.reduce((acc, role, idx, arr) => {
-				if (acc.length + role.name.length < 1010)
+			.reduce((acc, role, idx) => {
+				if (acc.length + role.name.length < 1010) {
 					if (role.name === '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯') {
 						spacer = true;
-						return acc + '\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n';
+						return `${acc}\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n`;
 					} else {
-						const comma = (((idx !== 0) && (!spacer)) ? ', ' : '');
+						const comma = (idx !== 0) && !spacer ? ', ' : '';
 						spacer = false;
 						return acc + comma + role.name;
 					}
-				else return acc;
+				} else { return acc; }
 			}, '');
 
 		if (roles.size) {

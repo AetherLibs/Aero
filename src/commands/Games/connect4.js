@@ -42,7 +42,7 @@ module.exports = class extends Command {
 		const { players, choice } = c4;
 		const usr = players[choice % 2];
 
-		await msg.edit(c4.turnTable() + '\n1⃣2⃣3⃣4⃣5⃣6⃣7⃣');
+		await msg.edit(`${c4.turnTable()}\n1⃣2⃣3⃣4⃣5⃣6⃣7⃣`);
 		msg.awaitReactions((reaction, user) => user.id === usr && this.numbers.includes(reaction.emoji.toString()), { time: 60000, max: 1, errors: ['time'] })
 			.then(async (reactions) => {
 				const res = reactions.first();

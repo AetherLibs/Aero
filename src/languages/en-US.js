@@ -13,7 +13,7 @@ module.exports = class extends Language {
 			PREFIX_REMINDER: (prefix = `@${this.client.user.tag}`) => `The prefix${Array.isArray(prefix)
 				? `es for this guild are: ${prefix.map(pre => `\`${pre}\``).join(', ')}`
 				: ` in this guild is set to: \`${prefix}\``
-				}`,
+			}`,
 
 			ERROR_GENERIC: (err) => `An error occurred: ${err}`,
 

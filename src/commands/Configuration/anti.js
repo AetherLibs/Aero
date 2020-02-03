@@ -31,14 +31,14 @@ module.exports = class extends Command {
 			return msg.send(msg.language.get('COMMAND_ANTI_DISPLAY_ONE', type, enabled));
 		} else {
 			const out = [];
-			out.push(msg.language.get('COMMAND_ANTI_DISPLAY_DIVIDER_CHAT'))
+			out.push(msg.language.get('COMMAND_ANTI_DISPLAY_DIVIDER_CHAT'));
 			out.push('');
 			for (const anti of ['invites', 'duplicates', 'copypastas', 'toxicity']) {
 				const enabled = msg.guild.settings.get(`mod.anti.${anti}`);
 				out.push(msg.language.get('COMMAND_ANTI_DISPLAY_ALL_CHAT', anti, enabled));
 			}
 			out.push('');
-			out.push(msg.language.get('COMMAND_ANTI_DISPLAY_DIVIDER_USERS'))
+			out.push(msg.language.get('COMMAND_ANTI_DISPLAY_DIVIDER_USERS'));
 			out.push('');
 			for (const anti of ['unmentionable', 'hoisting']) {
 				const enabled = msg.guild.settings.get(`mod.anti.${anti}`);
