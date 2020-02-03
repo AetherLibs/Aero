@@ -6,7 +6,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['vck'],
-			description: language => language.get('COMMAND_VOICEKICK_NOPERMS'),
+			description: language => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
 			requiredPermissions: ['EMBED_LINKS', 'MOVE_MEMBERS', 'MANAGE_CHANNELS'],
 			usage: '<user:username>'
 		});

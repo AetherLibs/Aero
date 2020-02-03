@@ -482,6 +482,7 @@ module.exports = class extends Language {
 
 			LOG_ARGS_USER: (tag, mention, id) => `**user:** ${tag} ${mention} [${id}]`,
 			LOG_ARGS_MEMBER: (name, mention, id) => `**member:** ${name} ${mention} [${id}]`,
+			LOG_ARGS_CHANNEL: (name, mention, id) => `**channel:** ${name} ${mention} [${id}]`,
 			LOG_ARGS_USERS: users => `**users:** ${users}`,
 			LOG_ARGS_MODERATOR: (tag, id) => `moderator: ${tag} [${id}]`,
 			LOG_ARGS_REASON: reason => `**reason:** ${reason}`,
