@@ -19,19 +19,19 @@ module.exports = class extends Command {
 
 		if (!member) return msg.responder.error(msg.language.get('COMMAND_PROFILE_NOTMEMBER'));
 		await member.settings.sync(true);
-		const avatar = user.displayAvatarURL({ format: 'png' });
+		const avatarURL = user.displayAvatarURL({ format: 'png' });
 		const points = member.settings.get('points');
 		const level = member.settings.get('level');
 		const nextLevel = this.client.monitors.get('points').xpNeeded(level + 1);
 
-		const avatar = await req(avatar).body();
+		const avatar = await req(avatarURL).raw();
 		const progBar = Math.max((points / nextLevel) * 296, 10);
 		const canvas = new Canvas(500, 200);
 		const bg = await readFile(`${process.cwd()}/assets/backgrounds/clouds.jpg`);
 
 		const dominant = await req(this.client.config.colorgenURL)
 			.path('dominant')
-			.query('image', avatar)
+			.query('image', avatarURL)
 			.text();
 
 		canvas
