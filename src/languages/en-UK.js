@@ -142,8 +142,7 @@ module.exports = class extends Language {
 			COMMAND_URBAN_MISSINGTERM: 'What would you like to search?',
 			COMMAND_URBAN_MAX: length => `Invalid definition. Only found ${length} possible definitions.`,
 			COMMAND_YOMAMMA_DESCRIPTION: 'Yo momma is so fat, yo.',
-
-			// games
+            COMMAND_JOKE_DESCRIPTION: 'My older brother always tore the last pages of my comic books, and never told me why,I had to draw my own conclusions.',
 			COMMAND_GAME_CHALLENGE: user => `${user}, do you accept this challenge?`,
 			COMMAND_GAME_OCCURING: 'Only one game may be occuring per channel.',
 			COMMAND_GAME_NOBOTS: 'You cannot challenge bots',
