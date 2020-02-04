@@ -1,6 +1,5 @@
 const { Command } = require('klasa');
 const req = require('@aero/centra');
-const { bold } = require('discord-md-tags');
 
 module.exports = class extends Command {
 
@@ -12,8 +11,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const { json } = await req('https://official-joke-api.appspot.com/random_joke').send();
-		return msg.sendMessage(bold`📢  joke: \n  *${joke.setup}* \n \n ${joke.punchline}`);
+		const joke = await req('https://official-joke-api.appspot.com/random_joke').json();
+		return msg.sendMessage(`${joke.setup}\n\n*${joke.punchline}*`);
 	}
 
 };
