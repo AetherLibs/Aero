@@ -10,7 +10,7 @@ module.exports = class extends Event {
 	}
 
 	async run(info) {
-		this.client.console.log(info);
+		this.client.console.debug(`[Discord] ${info}`);
 	}
 
 };

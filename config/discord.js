@@ -5,6 +5,6 @@ module.exports = {
 	disableEveryone: true,
 	fetchAllMembers: false,
 	ws: {
-		intents: GUILDS | GUILD_MEMBERS | GUILD_BANS | GUILD_MESSAGES | GUILD_MESSAGE_REACTIONS
+		// intents: GUILDS | GUILD_MEMBERS | GUILD_BANS | GUILD_MESSAGES | GUILD_MESSAGE_REACTIONS
 	}
 };
