@@ -12,6 +12,7 @@ module.exports = class extends Event {
 		if (process.env.BOOT_SINGLE !== 'false') return;
 		this.client.console.log('[Aether] Sending ready event.');
 		this.client.manager.ws.send(encode(new Message(READY_CLIENT, { id: this.client.manager.id })));
+		this.client.events.get('debug').disable();
 	}
 
 };
