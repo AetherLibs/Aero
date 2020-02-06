@@ -12,7 +12,7 @@ module.exports = class extends Event {
 	}
 
 	async run(code, reason) {
-		this.client.console.error(`[CW] Closed (${code}): ${reason}`);
+		this.client.console.error(`[ChatWatch] Closed (${code}): ${reason}`);
 	}
 
 };

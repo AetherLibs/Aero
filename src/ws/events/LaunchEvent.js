@@ -8,6 +8,7 @@ class LaunchEvent extends Event {
 	}
 
 	run(data) {
+		this.client.console.log('[Aether] Received launch event.');
 		this.client.launch(data);
 	}
 
