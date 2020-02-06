@@ -30,7 +30,7 @@ module.exports = class extends Monitor {
 		for (const name of names) {
 			copypastas.push(readFileSync(join(dir, name)).toString().replace(/\r/g, ''));
 		}
-		this.client.console.log(`Loaded ${copypastas.length} copypastas.`);
+		this.client.console.log(`[AntiSpam] Loaded ${copypastas.length} copypastas.`);
 		return copypastas;
 	}
 

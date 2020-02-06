@@ -27,5 +27,5 @@ module.exports = {
 		}
 	},
 	typing: false,
-	readyMessage: '[Discord] Connected.'
+	readyMessage: 'Ready.'
 };
