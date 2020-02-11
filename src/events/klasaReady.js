@@ -7,7 +7,6 @@ module.exports = class extends Event {
 
 	async run() {
 		await this.client.chatwatch.login();
-		this.client.chatwatch.ws.on('error', error => this.client.console.error(`[ChatWatch] Received error event: ${error}`));
 		this.client.console.log('[ChatWatch] Connected to Websocket.');
 		if (process.env.BOOT_SINGLE !== 'false') return;
 		this.client.console.log('[Aether] Sending ready event.');
