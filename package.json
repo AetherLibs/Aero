@@ -24,7 +24,7 @@
 		"@aero/dbio": "^1.0.2",
 		"@aero/drep": "^1.2.9",
 		"@aero/ksoft": "^3.1.6",
-		"@aero/member-gateway": "^1.0.0",
+		"@aero/member-gateway": "^1.0.1",
 		"@aero/xkcd": "^1.0.0",
 		"breadtags": "^2.1.0",
 		"canvas": "^2.6.1",
