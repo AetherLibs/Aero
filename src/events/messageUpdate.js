@@ -10,7 +10,7 @@ module.exports = class extends Event {
 	}
 
 	async run(oldMessage, newMessage) {
-		if (!oldMessage.guild || oldMessage.author.bot) return false;
+		if (!newMessage.guild || oldMessage.author.bot) return false;
 		if ((oldMessage.content === newMessage.content) && (oldMessage.attachments.size === newMessage.attachments.size)) return false;
 		return newMessage.guild.log.messageEdited({ oldMessage, newMessage, user: oldMessage.author, channel: oldMessage.channel });
 	}
