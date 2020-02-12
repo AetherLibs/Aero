@@ -5,7 +5,7 @@ const Sentry = require('@sentry/node');
 
 Sentry.init({
 	dsn: process.env.SENTRY_TOKEN,
-	release: `aero@${npm_package_gitHead}`
+	release: `aero@${process.env.npm_package_gitHead}`
 });
 const Manager = require('../lib/Manager');
 
