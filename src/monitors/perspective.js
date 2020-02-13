@@ -39,10 +39,10 @@ module.exports = class extends Monitor {
 		const TOXICITY = scores.TOXICITY.summaryScore.value;
 
 		for (const obj of [msg.member, msg.author, msg.guild]) {
-			const messages = obj.settings.get('stats.messages');
 			await obj.settings.sync();
-			if (messages === 0) { obj.settings.update('stats.toxicity', TOXICITY); } else {
-				const prev = obj.settings.get('stats.toxicity');
+			const messages = obj.settings.get('stats.messages');
+			const prev = obj.settings.get('stats.toxicity');
+			if (messages === 0 || prev === 0) { obj.settings.update('stats.toxicity', TOXICITY); } else {
 				const updated = ((prev * messages) + TOXICITY) / (messages + 1);
 				obj.settings.update('stats.toxicity', updated);
 			}
