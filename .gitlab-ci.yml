@@ -2,6 +2,7 @@ stages:
 - build
 - stage
 - deploy
+- post-deploy
 
 variables:
   IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
@@ -40,3 +41,12 @@ deploy:
     - kubectl -n aero patch statefulset aero -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"aero\",\"image\":\"${IMAGE}\"}]}}}}"
   only:
     - master
+
+
+sentry:
+  stage: post-deploy
+  image: getsentry/sentry-cli
+  script:
+    - sentry-cli releases new $CI_COMMIT_SHA
+    - sentry-cli releases finalize $CI_COMMIT_SHA
+    - echo "Finalized release for $CI_COMMIT_SHA"
