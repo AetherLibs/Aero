@@ -40,7 +40,9 @@ stage:
   tags:
   - unprivileged
   environment:
-    name: staging
+    name: aero-staging
+    kubernetes:
+      namespace: aero
 
 deploy:
   stage: deploy
@@ -56,7 +58,9 @@ deploy:
   tags:
   - unprivileged
   environment:
-    name: production
+    name: aero
+    kubernetes:
+      namespace: aero
 
 sentry-commit:
   stage: deploy
