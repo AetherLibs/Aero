@@ -70,7 +70,7 @@ include:
   - template: Dependency-Scanning.gitlab-ci.yml
   - template: SAST.gitlab-ci.yml
   - template: Container-Scanning.gitlab-ci.yml
-  - template: License-Management.gitlab-ci.yml
+  - template: License-Scanning.gitlab-ci.yml
 
 
 dependency_scanning:
@@ -88,7 +88,7 @@ container_scanning:
   tags:
   - unprivileged
 
-license_management:
+license_scanning:
   stage: post-deploy
   tags:
   - unprivileged
