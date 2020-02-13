@@ -17,6 +17,8 @@ build:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build --pull -t ${IMAGE} .
     - docker push ${IMAGE}
+  tags:
+  - privileged
 
 stage:
   stage: stage
@@ -29,6 +31,8 @@ stage:
     - kubectl -n aero patch statefulset aero-staging -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"aero-staging\",\"image\":\"${IMAGE}\"}]}}}}"
   only:
     - develop
+  tags:
+  - unprivileged
 
 deploy:
   stage: deploy
@@ -41,7 +45,8 @@ deploy:
     - kubectl -n aero patch statefulset aero -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"aero\",\"image\":\"${IMAGE}\"}]}}}}"
   only:
     - master
-
+  tags:
+  - unprivileged
 
 sentry-commit:
   stage: post-build
@@ -50,3 +55,6 @@ sentry-commit:
     - sentry-cli releases new $CI_COMMIT_SHA
     - sentry-cli releases set-commits --auto $CI_COMMIT_SHA
     - sentry-cli releases finalize $CI_COMMIT_SHA
+  tags:
+  - unprivileged
+
