@@ -48,5 +48,6 @@ sentry:
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases new $CI_COMMIT_SHA
+    - sentry-cli releases set-commits --auto $CI_COMMIT_SHA
     - sentry-cli releases finalize $CI_COMMIT_SHA
     - echo "Finalized release for $CI_COMMIT_SHA"
