@@ -15,7 +15,6 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if (!msg.guild || !msg.guild.settings.get('mod.anti.toxicity') || this.client.owners.has(msg.author)) return;
 		const scores = await req(PerspectiveAPI, 'POST')
 			.path('comments:analyze')
 			.query('key', process.env.PERSPECTIVE_TOKEN)
@@ -33,7 +32,9 @@ module.exports = class extends Monitor {
 		const IDENTITY_ATTACK = scores.IDENTITY_ATTACK.summaryScore.value;
 		const SEVERE_TOXICITY = scores.SEVERE_TOXICITY.summaryScore.value;
 
-		if (IDENTITY_ATTACK > 0.85 || SEVERE_TOXICITY > 0.85) msg.delete({ reason: msg.language.get('EVENT_PERSPECTIVE_DELETEREASON') });
+		if (msg.guild && msg.guild.settings.get('mod.anti.toxicity') && (IDENTITY_ATTACK > 0.9 || SEVERE_TOXICITY > 0.9)) {
+			msg.delete({ reason: msg.language.get('EVENT_PERSPECTIVE_DELETEREASON') });
+		}
 
 		const TOXICITY = scores.TOXICITY.summaryScore.value;
 
