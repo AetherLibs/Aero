@@ -1,8 +1,9 @@
 stages:
 - build
+- post-build
 - stage
 - deploy
-- post-deploy
+- test
 
 variables:
   IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
@@ -43,10 +44,13 @@ deploy:
     - master
 
 
-sentry:
-  stage: post-deploy
+sentry-commit:
+  stage: post-build
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases new $CI_COMMIT_SHA
     - sentry-cli releases set-commits --auto $CI_COMMIT_SHA
     - sentry-cli releases finalize $CI_COMMIT_SHA
+
+include:
+  template: Dependency-Scanning.gitlab-ci.yml
