@@ -81,7 +81,7 @@ dependency_scanning:
 retire-js-dependency_scanning:
   script:
   - apk add --no-cache pkgconf
-  - ln -sf pkgconf /usr/bin/pkg-config
+  - ln -sf pkgconf /usr/bin/pkg-config cairo-dev jpeg-dev pango-dev giflib-dev
   - /analyzer run
 
 sast:
