@@ -63,7 +63,7 @@ deploy:
       namespace: aero
 
 sentry-commit:
-  stage: deploy
+  stage: build
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases new $CI_COMMIT_SHA
@@ -71,6 +71,12 @@ sentry-commit:
     - sentry-cli releases finalize $CI_COMMIT_SHA
   tags:
   - unprivileged
+
+sentry-deploy:
+  stage: deploy
+  image: getsentry/sentry-cli
+  script:
+    - sentry-cli releases deploys $CI_COMMIT_SHA new -e $CI_COMMIT_REF_SLUG
 
 include:
   - template: Dependency-Scanning.gitlab-ci.yml
