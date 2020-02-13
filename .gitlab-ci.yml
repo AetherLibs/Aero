@@ -3,12 +3,16 @@ stages:
 - post-build
 - stage
 - deploy
+- post-deploy
 
 variables:
   IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
   KUBECONFIG: /etc/deploy/config
   DS_DISABLE_DIND: "true"
   DS_PYTHON_VERSION: 2
+  SAST_DISABLE_DIND: "true"
+  SCAN_KUBERNETES_MANIFESTS: "true"
+
 
 build:
   stage: build
@@ -62,8 +66,27 @@ sentry-commit:
 
 include:
   - template: Dependency-Scanning.gitlab-ci.yml
+  - template: SAST.gitlab-ci.yml
+  - template: Container-Scanning.gitlab-ci.yml
+  - template: License-Management.gitlab-ci.yml
+
 
 dependency_scanning:
-  stage: post-build
+  stage: post-deploy
+  tags:
+  - unprivileged
+
+sast:
+  stage: post-deploy
+  tags:
+  - unprivileged
+
+container_scanning:
+  stage: post-deploy
+  tags:
+  - unprivileged
+
+license_management:
+  stage: post-deploy
   tags:
   - unprivileged
