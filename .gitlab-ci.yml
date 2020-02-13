@@ -1,7 +1,5 @@
 stages:
 - build
-- post-build
-- stage
 - deploy
 - post-deploy
 
@@ -29,7 +27,7 @@ build:
   - privileged
 
 stage:
-  stage: stage
+  stage: deploy
   image: lwolf/helm-kubectl-docker:latest
   before_script:
     - mkdir -p /etc/deploy
@@ -41,6 +39,8 @@ stage:
     - develop
   tags:
   - unprivileged
+  environment:
+    name: staging
 
 deploy:
   stage: deploy
@@ -55,9 +55,11 @@ deploy:
     - master
   tags:
   - unprivileged
+  environment:
+    name: production
 
 sentry-commit:
-  stage: post-build
+  stage: deploy
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases new $CI_COMMIT_SHA
@@ -81,6 +83,7 @@ retire-js-dependency_scanning:
   script:
   - apk add --no-cache pkgconf cairo-dev jpeg-dev pango-dev giflib-dev
   - ln -sf pkgconf /usr/bin/pkg-config
+  - export CXXFLAGS="-w"
   - /analyzer run
 
 sast:
