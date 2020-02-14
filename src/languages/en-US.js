@@ -227,6 +227,8 @@ module.exports = class extends Language {
 			COMMAND_REP_NOSELF: 'You may not upvote yourself.',
 			COMMAND_REP_COOLDOWN: time => `You've recently upvoted a user. You can upvote again in ${time}`,
 			COMMAND_REP_REPLY: user => `Successfully upvoted **${user}**.`,
+			COMMAND_BIO_DESCRIPTION: 'Gets your bio from discord.bio',
+			COMMAND_BIO_NOBIO: (isSelf) => `${isSelf ? "You don't" : "This user doesn't"} seem to have a discord.bio configured.`,
 
 			// mod commands
 			COMMAND_BAN_DESCRIPTION: [
