@@ -17,7 +17,7 @@ module.exports = {
 	inviteURL: 'https://get.aero.bot',
 	supportServer: 'https://discord.gg/n6eZ3Z5',
 	repoURL: 'https://git.aero.bot/aero',
-	hasteURL: 'https://haste.cloudy.gg',
+	hasteURL: 'https://haste.aero.bot',
 	memegenURL: 'https://memes.aero.bot/api',
 	colorgenURL: 'https://color.aero.bot',
 	dailyPoints: 50
