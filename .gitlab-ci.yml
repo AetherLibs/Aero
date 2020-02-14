@@ -77,6 +77,8 @@ sentry-deploy:
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases deploys $CI_COMMIT_SHA new -e $CI_COMMIT_REF_SLUG
+  tags:
+  - unprivileged
 
 include:
   - template: Dependency-Scanning.gitlab-ci.yml
