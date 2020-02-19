@@ -16,10 +16,10 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [prefix]) {
-		if (!prefix) return msg.responder.success(msg.language.get('COMMAND_PREFIX_REMINDER', msg.guild.settings.get('prefix')));
+		if (!prefix) return msg.responder.success('COMMAND_PREFIX_REMINDER', msg.guild.settings.get('prefix'));
 		await msg.guild.settings.sync();
 		await msg.guild.settings.update('prefix', prefix);
-		return msg.responder.success(msg.language.get('COMMAND_PREFIX_SUCCESS', prefix));
+		return msg.responder.success('COMMAND_PREFIX_SUCCESS', prefix);
 	}
 
 };

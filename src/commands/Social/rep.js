@@ -14,9 +14,9 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user]) {
-		if (user.id === msg.author.id) return msg.responder.error(msg.language.get('COMMAND_REP_NOSELF'));
+		if (user.id === msg.author.id) return msg.responder.error('COMMAND_REP_NOSELF');
 		if (Date.now() - msg.author.settings.get('lastReputationTimestamp') < TIME.HOUR * 12) {
-			return msg.responder.error(msg.language.get('COMMAND_REP_COOLDOWN', Duration.toNow(msg.author.settings.get('lastReputationTimestamp') + (TIME.HOUR * 12))));
+			return msg.responder.error('COMMAND_REP_COOLDOWN', Duration.toNow(msg.author.settings.get('lastReputationTimestamp') + (TIME.HOUR * 12)));
 		}
 		await msg.author.settings.sync();
 		await msg.author.settings.update('lastReputationTimestamp', Date.now());
@@ -28,7 +28,7 @@ module.exports = class extends Command {
 		const individual = user.settings.get('stats.reputation.individual');
 		if (!individual.includes(msg.author.id)) user.settings.update('stats.reputation.individual', msg.author.id, { arrayAction: 'add' });
 
-		return msg.responder.success(msg.language.get('COMMAND_REP_REPLY', user.username));
+		return msg.responder.success('COMMAND_REP_REPLY', user.username);
 	}
 
 };

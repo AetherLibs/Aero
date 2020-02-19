@@ -19,7 +19,7 @@ module.exports = class extends Command {
 	async run(msg, [user = msg.author]) {
 		const bio = await this.client.dbio.details(user.id).catch(() => null);
 
-		if (!bio) return msg.responder.error(msg.language.get('COMMAND_BIO_NOBIO', user === msg.author));
+		if (!bio) return msg.responder.error('COMMAND_BIO_NOBIO', user === msg.author);
 
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 

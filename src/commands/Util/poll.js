@@ -17,10 +17,10 @@ module.exports = class extends Command {
 	async run(msg, [options]) {
 		const opt = options.split(/,\s*/);
 		if (opt.length > 10) {
-			return msg.responder.error(msg.language.get('COMMAND_POLL_TOO_MANY_OPTIONS'));
+			return msg.responder.error('COMMAND_POLL_TOO_MANY_OPTIONS');
 		}
 		if (opt.length < 2) {
-			return msg.responder.error(msg.language.get('COMMAND_POLL_TOO_FEW_OPTIONS'));
+			return msg.responder.error('COMMAND_POLL_TOO_FEW_OPTIONS');
 		}
 		const embed = new MessageEmbed()
 			.setColor(color.INFORMATION)

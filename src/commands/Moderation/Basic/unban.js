@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 	async run(msg, [users, reason]) {
 		const bannable = await this.getModeratable(msg.member, users);
-		if (!bannable.length) return msg.responder.error(msg.language.get('COMMAND_UNBAN_NOPERMS', users.length > 1));
+		if (!bannable.length) return msg.responder.error('COMMAND_UNBAN_NOPERMS', users.length > 1);
 
 		const moderator = msg.author;
 

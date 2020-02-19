@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 	async run(msg, [users, duration, reason]) {
 		const muteable = await this.getModeratable(msg.member, users, true);
-		if (!muteable.length) return msg.responder.error(msg.language.get('COMMAND_MUTE_NOPERMS', users.length > 1));
+		if (!muteable.length) return msg.responder.error('COMMAND_MUTE_NOPERMS', users.length > 1);
 
 		const muterole = msg.guild.settings.get('mod.roles.mute') || await msg.guild.createMuteRole();
 

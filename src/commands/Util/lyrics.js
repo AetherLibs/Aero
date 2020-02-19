@@ -34,7 +34,7 @@ module.exports = class extends Command {
 			embed.addField(zws, part);
 		}
 
-		return msg.sendEmbed(embed).catch(() => msg.responder.error(msg.language.get('COMMAND_LYRICS_FAILED', track.url)));
+		return msg.sendEmbed(embed).catch(() => msg.responder.error('COMMAND_LYRICS_FAILED', track.url));
 	}
 
 };

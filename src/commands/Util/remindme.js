@@ -18,7 +18,7 @@ module.exports = class extends Command {
 				text
 			}
 		});
-		return msg.responder.success(msg.language.get('COMMAND_REMIND_REPLY', Duration.toNow(time)));
+		return msg.responder.success('COMMAND_REMIND_REPLY', Duration.toNow(time));
 	}
 
 };

@@ -29,7 +29,7 @@ module.exports = class extends Command {
 				}
 			});
 		}
-		return msg.responder.success(msg.language.get('COMMAND_DAILY_REPLY'));
+		return msg.responder.success('COMMAND_DAILY_REPLY');
 	}
 
 };

@@ -12,9 +12,9 @@ module.exports = class extends Command {
 		});
 	}
 	async run(msg, [user, reason]) {
-		if (!msg.member.hasPermission('DEAFEN_MEMBERS')) return msg.responder.error(msg.language.get('COMMAND_VOICEDEAFEN_NOPERMS'));
-		if (!user.voiceChannel) msg.responder.error(msg.language.get('COMMAND_VOICEDEAFEN_NOVOICE'));
-		if (user.serverDeaf) return msg.responder.error(msg.language.get('COMMAND_VOICEDEAFEN_ALREADY_DEAFENED'));
+		if (!msg.member.hasPermission('DEAFEN_MEMBERS')) return msg.responder.error('COMMAND_VOICEDEAFEN_NOPERMS');
+		if (!user.voiceChannel) msg.responder.error('COMMAND_VOICEDEAFEN_NOVOICE');
+		if (user.serverDeaf) return msg.responder.error('COMMAND_VOICEDEAFEN_ALREADY_DEAFENED');
 		user.setDeaf(true, reason || msg.language.get('COMMAND_VOICEDEAFEN_NOREASON'));
 		const embed = new MessageEmbed()
 			.setDescription(msg.language.get('COMMAND_VOICEDEAFEN_DEAFENED'))

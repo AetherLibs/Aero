@@ -24,13 +24,13 @@ module.exports = class extends Command {
 		const hook = await channel.createWebhook(`${this.client.user.username} Log: ${type}`,
 			{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') });
 		await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
-		return msg.responder.success(msg.language.get('COMMAND_LOG_SUCCESS', type, channel));
+		return msg.responder.success('COMMAND_LOG_SUCCESS', type, channel);
 	}
 
 	async displayLogs(msg, type) {
 		if (type) {
 			const _channel = msg.guild.settings.get(`logs.${type}.channel`);
-			if (!_channel || !msg.guild.channels.has(_channel)) return msg.responder.error(msg.language.get('COMMAND_LOG_DISPLAY_NOCHANNEL', type));
+			if (!_channel || !msg.guild.channels.has(_channel)) return msg.responder.error('COMMAND_LOG_DISPLAY_NOCHANNEL', type);
 			return msg.send(msg.language.get('COMMAND_LOG_DISPLAY_ONE', type, msg.guild.channels.get(_channel)));
 		} else {
 			const out = [];

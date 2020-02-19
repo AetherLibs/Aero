@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 	async run(msg, [users, reason]) {
 		const muteable = await this.getModeratable(msg.member, users, true);
-		if (!muteable.length) return msg.responder.error(msg.language.get('COMMAND_UNMUTE_NOPERMS', users.length > 1));
+		if (!muteable.length) return msg.responder.error('COMMAND_UNMUTE_NOPERMS', users.length > 1);
 
 		await this.executeUnmutes(muteable, reason, msg.guild, msg.author);
 		await this.logActions(msg.guild, 'unmute', muteable.map(member => member.user), { reason, moderator: msg.author });

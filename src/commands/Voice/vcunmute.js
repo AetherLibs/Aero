@@ -12,9 +12,9 @@ module.exports = class extends Command {
 		});
 	}
 	async run(msg, [user, reason]) {
-		if (!msg.member.hasPermission('MUTE_MEMBERS')) return msg.responder.error(msg.language.get('COMMAND_VOICEUNMUTE_NOPERMS'));
-		if (!user.voiceChannel) msg.responder.error(msg.language.get('COMMAND_VOICEUNMUTE_NOVOICE'));
-		if (!user.serverMute) return msg.responder.error(msg.language.get('COMMAND_VOICEMUTE_ALREADY_UNMUTED'));
+		if (!msg.member.hasPermission('MUTE_MEMBERS')) return msg.responder.error('COMMAND_VOICEUNMUTE_NOPERMS');
+		if (!user.voiceChannel) msg.responder.error('COMMAND_VOICEUNMUTE_NOVOICE');
+		if (!user.serverMute) return msg.responder.error('COMMAND_VOICEMUTE_ALREADY_UNMUTED');
 		user.setMute(false, reason || msg.language.get('COMMAND_VOICEUNMUTE_NOREASON'));
 		const embed = new MessageEmbed()
 			.setDescription(msg.language.get('COMMAND_VOICEUNMUTE_UNMUTED'))

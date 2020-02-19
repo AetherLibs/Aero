@@ -20,11 +20,11 @@ module.exports = class extends Command {
 		if (!channel) return msg.send(msg.language.get('COMMAND_RAID_HOWTO', this.client.user.username, msg.guild.settings.get('prefix')));
 		if (channel === 'disable') {
 			await msg.guild.settings.reset('raid.channel');
-			return msg.responder.success(msg.language.get('COMMAND_RAID_DISABLE'));
+			return msg.responder.success('COMMAND_RAID_DISABLE');
 		}
 		await msg.guild.settings.sync();
 		await msg.guild.settings.update('raid.channel', channel);
-		return msg.responder.success(msg.language.get('COMMAND_RAID_SUCCESS', channel));
+		return msg.responder.success('COMMAND_RAID_SUCCESS', channel);
 	}
 
 };

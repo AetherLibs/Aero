@@ -20,18 +20,18 @@ module.exports = class extends Command {
 		if (!role) return this.display(msg);
 		if (role === 'disable') {
 			await msg.guild.settings.reset('mod.roles.bots');
-			return msg.responder.success(msg.language.get('COMMAND_BOTROLE_DISABLE', role.name));
+			return msg.responder.success('COMMAND_BOTROLE_DISABLE', role.name);
 		} else {
 			await msg.guild.settings.sync();
 			await msg.guild.settings.update('mod.roles.bots', role.id);
-			return msg.responder.success(msg.language.get('COMMAND_BOTROLE_SET', role.name));
+			return msg.responder.success('COMMAND_BOTROLE_SET', role.name);
 		}
 	}
 
 	display(msg) {
 		const role = msg.guild.settings.get(msg.guild.settings.get('mod.roles.bots'));
-		if (!role) return msg.responder.error(msg.language.get('COMMAND_BOTROLE_NONE'));
-		return msg.responder.success(msg.language.get('COMMAND_BOTROLE_DISPLAY', role.name));
+		if (!role) return msg.responder.error('COMMAND_BOTROLE_NONE');
+		return msg.responder.success('COMMAND_BOTROLE_DISPLAY', role.name);
 	}
 
 };

@@ -40,15 +40,15 @@ module.exports = class extends Command {
 			await channel.messages.fetch(messageID).then(message => {
 				const equalReactionRoles = reactionRoles.filter(item => filter(item));
 
-				if (equalReactionRoles.length > 0) return msg.responder.error(msg.language.get('COMMAND_REACTIONROLE_ROLE_EXIST'));
+				if (equalReactionRoles.length > 0) return msg.responder.error('COMMAND_REACTIONROLE_ROLE_EXIST');
 				msg.guild.settings.update('mod.roles.reactionRoles', reactionRole, { arrayAction: 'add' });
 				message.react(emote.id);
-				return msg.responder.success(msg.language.get('COMMAND_REACTIONROLE_ROLE_ADDED'));
-			}).catch(() => msg.responder.error(msg.language.get('COMMAND_REACTIONROLE_NOMSG', messageID)));
+				return msg.responder.success('COMMAND_REACTIONROLE_ROLE_ADDED');
+			}).catch(() => msg.responder.error('COMMAND_REACTIONROLE_NOMSG', messageID));
 		} else if (action === 'remove') {
 			const newReactionRoles = reactionRoles.filter(item => !filter(item));
 			msg.guild.settings.update('mod.roles.reactionRoles', newReactionRoles, { arrayAction: 'overwrite' });
-			msg.responder.success(msg.language.get('COMMAND_REACTIONROLE_ROLE_REMOVED'));
+			msg.responder.success('COMMAND_REACTIONROLE_ROLE_REMOVED');
 		}
 
 		return true;

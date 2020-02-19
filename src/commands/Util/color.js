@@ -24,9 +24,9 @@ module.exports = class extends Command {
 	}
 
 	async display(msg, hexCode) {
-		if (!hexCode) return msg.responder.error(msg.language.get('COMMAND_COLOR_NOCOLOR'));
+		if (!hexCode) return msg.responder.error('COMMAND_COLOR_NOCOLOR');
 		const colorData = color(hexCode);
-		if (colorData._format === false) return msg.responder.error(msg.language.get('COMMAND_COLOR_INVALIDCOLOR'));
+		if (colorData._format === false) return msg.responder.error('COMMAND_COLOR_INVALIDCOLOR');
 		const img = await this.draw(colorData.toHex());
 		return msg.channel.sendFile(img, 'color.png', [
 			`**${colorData.toName() ? toTitleCase(colorData.toName()) : 'Unnamed'}**`,

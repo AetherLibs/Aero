@@ -210,6 +210,8 @@ module.exports = class extends Language {
 			COMMAND_POLL_TOO_MANY_OPTIONS: 'The maximum amount of options is **10**',
 			COMMAND_POLL_TOO_FEW_OPTIONS: 'The minimum amount of options required is **2**',
 			COMMAND_POLL_EMBED_FOOTER: 'React to one of the emotes below to vote.',
+			COMMAND_REDEEM_SUCCESS: (icon, title) => `Successfully redeemed ${icon} ${title}`,
+			COMMAND_REPORT_SUBMITERR: (err) => `An issue occurred when submitting the ban: ${err}`,
 
 			// social commands
 			COMMAND_DAILY_DESCRIPTION: 'Claim your daily points! Add --reminder to be reminded in 12h.',
@@ -269,6 +271,8 @@ module.exports = class extends Language {
 			COMMAND_UNWARN_UNWARNED: (reason, pardon) => `Your warn for ${bold`${reason}`} has been pardoned for: ${bold`${pardon}`}`,
 			COMMAND_UNWARN_MODERATOR: tag => `Moderator: ${tag}`,
 			COMMAND_UNWARN_NOPERMS: 'You cannot remove warnings for that user.',
+			COMMAND_PRUNE_RESPONSE: (count) => `Successfully deleted ${count} messages.`,
+			COMMAND_PRUNE_DESCRIPTION: 'Bulk deletes a certain amount of messages with optional filters.',
 
 			// core commands
 			COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',

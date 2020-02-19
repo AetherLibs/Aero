@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	async run(msg, [user = msg.author]) {
 		const member = await msg.guild.members.fetch(user.id);
 
-		if (!member) return msg.responder.error(msg.language.get('COMMAND_PROFILE_NOTMEMBER'));
+		if (!member) return msg.responder.error('COMMAND_PROFILE_NOTMEMBER');
 		await member.settings.sync(true);
 		const avatarURL = user.displayAvatarURL({ format: 'png' });
 		const points = member.settings.get('points');

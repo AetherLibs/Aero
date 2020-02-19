@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 	async run(msg, [users, reason]) {
 		const kickable = await this.getModeratable(msg.member, users, true);
-		if (!kickable.length) return msg.responder.error(msg.language.get('COMMAND_KICK_NOPERMS', users.length > 1));
+		if (!kickable.length) return msg.responder.error('COMMAND_KICK_NOPERMS', users.length > 1);
 
 		await this.executeKicks(kickable, reason, msg.guild, msg.author);
 		await this.logActions(msg.guild, 'kick', kickable.map(member => member.user), { reason, moderator: msg.author });

@@ -21,11 +21,11 @@ module.exports = class extends Command {
 		this.channels.add(msg.channel.id);
 		if (!user) {
 			user = await this.ask(msg, this.validateUser.bind(this), this.parseUser.bind(this), {
-				question: msg.language.get('COMMAND_REPORT_ARG_USER_QUESTION'),
-				timeout: msg.language.get('COMMAND_REPORT_ARG_USER_TIMEOUT'),
-				invalid: msg.language.get('COMMAND_REPORT_ARG_USER_INVALID')
+				question: 'COMMAND_REPORT_ARG_USER_QUESTION',
+				timeout: 'COMMAND_REPORT_ARG_USER_TIMEOUT',
+				invalid: 'COMMAND_REPORT_ARG_USER_INVALID'
 			}).catch((err) => {
-				msg.responder.error(err, true);
+				msg.responder.newError(err);
 				this.channels.delete(msg.channel.id);
 				return null;
 			});
@@ -34,11 +34,11 @@ module.exports = class extends Command {
 
 		if (!reason) {
 			reason = await this.ask(msg, this.validateReason, this.parseReason, {
-				question: msg.language.get('COMMAND_REPORT_ARG_REASON_QUESTION'),
-				timeout: msg.language.get('COMMAND_REPORT_ARG_REASON_TIMEOUT'),
-				invalid: msg.language.get('COMMAND_REPORT_ARG_REASON_INVALID')
+				question: 'COMMAND_REPORT_ARG_REASON_QUESTION',
+				timeout: 'COMMAND_REPORT_ARG_REASON_TIMEOUT',
+				invalid: 'COMMAND_REPORT_ARG_REASON_INVALID'
 			}).catch((err) => {
-				msg.responder.error(err, true);
+				msg.responder.newError(err);
 				this.channels.delete(msg.channel.id);
 				return null;
 			});
@@ -48,11 +48,11 @@ module.exports = class extends Command {
 		if (!proof) {
 			if (!this.validateProof(msg)) {
 				proof = await this.ask(msg, this.validateProof, this.parseProof, {
-					question: msg.language.get('COMMAND_REPORT_ARG_PROOF_QUESTION'),
-					timeout: msg.language.get('COMMAND_REPORT_ARG_PROOF_TIMEOUT'),
-					invalid: msg.language.get('COMMAND_REPORT_ARG_PROOF_INVALID')
+					question: 'COMMAND_REPORT_ARG_PROOF_QUESTION',
+					timeout: 'COMMAND_REPORT_ARG_PROOF_TIMEOUT',
+					invalid: 'COMMAND_REPORT_ARG_PROOF_INVALID'
 				}).catch((err) => {
-					msg.responder.error(err, true);
+					msg.responder.newError(err);
 					this.channels.delete(msg.channel.id);
 					return null;
 				});
@@ -74,8 +74,8 @@ module.exports = class extends Command {
 
 		const res = await this.client.ksoft.bans.add(ban);
 		this.channels.delete(msg.channel.id);
-		if (!res.success) return msg.responder.error(res.message);
-		return msg.responder.success(msg.language.get('COMMAND_REPORT_SUCCESS'));
+		if (!res.success) return msg.responder.error('COMMAND_REPORT_SUBMITERR', res.message);
+		return msg.responder.success('COMMAND_REPORT_SUCCESS');
 	}
 
 	async ask(msg, validator, parser, { question, timeout, invalid }) {
@@ -87,13 +87,13 @@ module.exports = class extends Command {
 			collector.on('collect', async message => {
 				if (await validator(message)) collector.stop('success');
 				else if (cancel.test(message.content)) collector.stop('cancelled');
-				else msg.responder.error(invalid, true);
+				else msg.responder.newError(invalid);
 			});
 			collector.on('end', (collected, reason) => {
 				if (reason === 'success') {
 					resolve(parser(collected.first()));
 				} else if (reason === 'cancelled') {
-					reject(msg.language.get('COMMAND_REPORT_CANCELLED'));
+					reject('COMMAND_REPORT_CANCELLED');
 				} else {
 					reject(timeout);
 				}

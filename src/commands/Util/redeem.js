@@ -18,14 +18,14 @@ module.exports = class extends Command {
 
 		const found = this.client.settings.get('keys').find(item => item.key === key);
 
-		if (!found) return msg.responder.error(msg.language.get('COMMAND_REDEEMKEY_NOEXIST'));
+		if (!found) return msg.responder.error('COMMAND_REDEEMKEY_NOEXIST');
 
 		const newKeys = this.client.settings.get('keys').filter(item => item.key !== key);
 		await this.client.settings.sync();
 		this.client.settings.update('keys', newKeys, { arrayAction: 'overwrite' });
 		msg.author.settings.update('badges', msg.author.settings.get('badges') | (1 << found.id)); /* eslint-disable-line no-bitwise */
 
-		return msg.responder.success(`Successfully redeemed ${badges[found.id].icon} ${badges[found.id].title}`);
+		return msg.responder.success('COMMAND_REDEEM_SUCCESS', badges[found.id].icon, badges[found.id].title);
 	}
 
 };

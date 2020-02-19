@@ -12,8 +12,8 @@ module.exports = class extends Command {
 		});
 	}
 	async run(msg, [user]) {
-		if (!msg.member.hasPermission('MOVE_MEMBERS')) return msg.responder.error(msg.language.get('COMMAND_VOICEKICK_NOPERMS'));
-		if (!user.voiceChannel) msg.responder.error(msg.language.get('COMMAND_VOICEKICK_NOVOICE'));
+		if (!msg.member.hasPermission('MOVE_MEMBERS')) return msg.responder.error('COMMAND_VOICEKICK_NOPERMS');
+		if (!user.voiceChannel) msg.responder.error('COMMAND_VOICEKICK_NOVOICE');
 		user.setVoiceChannel(null);
 		const embed = new MessageEmbed()
 			.setDescription(msg.language.get('COMMAND_VOICEKICK_VOICEKICKED'))

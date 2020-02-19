@@ -20,10 +20,10 @@ module.exports = class extends Command {
 	async run(msg, [users, duration, purge = false, reason]) {
 		if (!Array.isArray(users)) users = [users];
 		const bannable = await this.getModeratable(msg.member, users);
-		if (!bannable.length) return msg.responder.error(msg.language.get('COMMAND_BAN_NOPERMS', users.length > 1));
+		if (!bannable.length) return msg.responder.error('COMMAND_BAN_NOPERMS', users.length > 1);
 
 		const soft = ['soft', 's'].includes(purge);
-		if (duration && soft) return msg.responder.error(msg.language.get('COMMAND_BAN_CONFLICT'));
+		if (duration && soft) return msg.responder.error('COMMAND_BAN_CONFLICT');
 
 		await this.executeBans(bannable, duration, reason, purge, soft, msg.guild, msg.author);
 

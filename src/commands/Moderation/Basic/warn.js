@@ -20,7 +20,7 @@ module.exports = class extends Command {
 
 	async run(msg, [members, reason = msg.language.get('COMMAND_WARN_NOREASON')]) {
 		const warnable = await this.getModeratable(msg.member, members, true);
-		if (!warnable.length) return msg.responder.error(msg.language.get('COMMAND_WARN_NOPERMS', members.length > 1));
+		if (!warnable.length) return msg.responder.error('COMMAND_WARN_NOPERMS', members.length > 1);
 
 		for (const member of warnable) {
 			await member.settings.sync();
