@@ -30,7 +30,7 @@ module.exports = class extends Command {
 				bannerURL: bio.bannerURL || "",
 				username: user.username,
 				description: bio.description || 'no description',
-				birthday: this.timestamp.display(bio.birthday) || 'no birthday set',
+				birthday: bio.birthday ? this.timestamp.display(bio.birthday) : 'no birthday set',
 				location: bio.location || 'no location',
 				occupation: bio.occupation || 'no occupation',
 				status: bio.status || 'no status',
