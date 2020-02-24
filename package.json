@@ -22,7 +22,7 @@
 		"@aero/centra": "^1.0.3",
 		"@aero/chatwatch": "^1.5.1",
 		"@aero/dbio": "^1.1.2",
-		"@aero/drep": "^1.2.9",
+		"@aero/drep": "^1.2.12",
 		"@aero/ksoft": "^3.1.6",
 		"@aero/member-gateway": "^1.0.1",
 		"@aero/xkcd": "^1.0.0",

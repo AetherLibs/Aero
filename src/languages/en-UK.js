@@ -232,6 +232,12 @@ module.exports = class extends Language {
 			COMMAND_REP_REPLY: user => `Successfully upvoted **${user}**.`,
 			COMMAND_BIO_DESCRIPTION: 'Gets your bio from discord.bio',
 			COMMAND_BIO_NOBIO: (isSelf) => `${isSelf ? "You don't" : "This user doesn't"} seem to have a discord.bio configured.`,
+			COMMAND_UPVOTE_DESCRIPTION: 'Give someone a positive reputation based on trustworthy behavior. Powered by DiscordRep.',
+			COMMAND_UPVOTE_SUCCESS: (user) => `Successfully upvoted **${user}**`,
+			COMMAND_UPVOTE_ERROR: (user, message) => `Failed to upvote **${user}**: ${message}`,
+			COMMAND_DOWNVOTE_DESCRIPTION: 'Give someone a negative reputation based on untrustworthy behavior. Powered by DiscordRep.',
+			COMMAND_DOWNVOTE_SUCCESS: (user) => `Successfully downvoted **${user}**`,
+			COMMAND_DOWNVOTE_ERROR: (user, message) => `Failed to downvote **${user}**: ${message}`,
 
 			// mod commands
 			COMMAND_BAN_DESCRIPTION: [
