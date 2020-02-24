@@ -229,7 +229,7 @@ module.exports = class extends Language {
 			COMMAND_REP_DESCRIPTION: 'Reward nice or helpful users with some virtual love c:',
 			COMMAND_REP_NOSELF: 'You may not upvote yourself.',
 			COMMAND_REP_COOLDOWN: time => `You've recently upvoted a user. You can upvote again in ${time}`,
-			COMMAND_REP_REPLY: user => `Successfully upvoted **${user}**.`,
+			COMMAND_REP_REPLY: user => `Successfully gave kudos to **${user}**.`,
 			COMMAND_BIO_DESCRIPTION: 'Gets your bio from discord.bio',
 			COMMAND_BIO_NOBIO: (isSelf) => `${isSelf ? "You don't" : "This user doesn't"} seem to have a discord.bio configured.`,
 			COMMAND_UPVOTE_DESCRIPTION: 'Give someone a positive reputation based on trustworthy behavior. Powered by DiscordRep.',
