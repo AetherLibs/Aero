@@ -28,7 +28,7 @@ module.exports = class extends Command {
 		messages = messages.keyArray().slice(0, limit);
 		if (!messages.includes(msg.id)) messages.push(msg.id);
 		await msg.channel.bulkDelete(messages);
-		const message = await msg.responder.success('COMMAND_PRUNE_RESPONSE');
+		const message = await msg.responder.success('COMMAND_PRUNE_RESPONSE', messagse.size - 1);
 		message.delete({ timeout: 3000 }).catch(() => null);
 	}
 
