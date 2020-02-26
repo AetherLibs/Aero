@@ -79,7 +79,7 @@ module.exports = class extends Command {
 	}
 
 	async ask(msg, validator, parser, { question, timeout, invalid }) {
-		await msg.channel.send(question);
+		await msg.channel.send(msg.language.get(question));
 		const authorFilter = message => message.author.id === msg.author.id;
 		const collector = msg.channel.createMessageCollector(authorFilter, { idle: 60 * 1000, time: 3 * 60 * 1000 });
 
