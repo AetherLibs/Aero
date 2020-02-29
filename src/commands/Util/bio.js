@@ -9,7 +9,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			description: language => language.get('COMMAND_BIO_DESCRIPTION'),
-			usage: '[user:username]',
+			usage: '[user:username|slug:string]',
 			usageDelim: ' '
 		});
 
@@ -17,9 +17,11 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user = msg.author]) {
-		const bio = await this.client.dbio.details(user.id).catch(() => null);
+		const bio = await this.client.dbio.details(user.id || user).catch(() => null);
 
 		if (!bio) return msg.responder.error('COMMAND_BIO_NOBIO', user === msg.author);
+
+		if (typeof user === 'string') user = await this.client.users.fetch(bio.id);
 
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 
