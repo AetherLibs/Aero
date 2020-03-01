@@ -109,8 +109,8 @@ module.exports = class extends Command {
 
 	async _addBaseData(user, embed) {
 		return embed
-			.setAuthor(`${user.tag} [${user.id}]`, user.avatarURL())
-			.setThumbnail(user.avatarURL());
+			.setAuthor(`${user.tag} [${user.id}]`, user.displayAvatarURL({ dynamic: true }))
+			.setThumbnail(user.displayAvatarURL({ dynamic: true }));
 	}
 
 	async _addBadges(user, embed) {
@@ -278,7 +278,7 @@ module.exports = class extends Command {
 	botinfo(msg) {
 		if (msg.guild && !msg.guild.me.permissions.has(FLAGS.EMBED_LINKS)) return msg.sendLocale('COMMAND_INFO_BOT');
 		return msg.sendEmbed(new MessageEmbed()
-			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
+			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL({ dynamic: true }))
 			.setDescription(msg.language.get('COMMAND_INFO_BOT'))
 		);
 	}
