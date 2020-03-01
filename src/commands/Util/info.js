@@ -189,12 +189,11 @@ module.exports = class extends Command {
 		const KSoftBan = await this.client.ksoft.bans.info(user.id);
 		const DRepBan = await this.client.drep.ban(user.id);
 		const DRepScore = await this.client.drep.rep(user.id).then(res => res.reputation);
-		const fancyScore = DRepScore === 0 ? '±0' : DRepScore > 0 ? `+${DRepScore}` : DRepScore;
-		const DServicesBan = DServicesBans.get(user.id);
+		const DRepProfile = `https://discordrep.com/u/${user.id}`;
 		const CWProfile = await this.client.chatwatch.profile(user.id);
 		const rating = KSoftBan || CWProfile.blacklisted
 			? 'COMMAND_INFO_TRUST_VERYLOW'
-			: DRepBan.banned || DRepScore < 0 || DServicesBans.has(user.id) || CWProfile.score > 50
+			: DRepBan.banned || DRepScore < 0 || CWProfile.score > 50
 				? 'COMMAND_INFO_TRUST_LOW'
 				: this.client.owners.has(user) || CWProfile.whitelisted
 					? 'COMMAND_INFO_TRUST_VERYHIGH'
@@ -212,18 +211,18 @@ module.exports = class extends Command {
 		embed.addField(`• Trust (${msg.language.get(rating)})`, [
 			KSoftBan
 				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof)
-				: DServicesBan
-					? msg.language.get('COMMAND_INFO_USER_DSERVICESBANNED', DServicesBan.reason, DServicesBan.proof)
-					: msg.language.get('COMMAND_INFO_USER_BANSCLEAN'),
+				: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN'),
 			msg.language.get(cwRating, CWProfile.blacklisted_reason),
 			DRepBan.banned
-				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepBan.reason, fancyScore)
+				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepBan.reason)
 				: DRepScore === 0
-					? msg.language.get('COMMAND_INFO_USER_DREPNEUTRAL')
-					: msg.language.get('COMMAND_INFO_USER_DREPSCORE', fancyScore, DRepScore)
+					? msg.language.get('COMMAND_INFO_USER_DREPNEUTRAL', DRepProfile)
+					: DRepScore > 0
+						? msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
+						: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile)
 		].join('\n'));
 
-		DRepBan.banned || KSoftBan || DServicesBans.has(user.id) || CWProfile.blacklisted || CWProfile.score > 80
+		DRepBan.banned || KSoftBan || CWProfile.blacklisted || CWProfile.score > 80
 			? embed.setColor(VERY_NEGATIVE)
 			: embed.setColor(POSITIVE);
 
