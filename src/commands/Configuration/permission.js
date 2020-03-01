@@ -1,6 +1,6 @@
 const { Permissions: { FLAGS } } = require('discord.js');
 const { Command } = require('klasa');
-const { error, success, unspecified } = require('../../../lib/util/constants').emojis;
+const { granted, denied, unspecified } = require('../../../lib/util/constants').emojis.perms;
 
 module.exports = class extends Command {
 
@@ -46,19 +46,19 @@ module.exports = class extends Command {
 			if (category === 'admin') continue;
 			out.push(`${typeof tree[category]['*'] === 'boolean'
 				? tree[category]['*']
-					? success
-					: error
+					? granted
+					: denied
 				: unspecified
-			} ${category}`);
+				} ${category}`);
 			let i = 0;
 			const keys = Object.keys(tree[category]).length;
 			for (const key in tree[category]) {
 				i++;
 				if (tree[category]['*'] === tree[category][key]) continue;
 				out.push(`  ${i === keys ? '└──' : '├──'}${tree[category][key]
-					? success
-					: error
-				} ${key}`);
+					? granted
+					: denied
+					} ${key}`);
 			}
 		}
 		return out.join('\n');
