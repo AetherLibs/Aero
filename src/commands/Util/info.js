@@ -188,12 +188,12 @@ module.exports = class extends Command {
 	async _addSecurity(msg, user, embed) {
 		const KSoftBan = await this.client.ksoft.bans.info(user.id);
 		const DRepBan = await this.client.drep.ban(user.id);
-		const DRepScore = await this.client.drep.rep(user.id).then(res => res.reputation);
+		const DRepReputation = await this.client.drep.rep(user.id);
 		const DRepProfile = `https://discordrep.com/u/${user.id}`;
 		const CWProfile = await this.client.chatwatch.profile(user.id);
 		const rating = KSoftBan || CWProfile.blacklisted
 			? 'COMMAND_INFO_TRUST_VERYLOW'
-			: DRepBan.banned || DRepScore < 0 || CWProfile.score > 50
+			: DRepBan.banned || DRepReputation.reputation < 0 || CWProfile.score > 50
 				? 'COMMAND_INFO_TRUST_LOW'
 				: this.client.owners.has(user) || CWProfile.whitelisted
 					? 'COMMAND_INFO_TRUST_VERYHIGH'
@@ -215,10 +215,12 @@ module.exports = class extends Command {
 			msg.language.get(cwRating, CWProfile.blacklisted_reason),
 			DRepBan.banned
 				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepBan.reason)
-				: DRepScore === 0
+				: DRepReputation.reputation === 0
 					? msg.language.get('COMMAND_INFO_USER_DREPNEUTRAL', DRepProfile)
-					: DRepScore > 0
-						? msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
+					: DRepReputation.reputation > 0
+						? DRepReputation.staff
+							? msg.language.get('COMMAND_INFO_USER_DREPSTAFF', DRepProfile)
+							: msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
 						: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile)
 		].join('\n'));
 

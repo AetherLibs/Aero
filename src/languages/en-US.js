@@ -1,6 +1,6 @@
 const { Language, util } = require('klasa');
-const { bold, code, underline } = require('discord-md-tags');
-const { error, success, unspecified } = require('../../lib/util/constants').emojis;
+const { bold, code } = require('discord-md-tags');
+const { error, success, unspecified, trusted } = require('../../lib/util/constants').emojis;
 
 module.exports = class extends Language {
 
@@ -184,15 +184,14 @@ module.exports = class extends Language {
 			COMMAND_INFO_USER_WARNINGS: 'Warnings',
 			COMMAND_INFO_USER_STATISTICS: 'Statistics',
 			COMMAND_INFO_USER_KSOFTBANNED: (reason, proof) => `${error} ${bold`Banned`} on KSoft.Si Bans for ${code`${reason}`} ⎾[proof](${proof})⏌`,
-			COMMAND_INFO_USER_KSOFTCLEAN: `${success} **Unlikely to bother** (according to KSoft.Si Bans)`,
+			COMMAND_INFO_USER_KSOFTCLEAN: `${trusted} Unlikely to bother (according to KSoft.Si Bans)`,
 			COMMAND_INFO_USER_DREPBANNED: (reason) => `${error} ${bold`Banned`} on DiscordRep for ${code`${reason}`}`,
 			COMMAND_INFO_USER_DREPNEUTRAL: profile => `${unspecified} No reputation yet (on [DiscordRep](${profile}))`,
-			COMMAND_INFO_USER_DREPPOSITIVE: profile => `${success} **Unlikely to scam** (according to [DiscordRep](${profile}))`,
+			COMMAND_INFO_USER_DREPPOSITIVE: profile => `${trusted} Unlikely to scam (according to [DiscordRep](${profile}))`,
+			COMMAND_INFO_USER_DREPSTAFF: profile => `${trusted} Very unlikely to scam (according to [DiscordRep](${profile}))`,
 			COMMAND_INFO_USER_DREPNEGATIVE: profile => `${error} **Likely to scam** (according to [DiscordRep](${profile}))`,
-			COMMAND_INFO_USER_DREPSCORE: (score, int) => `${int === 0 ? unspecified : int < 0 ? error : success} Reputation of ${bold`${score.toString()}`} on DiscordRep`,
-			COMMAND_INFO_USER_CWSCORE: (score) => `${score === 50 ? unspecified : score > 50 ? error : success} Spam likeliness of ${bold`${score.toString()}%`} on ChatWatch`,
-			COMMAND_INFO_USER_CWWHITELISTED: `${success} **Unlikely to spam** (according to ChatWatch)`,
-			COMMAND_INFO_USER_CWGOOD: `${success} **Unlikely to spam** (according to ChatWatch)`,
+			COMMAND_INFO_USER_CWWHITELISTED: `${trusted} Very unlikely to spam (according to ChatWatch)`,
+			COMMAND_INFO_USER_CWGOOD: `${trusted} Unlikely to spam (according to ChatWatch)`,
 			COMMAND_INFO_USER_CWNEUTRAL: `${unspecified} No data from ChatWatch yet`,
 			COMMAND_INFO_USER_CWBAD: `${error} **Likely to spam** (according to ChatWatch)`,
 			COMMAND_INFO_USER_CWBANNED: (reason) => `${error} ${bold`Blacklisted`} on ChatWatch for ${code`${reason}`}`,
