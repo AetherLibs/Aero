@@ -437,13 +437,15 @@ module.exports = class extends Language {
 
 			// events
 			EVENT_JOIN_PERSISTREASON: 'Role persistency - member had those roles before leaving.',
-			EVENT_RAID_TITLE: (check, err) => [
-				underline`Possible raid attempt detected.`,
-				`React with ${check} to ban the users.`,
-				`React with ${err} to mark this as a false alarm.`
+			EVENT_RAID: (yes, no, users) => [
+				bold`Possible raid attempt detected`,
+				'',
+				`Involved users: ${users}`,
+				'',
+				`React with ${yes} to ban the users.`,
+				`React with ${no} to mark this as a false alarm.`
 			].join('\n'),
 			EVENT_RAID_PREVENTED: 'Successfully prevented raid',
-			EVENT_RAID_USERS_TITLE: 'Involved users',
 			EVENT_RAID_BANREASON: 'Automatic raid prevention.',
 			EVENT_GLOBALBAN_REASON: 'Globally banned user.',
 			EVENT_AUTOROLE_REASON: 'Autorole - configured to be automatically assigned to each member upon joining.',
