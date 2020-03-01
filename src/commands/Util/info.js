@@ -1,6 +1,6 @@
 const { Command, Duration, Timestamp } = require('klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
-const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { error, success }, DServicesBans, badges } = require('../../../lib/util/constants');
+const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { success, perms: { granted, unspecified } }, badges } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
 
 module.exports = class extends Command {
@@ -244,14 +244,14 @@ module.exports = class extends Command {
 			.addField('• Created', `${this.timestamp.display(role.createdAt)} (${Duration.toNow(role.createdAt)} ago)`, true)
 			.addField('• Properties', [
 				role.hoist
-					? `${success} displayed seperately`
-					: `${error} not displayed seperately`,
+					? `${granted} displayed seperately`
+					: `${unspecified} not displayed seperately`,
 				role.mentionable
-					? `${success} mentionable as ${role.toString()}`
-					: `${error} not mentionable`,
+					? `${granted} mentionable as ${role.toString()}`
+					: `${unspecified} not mentionable`,
 				!role.managed
-					? `${success} configurable`
-					: `${error} managed by an integration`
+					? `${granted} configurable`
+					: `${unspecified} managed by an integration`
 			].join('\n'));
 		return msg.sendEmbed(embed);
 	}
