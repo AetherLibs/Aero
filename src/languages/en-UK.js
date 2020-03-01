@@ -1,6 +1,6 @@
 const { Language, util } = require('klasa');
 const { bold, code } = require('discord-md-tags');
-const { error, success, unspecified, trusted, banned, nodata } = require('../../lib/util/constants').emojis;
+const { success, trusted, banned, nodata, perms: { granted, unspecified } } = require('../../lib/util/constants').emojis;
 
 module.exports = class extends Language {
 
@@ -58,8 +58,8 @@ module.exports = class extends Language {
 			COMMAND_LOG_DISPLAY_ONE: (type, channel) => `Currently logging ${bold`${type}`} in ${channel}.`,
 			COMMAND_ANTI_DESCRIPTION: 'Configures auto moderation settings.',
 			COMMAND_ANTI_DISPLAY_ONE: (type, enabled) => `**Anti-${type}** is currently **${enabled ? 'enabled' : 'disabled'}**.`,
-			COMMAND_ANTI_DISPLAY_ALL_CHAT: (type, enabled) => `${enabled ? success : unspecified} ${enabled ? 'Currently' : 'Not'} filtering **${type}**`,
-			COMMAND_ANTI_DISPLAY_ALL_USERS: (type, enabled) => `${enabled ? success : unspecified} ${enabled ? 'Currently' : 'Not'} filtering usernames which are **${type}**`,
+			COMMAND_ANTI_DISPLAY_ALL_CHAT: (type, enabled) => `${enabled ? granted : unspecified} ${enabled ? 'Currently' : 'Not'} filtering **${type}**`,
+			COMMAND_ANTI_DISPLAY_ALL_USERS: (type, enabled) => `${enabled ? granted : unspecified} ${enabled ? 'Currently' : 'Not'} filtering usernames which are **${type}**`,
 			COMMAND_ANTI_DISPLAY_DIVIDER_CHAT: '__Chat offenses:__',
 			COMMAND_ANTI_DISPLAY_DIVIDER_USERS: '__Username issues:__',
 			COMMAND_ANTI_NOTYPE: 'No auto moderation type specified.',
