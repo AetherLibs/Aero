@@ -10,7 +10,7 @@ module.exports = class extends Command {
 			requiredPermissions: ['MANAGE_WEBHOOKS'],
 			aliases: ['ul'],
 			description: language => language.get('COMMAND_LOG_DESCRIPTION'),
-			usage: '[moderation|messages|members] [channel:channel]',
+			usage: '[moderation|messages|members] [channel:channel|disable]',
 			usageDelim: ' '
 		});
 
@@ -20,11 +20,9 @@ module.exports = class extends Command {
 	async run(msg, [type, channel]) {
 		if (!channel) return this.displayLogs(msg, type);
 		await msg.guild.settings.sync();
-		await msg.guild.settings.update(`logs.${type}.channel`, channel);
-		const hook = await channel.createWebhook(`${this.client.user.username} Log: ${type}`,
-			{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') });
-		await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
-		return msg.responder.success('COMMAND_LOG_SUCCESS', type, channel);
+		return channel === 'disable'
+			? this.disableLogs(msg, type)
+			: this.setLogs(msg, type, channel);
 	}
 
 	async displayLogs(msg, type) {
@@ -43,6 +41,41 @@ module.exports = class extends Command {
 
 			return msg.send(out.join('\n'));
 		}
+	}
+
+	async setLogs(msg, type, channel) {
+		// create hook
+		const hook = await channel.createWebhook(`${this.client.user.username} Log: ${type}`,
+			{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') });
+
+		// set db entries
+		await msg.guild.settings.update(`logs.${type}.channel`, channel);
+		await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
+
+		// populate logger cache
+		msg.guild.log.webhooks[type] = hook;
+
+		return msg.responder.success('COMMAND_LOG_SUCCESS', type, channel);
+	}
+
+	async disableLogs(msg, type) {
+		const channelID = msg.guild.settings.get(`logs.${type}.channel`);
+		const webhookID = msg.guild.settings.get(`logs.${type}.webhook`);
+
+		// reset db
+		await msg.guild.settings.reset(`logs.${type}.channel`);
+		await msg.guild.settings.reset(`logs.${type}.webhook`);
+
+		// delete webhook
+		if (msg.guild.channels.has(channelID)) {
+			const hooks = await msg.guild.channels.get(channelID).fetchWebhooks();
+			if (hooks.has(webhookID)) hooks.get(webhookID).delete().catch(() => null);
+		}
+
+		// clean hook cache
+		msg.guild.log.webhooks[type] = null;
+
+		return msg.responder.success();
 	}
 
 
