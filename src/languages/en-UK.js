@@ -16,6 +16,7 @@ module.exports = class extends Language {
 				}`,
 
 			ERROR_GENERIC: (err) => `An error occurred: ${err}`,
+			ERROR_SHORT: (err) => err,
 
 			ACTIVITY_PLAYING: 'Playing',
 			ACTIVITY_LISTENING: 'Listening to',
