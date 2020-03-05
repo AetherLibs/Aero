@@ -25,6 +25,7 @@ module.exports = class extends Command {
 			},
 			msg.guild.language.get('COMMAND_UNLOCK_REASON')
 		);
+
 		return msg.responder.unlock();
 	}
 

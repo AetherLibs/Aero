@@ -25,6 +25,7 @@ module.exports = class extends Command {
 		for (const member of warnable) {
 			await member.settings.sync();
 			member.settings.update('warnings', { reason, moderator: msg.member.id, active: true }, { arrayAction: 'add' });
+
 			const embed = new MessageEmbed()
 				.setAuthor(msg.guild.name, msg.guild.iconURL())
 				.setDescription(msg.language.get('COMMAND_WARN_WARNED', reason))
@@ -32,6 +33,7 @@ module.exports = class extends Command {
 				.setColor(VERY_NEGATIVE);
 			member.user.send(embed).catch(() => null);
 		}
+
 		msg.responder.success();
 		return this.logActions(msg.guild, 'warn', members, { reason, moderator: msg.author });
 	}

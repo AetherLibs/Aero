@@ -25,6 +25,7 @@ module.exports = class extends Command {
 			},
 			msg.guild.language.get('COMMAND_LOCK_REASON')
 		);
+
 		return msg.responder.lock();
 	}
 
