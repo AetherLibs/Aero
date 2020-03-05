@@ -9,7 +9,7 @@ module.exports = class extends Event {
 			this.client.emit('wtf', `[COMMAND] ${command.path}\n${error.stack || error}`);
 			this.client.sentry.captureException(error);
 		}
-		else message.responder.error(error).catch(err => this.client.emit('wtf', err));
+		else message.responder.error('ERROR_GENERIC', error).catch(err => this.client.emit('wtf', err));
 	}
 
 };

@@ -18,7 +18,7 @@ module.exports = class extends Inhibitor {
 		if (!message.guild) return;
 		const check = await this.client.permissions.canUse(message, command);
 		if (!check) {
-			await message.responder.error(`You do not have permission to use this command. You need the \`${command.category.toLowerCase()}.${command.name}\` permission.`);
+			await message.responder.error('INHIBITOR_PERM_NODES', `${command.category.toLowerCase()}.${command.name}`);
 			throw true;
 		}
 	}

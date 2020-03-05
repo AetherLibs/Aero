@@ -102,6 +102,9 @@ module.exports = class extends Language {
 			COMMAND_8BALL_ANSWERS,
 			COMMAND_8BALL_NOQUESTION: "🎱 That doesn't look like a question, try again please.",
 			COMMAND_BRAIN_DESCRIPTION: 'Generates an expanding brain meme from a group of sentences. Separate the sentences using commas.',
+			COMMAND_BRAIN_VALIDATOR: 'Please enter the text of the 4 panels seperated by commas.',
+			COMMAND_CRAB_DESCRIPTION: '🦀 Crab Rave 🦀',
+			COMMAND_CRAB_VALIDATOR: 'Please enter the text of a top and a bottom panel seperated by a comma.',
 			COMMAND_CHOICE_DESCRIPTION: 'Makes a decision for you given some choices.',
 			COMMAND_CHOICE_PROMPT: 'From what would you like me to choose from? Separate choices with a comma.',
 			COMMAND_CHOICE_ONEOPTION: 'You only gave me one choice, dummy.',
@@ -472,6 +475,7 @@ module.exports = class extends Language {
 			INHIBITOR_RUNIN: (types) => `This command is only available in ${types} channels.`,
 			INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
 			INHIBITOR_DEPRECATED: (reason) => `**This command is currently globally disabled:** ${reason}`,
+			INHIBITOR_PERM_NODES: (node) => `You do not have permission to use this command. You need the \`${node}\` permission.`,
 
 			LOG_ACTION_BAN: 'user banned',
 			LOG_ACTION_UNBAN: 'user unbanned',

@@ -4,7 +4,7 @@ module.exports = class extends MemeGenerationCommand {
 
 	constructor(...args) {
 		const textValidator = text => text.split(',').length === 4;
-		const textValidatorResponse = 'Please enter the text of the 4 panels seperated by commas.';
+		const textValidatorResponse = 'COMMAND_BRAIN_VALIDATOR';
 		super({
 			name: 'brain',
 			text: true,
