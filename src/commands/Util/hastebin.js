@@ -12,8 +12,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [code]) {
-		const url = this.client.config.hasteURL;
-		const { key } = await req(url, 'POST')
+		const { key } = await req(this.client.config.hasteURL, 'POST')
 			.path('documents')
 			.body(code)
 			.json();
