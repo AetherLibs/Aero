@@ -2,7 +2,7 @@
 // derived from https://github.com/KlasaCommunityPlugins/tags
 const { Command, util } = require('klasa');
 const { trimString } = require('../../../lib/util/util');
-const { util: djsUtil, Permissions: { FLAGS } } = require('discord.js');
+const { Util: djsUtil, Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends Command {
 
@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			description: language => language.get('COMMAND_TAG_DESCRIPTION'),
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|remove|list|view> [tag:string] [content:string] [...]',
+			usage: '<add|remove|list:default|view> [tag:string] [content:string] [...]',
 			usageDelim: ' ',
 			aliases: ['t']
 		});
@@ -29,22 +29,25 @@ module.exports = class extends Command {
 	}
 
 	async remove(msg, [tag]) {
-		const filtered = msg.guild.settings.get('tags').filter(([name]) => name !== tag.toLowerCase());
+		const tags = msg.guild.settings.get('tags');
+		const filtered = tags.filter(([name]) => name !== tag.toLowerCase());
+		if (tags.length === filtered.length) throw msg.language.get('COMMAND_TAG_NOEXIST', tag);
 		await msg.guild.settings.sync();
 		await msg.guild.settings.update('tags', filtered, { action: 'overwrite' });
 		return msg.send(msg.language.get('COMMAND_TAG_REMOVED', tag));
 	}
 
-	view(msg, [tag = '']) {
+	view(msg, [tag]) {
+		if (!tag) throw msg.language.get('COMMAND_TAG_UNSPECIFIED');
 		const emote = msg.guild.settings.get('tags').find(([name]) => name === tag.toLowerCase());
-		if (!emote) throw msg.language.get('COMMAND_TAG_NOEXIST');
+		if (!emote) throw msg.language.get('COMMAND_TAG_NOEXIST', tag);
 		return msg.send(util.codeBlock('', emote[1]));
 	}
 
 	list(msg) {
-		if (!msg.guild.settings.get('tags').length) throw msg.language.get('COMMAND_TAG_NOTAGS');
+		if (!msg.guild.settings.get('tags').length) throw msg.language.get('COMMAND_TAG_NOTAGS', msg.guild.settings.get('prefix'));
 		const tags = msg.guild.settings.get('tags');
-		const output = [`**${msg.guild.name} Tags** (Total ${tags.length})`, '```asciidoc'];
+		const output = [msg.language.get('COMMAND_TAG_LIST', msg.guild.name, tags.length), '```asciidoc'];
 		for (const [index, [tag, value]] of tags.entries()) {
 			output.push(`${index + 1}. ${tag} :: ${trimString(value, 30)}`);
 		}

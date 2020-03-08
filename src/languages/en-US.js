@@ -167,8 +167,10 @@ module.exports = class extends Language {
 			COMMAND_TAG_REMOVED: tag => `Removed the tag \`${tag}\``,
 			COMMAND_TAG_EMPTY: 'Please include what the tag is supposed to do',
 			COMMAND_TAG_NOEXIST: tag => `The tag \`${tag}\` doesn't exist.`,
-			COMMAND_TAG_NOTAGS: "There don't appear to be any tags configured.",
+			COMMAND_TAG_NOTAGS: prefix => `There don't appear to be any tags configured. Add a tag using \`${prefix}tag add\``,
 			COMMAND_TAG_EXISTS: 'This tag already exists.',
+			COMMAND_TAG_UNSPECIFIED: 'Please specify a tag to view.',
+			COMMAND_TAG_LIST: (guild, total) => `**Tags on ${guild}** (${total})`,
 
 			// misc commands
 			COMMAND_INFO_DESCRIPTION: 'Get information about a user, role, the server, or this bot.',
