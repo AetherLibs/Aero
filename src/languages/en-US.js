@@ -37,7 +37,7 @@ module.exports = class extends Language {
 				`You can also use wildcards such as ${code`<category>.*`} which includes all commands in the category, and ${code`*`} which includes all commands,`,
 				'',
 				bold`Examples`,
-				`Allow ravy to use the ban command: ${code`${prefix}perms allow @ravy mod.ban`}`,
+				`Allow ravy to use the ban command: ${code`${prefix}perms allow @ravy moderation.ban`}`,
 				`Disallow dragonblitz10 from using all configuration commands: ${code`${prefix}perms remove @dragonblitz10 configuration.*`}`,
 				`Allow admins to use all commands: ${code`${prefix}perms allow @Admins *`}`
 			],
