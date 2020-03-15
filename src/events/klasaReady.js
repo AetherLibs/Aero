@@ -6,12 +6,11 @@ const { READY_CLIENT } = require('../../lib/ws/util/constants').types;
 module.exports = class extends Event {
 
 	async run() {
-		await this.client.chatwatch.login();
+		await this.client.chatwatch.login().catch(err => this.client.console.error(`[ChatWatch] failed to log in: ${err.message}`));
 		this.client.console.log('[ChatWatch] Connected to Websocket.');
 		if (process.env.BOOT_SINGLE !== 'false') return;
 		this.client.console.log('[Aether] Sending ready event.');
 		this.client.manager.ws.send(encode(new Message(READY_CLIENT, { id: this.client.manager.id })));
 		this.client.events.get('debug').unload();
 	}
-
 };

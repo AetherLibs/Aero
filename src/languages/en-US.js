@@ -221,6 +221,16 @@ module.exports = class extends Language {
 			COMMAND_REPORT_SUBMITERR: (err) => `An issue occurred when submitting the ban: ${err}`,
 			COMMAND_AVATAR_DESCRIPTION: 'Get the avatar from a user.',
 			COMMAND_REVERSEAVATAR_DESCRIPTION: "Perform a reverse image search for a user's avatar.",
+			COMMAND_CORONA_DESCRIPTION: 'Get current statistics of the COVID-19 pandemic.',
+			COMMAND_CORONA_EMBED_TITLE: 'COVID-19 stats',
+			COMMAND_CORONA_EMBED_FIELD_CASES_TITLE: 'Cases',
+			COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE: 'Deaths',
+			COMMAND_CORONA_EMBED_FIELD_CRITICAL_TITLE: 'Critical',
+			COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE: 'Recovered',
+			COMMAND_CORONA_EMBED_DISCLAIMER: 'All stats shown here are from corona.lmao.ninja and hence from worldometers. We cannot guarantee the correctness of them.',
+			COMMAND_CORONA_INVALID_COUNTRY: 'Country name invalid or not in statistics',
+			COMMAND_CORONA_EMBED_TITLE_COUNTRY: country => `COVID-19 stats / ${country}`,
+			COMMAND_CORONA_TODAY: 'today',
 
 			// social commands
 			COMMAND_DAILY_DESCRIPTION: 'Claim your daily points! Add --reminder to be reminded in 12h.',
