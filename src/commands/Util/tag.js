@@ -24,7 +24,7 @@ module.exports = class extends Command {
 		if (msg.guild.settings.get('tags').find(tuple => tuple[0] === tag.toLowerCase())) throw msg.language.get('COMMAND_TAG_EXISTS');
 		content = content.join(this.usageDelim);
 		await msg.guild.settings.sync();
-		await msg.guild.settings.update('tags', [...msg.guild.settings.get('tags'), [tag.toLowerCase(), content]], { action: 'overwrite' });
+		await msg.guild.settings.update('tags', [...msg.guild.settings.get('tags'), [tag.toLowerCase(), content]], { arrayAction: 'overwrite' });
 		return msg.send(msg.language.get('COMMAND_TAG_ADDED', tag, djsUtil.escapeMarkdown(content)));
 	}
 
@@ -33,7 +33,7 @@ module.exports = class extends Command {
 		const filtered = tags.filter(([name]) => name !== tag.toLowerCase());
 		if (tags.length === filtered.length) throw msg.language.get('COMMAND_TAG_NOEXIST', tag);
 		await msg.guild.settings.sync();
-		await msg.guild.settings.update('tags', filtered, { action: 'overwrite' });
+		await msg.guild.settings.update('tags', filtered, { arrayAction: 'overwrite' });
 		return msg.send(msg.language.get('COMMAND_TAG_REMOVED', tag));
 	}
 
