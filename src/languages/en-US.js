@@ -231,6 +231,8 @@ module.exports = class extends Language {
 			COMMAND_CORONA_INVALID_COUNTRY: 'Country name invalid or not in statistics',
 			COMMAND_CORONA_EMBED_TITLE_COUNTRY: country => `COVID-19 stats / ${country}`,
 			COMMAND_CORONA_TODAY: 'today',
+			COMMAND_CORONA_FATALITY_RATE: 'fatality rate',
+			COMMAND_CORONA_RECOVERY_RATE: 'recovery rate',
 
 			// social commands
 			COMMAND_DAILY_DESCRIPTION: 'Claim your daily points! Add --reminder to be reminded in 12h.',

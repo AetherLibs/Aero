@@ -29,12 +29,18 @@ module.exports = class extends Command {
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE'),
-				stats.deaths.toLocaleString(),
+				[
+					stats.deaths.toLocaleString(),
+					`${Math.round((stats.deaths / stats.cases) * 10000) / 100}% ${msg.language.get('COMMAND_CORONA_FATALITY_RATE')}`
+				].join('\n'),
 				true
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE'),
-				stats.recovered.toLocaleString(),
+				[
+					stats.recovered.toLocaleString(),
+					`${Math.round((stats.recovered / stats.cases) * 10000) / 100}% ${msg.language.get('COMMAND_CORONA_RECOVERY_RATE')}`
+				].join('\n'),
 				true
 			)
 			.setFooter(msg.language.get('COMMAND_CORONA_EMBED_DISCLAIMER'));
@@ -54,12 +60,18 @@ module.exports = class extends Command {
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE'),
-				`${stats.deaths.toLocaleString()} (+${stats.todayDeaths} ${msg.language.get('COMMAND_CORONA_TODAY')})`,
+				[
+					`${stats.deaths.toLocaleString()} (+${stats.todayDeaths} ${msg.language.get('COMMAND_CORONA_TODAY')})`,
+					`${Math.round((stats.deaths / stats.cases) * 10000) / 100}% ${msg.language.get('COMMAND_CORONA_FATALITY_RATE')}`
+				].join('\n'),
 				true
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE'),
-				stats.recovered.toLocaleString(),
+				[
+					stats.recovered.toLocaleString(),
+					`${Math.round((stats.recovered / stats.cases) * 10000) / 100}% ${msg.language.get('COMMAND_CORONA_RECOVERY_RATE')}`
+				].join('\n'),
 				true
 			)
 			.addField(
