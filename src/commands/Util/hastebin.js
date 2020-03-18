@@ -16,7 +16,7 @@ module.exports = class extends Command {
 			.path('documents')
 			.body(code)
 			.json();
-		return msg.send(`${url}/${key}`);
+		return msg.send(`${this.client.config.hasteURL}/${key}`);
 	}
 
 };
