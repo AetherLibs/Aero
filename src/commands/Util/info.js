@@ -1,6 +1,6 @@
 const { Command, Duration, Timestamp } = require('klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
-const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified } }, badges } = require('../../../lib/util/constants');
+const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified } }, badges, url: { KSoftBans } } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
 
 module.exports = class extends Command {
@@ -208,11 +208,13 @@ module.exports = class extends Command {
 						? 'COMMAND_INFO_USER_CWNEUTRAL'
 						: 'COMMAND_INFO_USER_CWBAD';
 
+		const KSoftBansProfile = `${KSoftBans}?user=${user.id}`;
+
 		embed.addField(`• Trust (${msg.language.get(rating)})`, [
 			KSoftBan
-				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof)
-				: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN'),
-			msg.language.get(cwRating, CWProfile.blacklisted_reason),
+				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof, KSoftBansProfile)
+				: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
+			msg.language.get(cwRating, KSoftBansProfile, CWProfile.blacklisted_reason),
 			DRepBan.banned
 				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepBan.reason)
 				: DRepReputation.reputation === 0
