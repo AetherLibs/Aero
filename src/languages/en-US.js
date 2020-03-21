@@ -191,6 +191,7 @@ module.exports = class extends Language {
 			COMMAND_INFO_USER_STATISTICS: 'Statistics',
 			COMMAND_INFO_USER_KSOFTBANNED: (reason, proof, profile) => `${banned} ${bold`Banned`} on [KSoft.Si Bans](${profile}) for ${code`${reason}`} ⎾[proof](${proof})⏌`,
 			COMMAND_INFO_USER_KSOFTCLEAN: profile => `${trusted} Unlikely to bother (according to [KSoft.Si Bans](${profile}))`,
+			COMMAND_INFO_USER_KSOFTSTAFF: profile => `${trusted} Very unlikely to bother (according to [KSoft.Si Bans](${profile}))`,
 			COMMAND_INFO_USER_DREPBANNED: (reason) => `${banned} ${bold`Banned`} on DiscordRep for ${code`${reason}`}`,
 			COMMAND_INFO_USER_DREPNEUTRAL: profile => `${nodata} No reputation yet (on [DiscordRep](${profile}))`,
 			COMMAND_INFO_USER_DREPPOSITIVE: profile => `${trusted} Unlikely to scam (according to [DiscordRep](${profile}))`,

@@ -213,7 +213,9 @@ module.exports = class extends Command {
 		embed.addField(`• Trust (${msg.language.get(rating)})`, [
 			KSoftBan
 				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof, KSoftBansProfile)
-				: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
+				: CWProfile.whitelisted
+					? msg.language.get('COMMAND_INFO_USER_KSOFTSTAFF', KSoftBansProfile)
+					: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
 			msg.language.get(cwRating, KSoftBansProfile, CWProfile.blacklisted_reason),
 			DRepBan.banned
 				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepBan.reason)
