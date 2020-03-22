@@ -29,7 +29,7 @@ module.exports = class extends Command {
 			.path('profile')
 			.query({
 				avatarURL: user.avatarURL({ format: 'png' }),
-				bannerURL: bio.bannerURL || "",
+				bannerURL: bio.bannerURL || '',
 				username: user.username,
 				description: bio.description || 'no description',
 				birthday: bio.birthday ? this.timestamp.display(bio.birthday) : 'no birthday set',
@@ -43,7 +43,6 @@ module.exports = class extends Command {
 		await msg.channel.sendFile(res, 'bio.png');
 
 		return loading.delete();
-
 	}
 
 };

@@ -17,7 +17,6 @@ module.exports = class extends Command {
 		return res.success
 			? msg.responder.success('COMMAND_DOWNVOTE_SUCCESS', user.username)
 			: msg.responder.error('COMMAND_DOWNVOTE_ERROR', user.username, res.message);
-
 	}
 
 };

@@ -13,4 +13,5 @@ module.exports = class extends Event {
 		this.client.manager.ws.send(encode(new Message(READY_CLIENT, { id: this.client.manager.id })));
 		this.client.events.get('debug').unload();
 	}
+
 };

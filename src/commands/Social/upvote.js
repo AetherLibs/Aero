@@ -17,7 +17,6 @@ module.exports = class extends Command {
 		return res.success
 			? msg.responder.success('COMMAND_UPVOTE_SUCCESS', user.username)
 			: msg.responder.error('COMMAND_UPVOTE_ERROR', user.username, res.message);
-
 	}
 
 };

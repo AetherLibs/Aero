@@ -7,7 +7,6 @@ module.exports = class extends Command {
 		super(...args, {
 			description: language => language.get('COMMAND_JOKE_DESCRIPTION')
 		});
-
 	}
 
 	async run(msg) {
