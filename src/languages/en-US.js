@@ -13,7 +13,7 @@ module.exports = class extends Language {
 			PREFIX_REMINDER: (prefix = `@${this.client.user.tag}`) => `The prefix${Array.isArray(prefix)
 				? `es for this guild are: ${prefix.map(pre => `\`${pre}\``).join(', ')}`
 				: ` in this guild is set to: \`${prefix}\``
-			}`,
+				}`,
 
 			ERROR_GENERIC: (err) => `An error occurred: ${err}`,
 			ERROR_SHORT: (err) => err,
@@ -307,33 +307,23 @@ module.exports = class extends Language {
 			COMMAND_VOICEDEAFEN_NOVOICE: 'That user is not in a voice chat.',
 			COMMAND_VOICEDEAFEN_NOREASON: 'no reason specified',
 			COMMAND_VOICEDEAFEN_ALREADY_DEAFENED: 'That user is already deafened serverwide.',
-			COMMAND_VOICEDEAFEN_DEAFENED: user => `Sucessfully voice deafened ${user}`,
-			COMMAND_VOICEDEAFEN_MODERATOR: tag => `Moderator: ${tag}`,
 			COMMAND_VOICEKICK_NOPERMS: 'You cannot voice kick that user.',
 			COMMAND_VOICEKICK_NOVOICE: 'That user is not in a voice chat',
-			COMMAND_VOICEKICK_VOICEKICKED: user => `Sucessfully voice kicked ${user}`,
-			COMMAND_VOICEKICK_MODERATOR: tag => `Moderator: ${tag}`,
 			COMMAND_VOICEMUTE_DESCRIPTION: 'Voice mute a user.',
 			COMMAND_VOICEMUTE_NOPERMS: 'You cannot voice mute that user.',
 			COMMAND_VOICEMUTE_NOVOICE: 'That user is not in a voice chat.',
 			COMMAND_VOICEMUTE_NOREASON: 'no reason specified.',
 			COMMAND_VOICEMUTE_ALREADY_MUTED: 'That user is already muted serverwide.',
-			COMMAND_VOICEMUTE_MUTED: user => `Sucessfully voice muted ${user}`,
-			COMMAND_VOICEMUTE_MODERATOR: tag => `Moderator: ${tag}`,
 			COMMAND_VOICEUNDEAFEN_DESCRIPTION: 'Voice undeafen a user.',
 			COMMAND_VOICEUNDEAFEN_NOPERMS: 'You cannot voice undeafen that user.',
 			COMMAND_VOICEUNDEAFEN_NOVOICE: 'That user is not in a voice chat.',
 			COMMAND_VOICEUNDEAFEN_NOREASON: 'no reason specified.',
 			COMMAND_VOICEDEAFEN_ALREADY_UNDEAFENED: 'That user is not deafened serverwide.',
-			COMMAND_VOICEUNDEAFEN_UNDEAFENED: user => `Sucessfully voice undeafened ${user}`,
-			COMMAND_VOICEUNDEAFEN_MODERATOR: tag => `Moderator: ${tag}`,
 			COMMAND_VOICEUNMUTE_DESCRIPTION: 'Voice unmute a user.',
 			COMMAND_VOICEUNMUTE_NOPERMS: 'You cannot voice unmute that user.',
 			COMMAND_VOICEUNMUTE_NOVOICE: 'That user is not in a voice chat.',
 			COMMAND_VOICEUNMUTE_NOREASON: 'no reason specified',
 			COMMAND_VOICEMUTE_ALREADY_UNMUTED: 'That user is not muted serverwide.',
-			COMMAND_VOICEUNMUTE_UNMUTED: user => `Sucessfully voice unmuted ${user}`,
-			COMMAND_VOICEUNMUTE_MODERATOR: tag => `Moderator: ${tag}`,
 
 			// core commands
 			COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',

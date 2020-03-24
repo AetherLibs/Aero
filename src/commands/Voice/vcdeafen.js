@@ -1,5 +1,5 @@
 const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
+
 module.exports = class extends Command {
 
 	constructor(...args) {
@@ -13,13 +13,10 @@ module.exports = class extends Command {
 	}
 	async run(msg, [user, reason]) {
 		if (!msg.member.hasPermission('DEAFEN_MEMBERS')) return msg.responder.error('COMMAND_VOICEDEAFEN_NOPERMS');
-		if (!user.voiceChannel) return msg.responder.error('COMMAND_VOICEDEAFEN_NOVOICE');
-		if (user.serverDeaf) return msg.responder.error('COMMAND_VOICEDEAFEN_ALREADY_DEAFENED');
-		user.setDeaf(true, reason || msg.language.get('COMMAND_VOICEDEAFEN_NOREASON'));
-		const embed = new MessageEmbed()
-			.setDescription(msg.language.get('COMMAND_VOICEDEAFEN_DEAFENED'))
-			.setFooter(msg.language.get('COMMAND_VOICEDEAFEN_MODERATOR', msg.author.tag), msg.author.displayAvatarURL());
-		return msg.channel.send(embed).catch(() => null);
+		if (!user.voice.channelID) return msg.responder.error('COMMAND_VOICEDEAFEN_NOVOICE');
+		if (user.voice.serverDeaf) return msg.responder.error('COMMAND_VOICEDEAFEN_ALREADY_DEAFENED');
+		user.voice.setDeaf(true, reason || msg.language.get('COMMAND_VOICEDEAFEN_NOREASON'));
+		return msg.responder.success();
 	}
 
 };
