@@ -104,6 +104,7 @@ module.exports = class extends Language {
 			COMMAND_8BALL_NOQUESTION: "🎱 That doesn't look like a question, try again please.",
 			COMMAND_BRAIN_DESCRIPTION: 'Generates an expanding brain meme from a group of sentences. Separate the sentences using commas.',
 			COMMAND_BRAIN_VALIDATOR: 'Please enter the text of the 4 panels seperated by commas.',
+			COMMAND_CHANGEMYMIND_DESCRIPTION: 'Generates an image for someone that will absolutely not change their mind.',
 			COMMAND_CRAB_DESCRIPTION: '🦀 Crab Rave 🦀',
 			COMMAND_CRAB_VALIDATOR: 'Please enter the text of a top and a bottom panel seperated by a comma.',
 			COMMAND_CHOICE_DESCRIPTION: 'Makes a decision for you given some choices.',
