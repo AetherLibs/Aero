@@ -1,8 +1,6 @@
 const { Command } = require('klasa');
 const { MessageEmbed } = require('discord.js');
 const { color: { VERY_NEGATIVE, NEGATIVE, POSITIVE, INFORMATION }, emojis: { success, error } } = require('../../../lib/util/constants');
-const req = require('@aero/centra');
-const url = 'https://status.discordapp.com/api/v2/';
 
 
 module.exports = class extends Command {
