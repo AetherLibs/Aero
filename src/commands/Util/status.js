@@ -20,28 +20,22 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const overview = await req(url)
-			.path('summary.json')
-			.json();
+		const overview = await this.client.dstatus.summary();
 
 		const embed = new MessageEmbed()
 			.setTitle(overview.status.description)
 			.setColor(this.colors[overview.status.indicator] || INFORMATION);
 
 		const description = [];
-		const components = overview.components.filter(comp => !comp.group_id);
-		for (const component of components) {
+		for (const component of overview.components) {
 			description.push(`${component.status === 'operational' ? success : error} **${component.name}:** ${component.status.replace(/_/g, ' ')}`);
 		}
 
 		embed.setDescription(description.join('\n'));
 
-		const incident = await req(url)
-			.path('incidents.json')
-			.json()
-			.then(res => res.incidents[0]);
+		const incident = await this.client.dstatus.incidents().then(res => res[0]);
 
-		embed.addField('Latest Incident', `[${incident.name}](${incident.shortlink}) (${incident.status})`);
+		embed.addField('Latest Incident', `[${incident.name}](${incident.url}) (${incident.status})`);
 
 		return msg.sendEmbed(embed);
 	}
