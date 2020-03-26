@@ -228,7 +228,7 @@ module.exports = class extends Language {
 			COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE: 'Deaths',
 			COMMAND_CORONA_EMBED_FIELD_CRITICAL_TITLE: 'Critical',
 			COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE: 'Recovered',
-			COMMAND_CORONA_EMBED_DISCLAIMER: 'All stats shown here are from corona.lmao.ninja and hence from worldometers. We cannot guarantee the correctness of them.',
+			COMMAND_CORONA_EMBED_DISCLAIMER: 'These stats are not necessarily comprehensive, complete, accurate or up to date; none of this is professional or legal advice.',
 			COMMAND_CORONA_INVALID_COUNTRY: 'Country name invalid or not in statistics',
 			COMMAND_CORONA_EMBED_TITLE_COUNTRY: country => `COVID-19 stats / ${country}`,
 			COMMAND_CORONA_TODAY: 'today',
