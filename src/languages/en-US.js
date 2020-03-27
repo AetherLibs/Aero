@@ -47,6 +47,13 @@ module.exports = class extends Language {
 			COMMAND_PERMS_SUCCESS_DENY: (permission, target) => `Denied ${code`${permission}`} from ${target.displayName || target.username || target}`,
 			COMMAND_PERMS_SUCCESS_REMOVE: (permission, target) => `Unset ${code`${permission}`} for ${target.displayName || target.username || target}`,
 			COMMAND_PERMS_SUCCESS_CLEAR: 'Cleared permission entries.',
+
+			COMMAND_PERMS_ERR_TARGET: "You can't modify permissions for that target.",
+			COMMAND_PERMS_ERR_CONFIG: 'There are no permission nodes configured in this server.',
+			COMMAND_PERMS_ERR_USAGE_NOCOMMAND: 'Invalid usage: a command or wildcard has to be specified.',
+			COMMAND_PERMS_ERR_USAGE_INVALIDCATEGORY: 'Invalid usage: choose a valid command category.',
+			COMMAND_PERMS_ERR_USAGE_INVALIDCOMMAND: 'Invalid usage: choose a valid command or use the * wildcard.',
+
 			COMMAND_LOG_DESCRIPTION: [
 				'Configures logging. Possible types:',
 				'• messages',

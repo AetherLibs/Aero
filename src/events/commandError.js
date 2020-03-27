@@ -7,7 +7,10 @@ module.exports = class extends Event {
 		if (error instanceof Error) {
 			this.client.emit('wtf', `[COMMAND] ${command.path}\n${error.stack || error}`);
 			this.client.sentry.captureException(error);
-		} else { message.responder.error('ERROR_SHORT', error).catch(err => this.client.emit('wtf', err)); }
+		} else {
+			if (typeof error === 'string' && message.language.has(error)) error = message.language.get(error);
+			message.responder.error('ERROR_SHORT', error).catch(err => this.client.emit('wtf', err));
+		}
 	}
 
 };
