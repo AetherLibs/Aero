@@ -103,6 +103,12 @@ module.exports = class extends Language {
 			COMMAND_BOTROLE_DISABLE: 'No longer automatically assigning a role to bots.',
 			COMMAND_BOTROLE_NONE: 'No bot role set up',
 			COMMAND_BOTROLE_DISPLAY: name => `Bots are currently automatically assigned ${bold`${name}`} upon joining.`,
+			COMMAND_WELCOME_DESCRIPTION: 'Sets a welcome message for new members. How friendly.',
+			COMMAND_WELCOME_NOTEXT: 'Please specify a welcome message',
+			COMMAND_WELCOME_SHOW_NONE: 'No welcome message configured',
+			COMMAND_WELCOME_SHOW: (channel, text) => `Currently welcoming members in ${channel} with: ${code`${text}`}`,
+			COMMAND_WELCOME_DISABLED: 'Disabled welcoming members.',
+			COMMAND_WELCOME_ENABLED: (channel, text) => `Now welcoming members in ${channel} with: ${code`${text}`}`,
 
 			// fun commands
 			COMMAND_8BALL_DESCRIPTION: 'Magic 8-Ball, does exactly what the toy does.',

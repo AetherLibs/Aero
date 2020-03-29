@@ -30,6 +30,9 @@ module.exports = class extends Event {
 		setTimeout(() => { member.guild.joinCache.delete(member.id); }, 20000);
 		if (member.guild.joinCache.size >= 50) this.client.emit('raid', member.guild, [...member.guild.joinCache]);
 
+		// welcoming
+		this.welcome(member);
+
 		// username cleanup
 		member.guild.modCache.add(member.id);
 		await this.dehoist(member);
@@ -56,6 +59,28 @@ module.exports = class extends Event {
 		if (!member.guild.settings.get('mod.anti.unmentionable')) return member;
 		member.cleanName();
 		return member;
+	}
+
+	welcome(member) {
+		const { guild } = member;
+		const channelID = guild.settings.get('welcome.channel');
+		if (!channelID) return member;
+		const channel = guild.channels.get(channelID);
+		if (!channel) return member;
+
+		const message = guild.settings.get('welcome.message');
+		if (!message) return member;
+
+		const parsed = this._fillTemplate(message, member);
+
+		channel.send(parsed);
+	}
+
+	_fillTemplate(template, member) {
+		return template
+			.replace(/{(member|user|mention)}/gi, member.toString())
+			.replace(/({name})/gi, member.user.username)
+			.replace(/{(guild|server)}/gi, member.guild.name);
 	}
 
 };
