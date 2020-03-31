@@ -25,15 +25,15 @@ module.exports = class extends Command {
 
 		// Handle too-long-messages
 		if (output.length > 2000) {
-			if (message.guild && message.channel.attachable) {
-				return message.channel.sendFile(Buffer.from(result), 'output.txt', message.language.get('COMMAND_EVAL_SENDFILE', time, footer));
-			}
-			this.client.emit('log', result);
-			return message.sendLocale('COMMAND_EVAL_SENDCONSOLE', [time, footer]);
+			const { key } = await req(this.client.config.hasteURL, 'POST')
+				.path('documents')
+				.json();
+
+			return message.send(message.language.get('COMMAND_EVAL_SENDHASTE', time, `${this.client.config.hasteURL}/${key}`, footer));
 		}
 
 		// If it's a message that can be sent correctly, send it
-		return message.sendMessage(output);
+		return message.send(output);
 	}
 
 	// Eval the input
