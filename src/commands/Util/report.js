@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user, reason, proof]) {
-		if (this.channels.has(msg.channel.id)) return false;
+		if (this.channels.has(msg.channel.id)) return msg.responder.error('COMMAND_REPORT_ONGOING');
 		this.channels.add(msg.channel.id);
 		if (!user) {
 			user = await this.ask(msg, this.validateUser.bind(this), this.parseUser.bind(this), {
