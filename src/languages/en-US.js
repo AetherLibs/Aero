@@ -468,6 +468,7 @@ module.exports = class extends Language {
 			COMMAND_REPORT_SUCCESS: 'Your report has been sent. Thanks for keeping Discord safe and sound! *This is a service powered by api.ksoft.si.*',
 			COMMAND_REPORT_CANCELLED: 'Canceled report.',
 			COMMAND_REPORT_ONGOING: 'Please finish your current report first. If you made an error, just type "cancel" to stop the report and try again.',
+			COMMAND_REPORT_ERRIMGUR: 'The imgur API returned an error.',
 			COMMAND_KSOFT_POWEREDBY: 'powered by api.ksoft.si',
 			COMMAND_MEME_DESCRIPTION: 'Fetches a random meme from reddit.',
 			COMMAND_VOICEKICK_DESCRIPTION: 'Voice kicks the mentioned member.',
