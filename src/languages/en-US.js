@@ -330,6 +330,9 @@ module.exports = class extends Language {
 			COMMAND_UNWARN_NOPERMS: 'You cannot remove warnings for that user.',
 			COMMAND_PRUNE_RESPONSE: (count) => `Successfully deleted ${count} messages.`,
 			COMMAND_PRUNE_DESCRIPTION: 'Bulk deletes a certain amount of messages with optional filters.',
+			COMMAND_DECANCER_DESCRIPTION: 'Clean a member\'s nickname from unmentionable characters.',
+			COMMAND_DECANCER_NOPERMS: 'You don\'t have permission to update that member\'s nickname.',
+
 			// voice commands
 			COMMAND_VOICEDEAFEN_DESCRIPTION: 'Voice deafen a user.',
 			COMMAND_VOICEDEAFEN_NOPERMS: 'You cannot deafen that user.',
