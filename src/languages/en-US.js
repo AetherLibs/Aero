@@ -171,6 +171,7 @@ module.exports = class extends Language {
 			COMMAND_RATE_REPLY: (user, percentage) => `I rate ${user} **${percentage}/100**!`,
 			COMMAND_SETCOLOR_DESCRIPTION: 'Set the color for a role.',
 			COMMAND_SETCOLOR_INVALIDCOLOR: 'That\'s not a valid color.',
+			COMMAND_SETCOLOR_NOPERMS: "I don't have permission to change the color for that role.",
 			COMMAND_URBAN_DESCRIPTION: 'Searches the urban dictionary for the definition to a search term.',
 			COMMAND_URBAN_MISSINGTERM: 'What would you like to search?',
 			COMMAND_URBAN_MAX: length => `Invalid definition. Only found ${length} possible definitions.`,
