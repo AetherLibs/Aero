@@ -55,7 +55,7 @@ module.exports = class extends Command {
 			for (const key in tree[category]) {
 				i++;
 				if (tree[category]['*'] === tree[category][key]) continue;
-				out.push(`  ${i === keys ? '└──' : '├──'}${tree[category][key]
+				out.push(`  ${i === (keys-1) ? '└──' : '├──'}${tree[category][key]
 					? granted
 					: denied
 				} ${key}`);
