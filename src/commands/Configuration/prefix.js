@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			usage: '[new  prefix:string{1,100}]'
 		});
 
-		this.defaultPermissions = FLAGS.MANAGE_SERVER;
+		this.defaultPermissions = FLAGS.MANAGE_GUILD;
 	}
 
 	async run(msg, [prefix]) {
