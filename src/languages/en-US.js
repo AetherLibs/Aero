@@ -253,6 +253,7 @@ module.exports = class extends Language {
 			COMMAND_AVATAR_DESCRIPTION: 'Get the avatar from a user.',
 			COMMAND_REVERSEAVATAR_DESCRIPTION: "Perform a reverse image search for a user's avatar.",
 			COMMAND_CORONA_DESCRIPTION: 'Get current statistics of the COVID-19 pandemic.',
+			COMMAND_CORONA_UNAVAILABLE: 'Fetching current data from disease.sh failed, please retry later',
 			COMMAND_CORONA_EMBED_TITLE: 'COVID-19 stats',
 			COMMAND_CORONA_EMBED_FIELD_CASES_TITLE: 'Cases',
 			COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE: 'Deaths',

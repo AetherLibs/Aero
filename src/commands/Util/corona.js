@@ -19,7 +19,8 @@ module.exports = class extends Command {
 	}
 
 	async allStats(msg) {
-		const stats = await this.client.corona.total();
+		const stats = await this.client.corona.total() || this.client.corona.getTotal();
+		if (!stats) throw 'COMMAND_CORONA_UNAVAILABLE';
 		const embed = new MessageEmbed()
 			.setTitle(msg.language.get('COMMAND_CORONA_EMBED_TITLE'))
 			.addField(
