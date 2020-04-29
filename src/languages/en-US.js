@@ -1,6 +1,6 @@
 const { Language, util } = require('klasa');
 const { bold, code } = require('discord-md-tags');
-const { success, trusted, banned, nodata, perms: { granted, unspecified } } = require('../../lib/util/constants').emojis;
+const { success, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests } } = require('../../lib/util/constants').emojis;
 
 module.exports = class extends Language {
 
@@ -177,7 +177,8 @@ module.exports = class extends Language {
 			COMMAND_URBAN_MAX: length => `Invalid definition. Only found ${length} possible definitions.`,
 			COMMAND_YOMAMMA_DESCRIPTION: 'Yo momma is so fat, yo.',
 			COMMAND_JOKE_DESCRIPTION: 'Fetch a *very* funny joke.',
-			COMMAND_TOPIC_DESCRIPTION: 'Suggests a random topic as a conversation starter.', 
+			COMMAND_TOPIC_DESCRIPTION: 'Suggests a random topic as a conversation starter.',
+			COMMAND_ROLL_DESCRIPTION: 'Roll one or more die.',
 
 			// games
 			COMMAND_GAME_CHALLENGE: user => `${user}, do you accept this challenge?`,
@@ -257,16 +258,20 @@ module.exports = class extends Language {
 			COMMAND_CORONA_DESCRIPTION: 'Get current statistics of the COVID-19 pandemic.',
 			COMMAND_CORONA_UNAVAILABLE: 'Fetching current data from disease.sh failed, please retry later',
 			COMMAND_CORONA_EMBED_TITLE: 'COVID-19 stats',
-			COMMAND_CORONA_EMBED_FIELD_CASES_TITLE: 'Cases',
-			COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE: 'Deaths',
-			COMMAND_CORONA_EMBED_FIELD_CRITICAL_TITLE: 'Critical',
-			COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE: 'Recovered',
+			COMMAND_CORONA_EMBED_FIELD_CASES_TITLE: `${cases} **Cases**`,
+			COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE: `${deaths} **Deaths**`,
+			COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE: `${recoveries} **Recoveries**`,
+			COMMAND_CORONA_EMBED_FIELD_TESTS_TITLE: `${tests} **Tests**`,
 			COMMAND_CORONA_EMBED_DISCLAIMER: 'These stats are not necessarily comprehensive, complete, accurate or up to date; none of this is professional or legal advice.',
 			COMMAND_CORONA_INVALID_COUNTRY: 'Country name invalid or not in statistics',
 			COMMAND_CORONA_EMBED_TITLE_COUNTRY: country => `COVID-19 stats / ${country}`,
 			COMMAND_CORONA_TODAY: 'today',
-			COMMAND_CORONA_FATALITY_RATE: 'fatality rate',
-			COMMAND_CORONA_RECOVERY_RATE: 'recovery rate',
+			COMMAND_CORONA_CRITICAL: 'critical',
+			COMMAND_CORONA_CASE_FATALITY_RATE: 'case fatality rate',
+			COMMAND_CORONA_ABSOLUTE_FATALITY_RATE: 'absolute fatality rate',
+			COMMAND_CORONA_CASE_RECOVERY_RATE: 'case recovery rate',
+			COMMAND_CORONA_ABSOLUTE_INFECTION_RATE: 'absolute infection rate',
+			COMMAND_CORONA_ABSOLUTE_TESTS_RATE: 'of population tested',
 
 			// social commands
 			COMMAND_DAILY_DESCRIPTION: 'Claim your daily points! Add --reminder to be reminded in 12h.',
