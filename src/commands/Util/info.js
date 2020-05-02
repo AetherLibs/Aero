@@ -2,6 +2,7 @@ const { Command, Duration, Timestamp } = require('klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
 const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified } }, badges, url: { KSoftBans } } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
+const { Ban, Warn } = require('@aero/drep');
 
 module.exports = class extends Command {
 
@@ -187,13 +188,13 @@ module.exports = class extends Command {
 
 	async _addSecurity(msg, user, embed) {
 		const KSoftBan = await this.client.ksoft.bans.info(user.id).catch(() => null);
-		const DRepBan = await this.client.drep.ban(user.id).catch(() => ({ banned: false }));
+		const DRepInfraction = await this.client.drep.infractions(user.id).catch(() => null);
 		const DRepReputation = await this.client.drep.rep(user.id).catch(() => ({ reputation: 0, staff: false }));
 		const DRepProfile = `https://discordrep.com/u/${user.id}`;
 		const CWProfile = await this.client.chatwatch.profile(user.id).catch(() => ({ whitelisted: false, score: 50 }));
 		const rating = KSoftBan || CWProfile.blacklisted
 			? 'COMMAND_INFO_TRUST_VERYLOW'
-			: DRepBan.banned || DRepReputation.reputation < 0 || CWProfile.score > 50
+			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0 || CWProfile.score > 50
 				? 'COMMAND_INFO_TRUST_LOW'
 				: this.client.owners.has(user) || CWProfile.whitelisted
 					? 'COMMAND_INFO_TRUST_VERYHIGH'
@@ -217,18 +218,20 @@ module.exports = class extends Command {
 					? msg.language.get('COMMAND_INFO_USER_KSOFTSTAFF', KSoftBansProfile)
 					: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
 			msg.language.get(cwRating, KSoftBansProfile, CWProfile.blacklisted_reason),
-			DRepBan.banned
-				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepBan.reason)
-				: DRepReputation.reputation === 0
-					? msg.language.get('COMMAND_INFO_USER_DREPNEUTRAL', DRepProfile)
-					: DRepReputation.reputation > 0
-						? DRepReputation.staff
-							? msg.language.get('COMMAND_INFO_USER_DREPSTAFF', DRepProfile)
-							: msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
-						: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile)
+			DRepInfraction instanceof Ban
+				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepInfraction.reason)
+				: DRepInfraction instanceof Warn
+					? msg.language.get('COMMAND_INFO_USER_DREPWARNED', DRepInfraction.reason)
+					: DRepReputation.reputation === 0
+						? msg.language.get('COMMAND_INFO_USER_DREPNEUTRAL', DRepProfile)
+						: DRepReputation.reputation > 0
+							? DRepReputation.staff
+								? msg.language.get('COMMAND_INFO_USER_DREPSTAFF', DRepProfile)
+								: msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
+							: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile)
 		].join('\n'));
 
-		DRepBan.banned || KSoftBan || CWProfile.blacklisted || CWProfile.score > 80
+		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan || CWProfile.blacklisted || CWProfile.score > 80
 			? embed.setColor(VERY_NEGATIVE)
 			: embed.setColor(POSITIVE);
 
