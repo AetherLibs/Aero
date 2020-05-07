@@ -187,11 +187,11 @@ module.exports = class extends Command {
 	}
 
 	async _addSecurity(msg, user, embed) {
-		const KSoftBan = await this.client.ksoft.bans.info(user.id).catch(() => null);
-		const DRepInfraction = await this.client.drep.infractions(user.id).catch(() => null);
-		const DRepReputation = await this.client.drep.rep(user.id).catch(() => ({ reputation: 0, staff: false }));
+		const KSoftBan = await this.client.ksoft.bans?.info(user.id).catch(() => null);
+		const DRepInfraction = await this.client.drep?.infractions(user.id).catch(() => null);
+		const DRepReputation = await this.client.drep?.rep(user.id).catch(() => ({ reputation: 0, staff: false })) ?? { reputation: 0, staff: false };
 		const DRepProfile = `https://discordrep.com/u/${user.id}`;
-		const CWProfile = await this.client.chatwatch.profile(user.id).catch(() => ({ whitelisted: false, score: 50 }));
+		const CWProfile = await this.client.chatwatch?.profile?.(user.id)?.catch(() => ({ whitelisted: false, score: 50 })) ?? { whitelisted: false, score: 50 };
 		const rating = KSoftBan || CWProfile.blacklisted
 			? 'COMMAND_INFO_TRUST_VERYLOW'
 			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0 || CWProfile.score > 50
