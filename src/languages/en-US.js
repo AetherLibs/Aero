@@ -273,6 +273,8 @@ module.exports = class extends Language {
 			COMMAND_CORONA_CASE_RECOVERY_RATE: 'case recovery rate',
 			COMMAND_CORONA_ABSOLUTE_INFECTION_RATE: 'absolute infection rate',
 			COMMAND_CORONA_ABSOLUTE_TESTS_RATE: 'of population tested',
+			COMMAND_CORONAGRAPH_DESCRIPTION: 'Graphs relevant COVID-19 stats for a country.',
+			COMMAND_CORONAGRAPH_INVALID: 'Invalid country name',
 
 			// social commands
 			COMMAND_DAILY_DESCRIPTION: 'Claim your daily points! Add --reminder to be reminded in 12h.',

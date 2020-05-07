@@ -16,9 +16,10 @@ module.exports = {
 	version,
 	inviteURL: 'https://get.aero.bot',
 	supportServer: 'https://discord.gg/n6eZ3Z5',
-	repoURL: 'https://git.aero.bot/aero',
+	repoURL: 'https://git.aero.bot',
 	hasteURL: 'https://haste.aero.bot',
-	memegenURL: 'https://memes.aero.bot/api',
+	memegenURL: 'https://memes.aero.bot',
 	colorgenURL: 'https://color.aero.bot',
+	chartgenURL: 'https://charts.aero.bot',
 	dailyPoints: 50
 };
