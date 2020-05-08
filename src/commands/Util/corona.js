@@ -48,29 +48,29 @@ module.exports = class extends Command {
 				[
 					`**${stats.cases.toLocaleString()}** (+${stats.todayCases.toLocaleString()} ${msg.language.get('COMMAND_CORONA_TODAY')})`,
 					`${stats.critical.toLocaleString()} ${msg.language.get('COMMAND_CORONA_CRITICAL')}`,
-					`${(stats.casesPerOneMillion) / 10000}% ${msg.language.get('COMMAND_CORONA_ABSOLUTE_INFECTION_RATE')}`
+					`${((stats.casesPerOneMillion) / 10000).toFixed(4)}% ${msg.language.get('COMMAND_CORONA_ABSOLUTE_INFECTION_RATE')}`
 				].join('\n')
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE'),
 				[
 					`**${stats.deaths.toLocaleString()}** (+${stats.todayDeaths.toLocaleString()} ${msg.language.get('COMMAND_CORONA_TODAY')})`,
-					`${Math.round((stats.deaths / stats.cases) * 10000) / 100}% ${msg.language.get('COMMAND_CORONA_CASE_FATALITY_RATE')}`,
-					`${(stats.deathsPerOneMillion) / 10000}% ${msg.language.get('COMMAND_CORONA_ABSOLUTE_FATALITY_RATE')}`
+					`${((stats.deaths / stats.cases) * 100).toFixed(2)}% ${msg.language.get('COMMAND_CORONA_CASE_FATALITY_RATE')}`,
+					`${((stats.deathsPerOneMillion) / 10000).toFixed(4)}% ${msg.language.get('COMMAND_CORONA_ABSOLUTE_FATALITY_RATE')}`
 				].join('\n')
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE'),
 				[
 					`**${stats.recovered.toLocaleString()}**`,
-					`${Math.round((stats.recovered / stats.cases) * 10000) / 100}% ${msg.language.get('COMMAND_CORONA_CASE_RECOVERY_RATE')}`
+					`${((stats.recovered / stats.cases) * 100).toFixed(2)}% ${msg.language.get('COMMAND_CORONA_CASE_RECOVERY_RATE')}`
 				].join('\n')
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_TESTS_TITLE'),
 				[
 					`**${stats.tests.toLocaleString()}**`,
-					`${(stats.testsPerOneMillion) / 10000}% ${msg.language.get('COMMAND_CORONA_ABSOLUTE_TESTS_RATE')}`
+					`${((stats.testsPerOneMillion) / 10000).toFixed(2)}% ${msg.language.get('COMMAND_CORONA_ABSOLUTE_TESTS_RATE')}`
 				].join('\n')
 			)
 			.setFooter(msg.language.get('COMMAND_CORONA_EMBED_DISCLAIMER'))
