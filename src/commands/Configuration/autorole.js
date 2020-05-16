@@ -10,7 +10,7 @@ module.exports = class extends Command {
 			requiredPermissions: ['MANAGE_ROLES'],
 			aliases: ['ar'],
 			description: language => language.get('COMMAND_AUTOROLE_DESCRIPTION'),
-			usage: '<add|remove|list:default> [rolename:rolename|roleid:role|all]',
+			usage: '<add|remove|list:default> [roleid:role|all|rolename:rolename]',
 			usageDelim: ' ',
 			subcommands: true
 		});
