@@ -32,7 +32,7 @@ module.exports = class extends Command {
 			permission,
 			target
 		});
-		return message.responder.success(`COMMAND_PERMS_SUCCESS_${action.toUpperCase()}`, permission, target.name || target.displayName || target);
+		return message.responder.success(`COMMAND_PERMS_SUCCESS_${action.toUpperCase()}`, permission, target?.name || target?.displayName || target);
 	}
 
 	buildOverview(tree, target, lang) {
