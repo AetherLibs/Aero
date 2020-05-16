@@ -62,6 +62,7 @@ module.exports = class extends Event {
 	}
 
 	welcome(member) {
+		if (member.user.bot) return;
 		const { guild } = member;
 		const channelID = guild.settings.get('welcome.channel');
 		if (!channelID) return member;
