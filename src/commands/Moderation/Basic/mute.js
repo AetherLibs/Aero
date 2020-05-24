@@ -24,7 +24,7 @@ module.exports = class extends Command {
 		const muterole = msg.guild.settings.get('mod.roles.mute') || await msg.guild.createMuteRole();
 
 		await this.executeMutes(muteable, reason, msg.guild, msg.author, muterole, duration);
-		await this.logActions(msg.guild, duration ? 'tempmute' : 'mute', muteable.map(member => member.user), { reason, moderator: msg.author, duration });
+		await this.logActions(msg.guild, duration ? 'tempmute' : 'mute', muteable.map(member => member.user), { reason, moderator: msg.author, duration, msg });
 
 		return msg.responder.success();
 	}

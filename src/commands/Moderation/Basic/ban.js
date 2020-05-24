@@ -34,7 +34,7 @@ module.exports = class extends Command {
 				: soft
 					? 'softban'
 					: 'ban';
-		await this.logActions(msg.guild, action, bannable, { duration, reason, moderator: msg.author });
+		await this.logActions(msg.guild, action, bannable, { duration, reason, moderator: msg.author, msg });
 
 		return msg.responder.success();
 	}

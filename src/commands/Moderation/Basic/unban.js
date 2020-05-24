@@ -24,7 +24,7 @@ module.exports = class extends Command {
 		const moderator = msg.author;
 
 		await this.executeUnbans(bannable, reason, msg.guild, moderator);
-		await this.logActions(msg.guild, 'unban', bannable, { reason, moderator });
+		await this.logActions(msg.guild, 'unban', bannable, { reason, moderator, msg });
 
 		return msg.responder.success();
 	}

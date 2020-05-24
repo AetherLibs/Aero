@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		if (!muteable.length) return msg.responder.error('COMMAND_UNMUTE_NOPERMS', users.length > 1);
 
 		await this.executeUnmutes(muteable, reason, msg.guild, msg.author);
-		await this.logActions(msg.guild, 'unmute', muteable.map(member => member.user), { reason, moderator: msg.author });
+		await this.logActions(msg.guild, 'unmute', muteable.map(member => member.user), { reason, moderator: msg.author, msg });
 
 		return msg.responder.success();
 	}

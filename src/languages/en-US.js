@@ -577,6 +577,16 @@ module.exports = class extends Language {
 			LOG_ACTION_WARN: 'user warned',
 			LOG_ACTION_UNWARN: 'warning removed',
 
+			LOG_DM_BAN: 'You have been banned',
+			LOG_DM_UNBAN: 'You have been unbanned',
+			LOG_DM_TEMPBAN: 'You have been temporarily banned',
+			LOG_DM_SOFTBAN: 'You have been softbanned',
+			LOG_DM_BULKBAN: 'You have been banned',
+			LOG_DM_KICK: 'You have been kicked',
+			LOG_DM_MUTE: 'You have been muted',
+			LOG_DM_UNMUTE: 'You have been unmuted',
+			LOG_DM_TEMPMUTE: 'You have been temporarily muted',
+
 			LOG_ACTION_MESSAGEEDITED: 'message edited',
 			LOG_ACTION_MESSAGEDELETED: 'message deleted',
 

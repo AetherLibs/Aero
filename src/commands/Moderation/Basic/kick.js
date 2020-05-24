@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		if (!kickable.length) return msg.responder.error('COMMAND_KICK_NOPERMS', users.length > 1);
 
 		await this.executeKicks(kickable, reason, msg.guild, msg.author);
-		await this.logActions(msg.guild, 'kick', kickable.map(member => member.user), { reason, moderator: msg.author });
+		await this.logActions(msg.guild, 'kick', kickable.map(member => member.user), { reason, moderator: msg.author, msg });
 
 		return msg.responder.success();
 	}

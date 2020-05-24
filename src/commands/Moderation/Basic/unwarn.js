@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		member.settings.update('warnings', warnings, { arrayAction: 'overwrite' });
 
 		msg.responder.success();
-		return this.logActions(msg.guild, 'unwarn', [member], { reason, moderator: msg.author });
+		return this.logActions(msg.guild, 'unwarn', [member], { reason, moderator: msg.author, msg });
 	}
 
 	getWarns(member, ids) {
