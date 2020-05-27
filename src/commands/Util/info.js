@@ -212,7 +212,7 @@ module.exports = class extends Command {
 		const KSoftBansProfile = `${KSoftBans}?user=${user.id}`;
 
 		embed.addField(`• Trust (${msg.language.get(rating)})`, [
-			KSoftBan
+			KSoftBan?.active
 				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof, KSoftBansProfile)
 				: CWProfile.whitelisted
 					? msg.language.get('COMMAND_INFO_USER_KSOFTSTAFF', KSoftBansProfile)
@@ -231,7 +231,7 @@ module.exports = class extends Command {
 							: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile)
 		].join('\n'));
 
-		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan || CWProfile.blacklisted || CWProfile.score > 80
+		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan?.active || CWProfile.blacklisted || CWProfile.score > 80
 			? embed.setColor(VERY_NEGATIVE)
 			: embed.setColor(POSITIVE);
 
