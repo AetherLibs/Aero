@@ -464,6 +464,7 @@ module.exports = class extends Language {
 			COMMAND_REACTIONROLE_ROLE_EXIST: 'That reaction role is already active.',
 			COMMAND_REACTIONROLE_ROLE_ADDED: 'The reaction role has been added.',
 			COMMAND_REACTIONROLE_ROLE_REMOVED: 'The reaction role has been removed.',
+			COMMAND_REACTIONROLE_FOREIGN_EMOJI: 'The emoji you used is from an unknown server. Because of this, Discord doesn\'t allow us to add a reaction with it. Please react to the message you want the reactionrole on first, and then rerun the command.',
 			COMMAND_REACTIONROLE_NOMSG: (messageid) => `Could not find message with id: \`${messageid}\``,
 			COMMAND_REACTIONROLE_ROLEUPDATE_REASON: 'Reaction Roles - User added or removed their reaction.',
 			COMMAND_REPORT_DESCRIPTION: [
