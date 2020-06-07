@@ -10,7 +10,7 @@ module.exports = class extends Command {
 			requiredPermissions: ['BAN_MEMBERS'],
 			aliases: ['b', 'bean', '410', 'yeet', 'banish', 'begone', 'perish'],
 			description: language => language.get('COMMAND_BAN_DESCRIPTION').join('\n'),
-			usage: '<username:membername|user  or  users:users> [duration:time] [purge|p|soft|s] [reason:...string]',
+			usage: '<user  or  users:users|username:membername> [duration:time] [purge|p|soft|s] [reason:...string]',
 			usageDelim: ' '
 		});
 
