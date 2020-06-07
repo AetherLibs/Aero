@@ -17,7 +17,7 @@ module.exports = class extends Command {
 			aliases: ['rero'],
 			quotedStringSupport: true,
 			description: language => language.get('COMMAND_REACTIONROLE_DESCRIPTION'),
-			usage: '<add|remove> [channel:channel] [messageid:string{17,18}] <role:rolename>',
+			usage: '<add|remove> [messageid:string{17,18}] <role:rolename>',
 			usageDelim: ' '
 		});
 
