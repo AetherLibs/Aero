@@ -4,6 +4,7 @@ const { GUILDS, GUILD_MEMBERS, GUILD_BANS, GUILD_MESSAGES, GUILD_MESSAGE_REACTIO
 module.exports = {
 	disableEveryone: true,
 	fetchAllMembers: false,
+	partials: ['REACTION', 'MESSAGE', 'CHANNEL'],
 	ws: {
 		intents: GUILDS | GUILD_MEMBERS | GUILD_BANS | GUILD_MESSAGES | GUILD_MESSAGE_REACTIONS | GUILD_VOICE_STATES
 	}

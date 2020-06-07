@@ -1,9 +1,11 @@
 /*
- * Author: William Johnstone <william@endevrr.com>
- * Credit example: Credit goes to [William Johnstone](https://endevrr.com). (c) [The Aero Team](https://aero.bot) 2020
+ * Co-Authored-By: William Johnstone <william@endevrr.com>
+ * Co-Authored-By: Ravy <ravy@aero.bot>
+ * Credit example: Credit goes to [William Johnstone](https://endevrr.com) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2020
  */
 const { Command } = require('klasa');
 const { Permissions: { FLAGS } } = require('discord.js');
+const GuildReactionCollector = require('../../../lib/extensions/GuildReactionCollector');
 
 module.exports = class extends Command {
 
@@ -12,49 +14,49 @@ module.exports = class extends Command {
 			enabled: true,
 			runIn: ['text', 'news'],
 			requiredPermissions: ['MANAGE_ROLES'],
-			aliases: ['rero', 'reactionroles'],
+			aliases: ['rero'],
 			quotedStringSupport: true,
 			description: language => language.get('COMMAND_REACTIONROLE_DESCRIPTION'),
-			usage: '<add|remove> [channel:channel] <messageid:string{17,18}> <emote:emojiID> [role:rolename]',
+			usage: '<add|remove> [channel:channel] [messageid:string{17,18}] <role:rolename>',
 			usageDelim: ' '
 		});
 
 		this.defaultPermissions = FLAGS.MANAGE_ROLES;
 	}
 
-	async run(msg, [action, channel = msg.channel, messageID, emoteID, role]) {
+	async run(msg, [action, messageID, role]) {
+
 		const reactionRole = {
 			messageID,
-			emoteID,
 			roleID: role && role.id
 		};
 		const filter = (item) => item.messageID === reactionRole.messageID
-			&& item.emoteID === reactionRole.emoteID;
+			&& item.roleID === reactionRole.roleID;
 
 		const reactionRoles = msg.guild.settings.get('mod.roles.reactionRoles');
 
 		await msg.guild.settings.sync();
 
 		if (action === 'add') {
-			if (!role) return msg.responder.error('COMMAND_REACTIONROLE_ROLE_UNSPECIFIED');
-			await channel.messages.fetch(messageID)
-				.then(message => {
-					const equalReactionRoles = reactionRoles.filter(item => filter(item));
+			const { emoji, message: partialMessage } = await this.queryEmoji(msg);
+			const message = await this.client.channels.get(partialMessage.channel.id).messages.fetch(partialMessage.id);
+			reactionRole.messageID = message.id;
 
-					if (equalReactionRoles.length > 0) return msg.responder.error('COMMAND_REACTIONROLE_ROLE_EXIST');
-					return message.react(`rero:${emoteID}`)
-						.then(() => {
-							msg.guild.settings.update('mod.roles.reactionRoles', reactionRole, { arrayAction: 'add' });
-							msg.responder.success('COMMAND_REACTIONROLE_ROLE_ADDED');
-						})
-						.catch((err) => {
-							console.error(err);
-							msg.responder.error('COMMAND_REACTIONROLE_FOREIGN_EMOJI')}
-						);
+			const equalReactionRoles = reactionRoles.filter(item => filter(item));
+			if (equalReactionRoles.length > 0) return msg.responder.error('COMMAND_REACTIONROLE_ROLE_EXIST');
+
+			return message.react(`${emoji.name}${emoji.id ? ':' + emoji.id: ''}`)
+				.then(() => {
+					reactionRole.emoji = emoji.id ? emoji.id : emoji.name;
+					msg.guild.settings.update('mod.roles.reactionRoles', reactionRole, { arrayAction: 'add' });
+					msg.responder.success('COMMAND_REACTIONROLE_ROLE_ADDED');
 				})
-				.catch(() => 
-					msg.responder.error('COMMAND_REACTIONROLE_NOMSG', messageID));
+				.catch(() => {
+					throw 'COMMAND_REACTIONROLE_INVALID_EMOJI';
+				});
+
 		} else if (action === 'remove') {
+			if (!messageID) throw 'COMMAND_REACTIONROLE_MESSAGE_UNSPECIFIED';
 			const newReactionRoles = reactionRoles.filter(item => !filter(item));
 			msg.guild.settings.update('mod.roles.reactionRoles', newReactionRoles, { arrayAction: 'overwrite' });
 			msg.responder.success('COMMAND_REACTIONROLE_ROLE_REMOVED');
@@ -62,5 +64,20 @@ module.exports = class extends Command {
 
 		return true;
 	}
+	
+	async queryEmoji(msg) {
+		await msg.send(msg.language.get('COMMAND_REACTIONROLE_QUERY_EMOJI'));
+		return new Promise((resolve, reject) => {
+			const filter = (_, user) => user.id === msg.author.id;
 
+			const collector = new GuildReactionCollector(msg, filter, { time: 30000, max: 1 });
+			collector.on('end', collected => {
+				if (collected.size > 0) {
+					resolve(collected.first());
+				} else {
+					reject('COMMAND_REACTIONROLE_NOEMOJI');
+				}
+			});
+		})
+	}
 };

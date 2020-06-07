@@ -37,6 +37,7 @@
 		"discord-md-tags": "^0.0.6",
 		"discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
 		"dotenv": "^8.2.0",
+		"emoji-regex": "^9.0.0",
 		"express": "^4.17.1",
 		"html-entities": "^1.3.1",
 		"klasa": "github:dirigeants/klasa#settings",
