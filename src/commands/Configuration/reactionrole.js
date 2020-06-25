@@ -26,6 +26,8 @@ module.exports = class extends Command {
 
 	async run(msg, [action, messageID, role]) {
 
+		if (messageID && !role && action === 'add') role = msg.guild.roles.get(messageID);
+
 		const reactionRole = {
 			messageID,
 			roleID: role && role.id

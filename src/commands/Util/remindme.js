@@ -6,7 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			description: language => language.get('COMMAND_REMIND_DESCRIPTION'),
 			usage: '<when:time> <text:...string>',
-			usageDelim: ' '
+			usageDelim: ' ',
+			aliases: ['remind', 'reminder']
 		});
 	}
 
