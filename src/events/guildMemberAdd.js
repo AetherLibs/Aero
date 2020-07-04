@@ -80,7 +80,9 @@ module.exports = class extends Event {
 	_fillTemplate(template, member) {
 		return template
 			.replace(/{(member|user|mention)}/gi, member.toString())
-			.replace(/({name})/gi, member.user.username)
+			.replace(/{(name|username)}/gi, member.user.username)
+			.replace(/{tag}/gi, member.user.tag)
+			.replace(/{(discrim|discriminator)}/gi, member.user.discriminator)
 			.replace(/{(guild|server)}/gi, member.guild.name);
 	}
 
