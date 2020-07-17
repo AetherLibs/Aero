@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			aliases: ['yomama'],
 			description: language => language.get('COMMAND_YOMAMMA_DESCRIPTION')
 		});
-		this.deprecated = 'recurring SSL issues with the API.'
+		this.deprecated = 'recurring SSL issues with the API.';
 	}
 
 	async run(msg) {

@@ -62,7 +62,7 @@ module.exports = class extends Event {
 	}
 
 	welcome(member) {
-		if (member.user.bot) return;
+		if (member.user.bot) return member;
 		const { guild } = member;
 		const channelID = guild.settings.get('welcome.channel');
 		if (!channelID) return member;
@@ -75,6 +75,7 @@ module.exports = class extends Event {
 		const parsed = this._fillTemplate(message, member);
 
 		channel.send(parsed);
+		return member;
 	}
 
 	_fillTemplate(template, member) {

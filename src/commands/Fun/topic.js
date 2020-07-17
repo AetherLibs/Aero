@@ -15,7 +15,7 @@ module.exports = class extends Command {
 			.text()
 			.then(this.process);
 
-		return msg.send(text);		
+		return msg.send(text);
 	}
 
 	process(text) {

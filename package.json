@@ -18,6 +18,9 @@
 		"lint": "eslint . --fix",
 		"start": "NODE_ENV=production node ."
 	},
+	"engines": {
+		"node": ">=14.0.0"
+	},
 	"dependencies": {
 		"@aero/centra": "^1.0.4",
 		"@aero/chatwatch": "^1.5.9",
@@ -47,7 +50,7 @@
 	},
 	"devDependencies": {
 		"@aero/eslint-config": "^1.0.1",
-		"eslint": "^6.8.0"
+		"eslint": "^7.4.0"
 	},
 	"optionalDependencies": {
 		"bufferutil": "^4.0.1",

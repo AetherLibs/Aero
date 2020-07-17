@@ -9,5 +9,8 @@
 	},
 	"globals": {
 		"BigInt": true
+	},
+	"parserOptions": {
+		"ecmaVersion": 11
 	}
 }

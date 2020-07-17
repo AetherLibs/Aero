@@ -16,21 +16,23 @@ module.exports = class extends Event {
 
 	async run({ user_id: userID, guild_id: guildID, message_id: messageID, emoji }) {
 		const guild = this.client.guilds.get(guildID);
-		if (!guild) return;
+		if (!guild) return null;
 		const reactionRoles = guild.settings.get('mod.roles.reactionRoles');
-		if(!reactionRole) return;
+		if (!reactionRoles) return null;
 		await guild.members.fetch(userID).catch(() => null);
 
 		reactionRoles.find(reactionRole => {
 			if (reactionRole.messageID === messageID && reactionRole.emoji === emoji.id || reactionRole.emoji === emoji.name) {
 				const member = guild.members.get(userID);
 				const role = guild.roles.get(reactionRole.roleID);
-				if(!role) return;
+				if (!role) return false;
 				member?.roles?.remove(role, guild.language.get('COMMAND_REACTIONROLE_ROLEUPDATE_REASON'));
 				return true;
 			}
 			return false;
 		});
+
+		return false;
 	}
 
 };

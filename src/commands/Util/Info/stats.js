@@ -32,7 +32,11 @@ module.exports = class extends Command {
 			this.client.options.shardCount
 		).join('\n');
 		const embed = new MessageEmbed()
-			.setAuthor(`${this.client.user.username} v${aeroVersion} [${process.env.npm_package_gitHead?.slice(0, 12) ?? 'dev'}]`, this.client.user.displayAvatarURL({ format: 'png', size: 2048 }), this.client.config.repoURL)
+			.setAuthor(
+				`${this.client.user.username} v${aeroVersion} [${process.env.npm_package_gitHead?.slice(0, 12) ?? 'dev'}]`,
+				this.client.user.displayAvatarURL({ format: 'png', size: 2048 }),
+				this.client.config.repoURL
+			)
 			.setDescription(stats)
 			.setColor((message.guild && message.guild.me.displayColor) || 'RANDOM');
 

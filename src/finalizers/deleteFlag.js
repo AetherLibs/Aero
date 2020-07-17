@@ -13,8 +13,8 @@ module.exports = class extends Finalizer {
 
 	async run(msg, _, res) {
 		let { delete: timeout } = msg.flagArgs;
-		if (!timeout) return;
-		timeout = parseInt(timeout)
+		if (!timeout) return res;
+		timeout = parseInt(timeout);
 		if (!isNaN(timeout) && timeout < 20 && timeout > 0) timeout *= 1000;
 		else timeout = 3000;
 
