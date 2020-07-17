@@ -36,7 +36,7 @@ module.exports = class extends Command {
 				location: bio.location || 'no location',
 				occupation: bio.occupation || 'no occupation',
 				status: bio.status || 'no status',
-				bioURL: `dsc.bio/${bio.name}`,
+				bioURL: `dsc.bio/${bio.slug}`,
 				gender: typeof bio._gender === 'number' ? bio._gender : -1
 			}).raw();
 

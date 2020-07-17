@@ -18,7 +18,7 @@ module.exports = class extends Event {
 		const guild = this.client.guilds.get(guildID);
 		if (!guild) return;
 		const reactionRoles = guild.settings.get('mod.roles.reactionRoles');
-
+		if(!reactionRole) return;
 		await guild.members.fetch(userID).catch(() => null);
 
 		reactionRoles.find(reactionRole => {
@@ -26,6 +26,7 @@ module.exports = class extends Event {
 				const member = guild.members.get(userID);
 				if (member.user.bot) return false;
 				const role = guild.roles.get(reactionRole.roleID);
+				if(!role) return null;
 				member?.roles?.add(role, guild.language.get('COMMAND_REACTIONROLE_ROLEUPDATE_REASON'));
 				return true;
 			}

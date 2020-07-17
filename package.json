@@ -23,7 +23,7 @@
 		"@aero/chatwatch": "^1.5.9",
 		"@aero/corona": "^1.4.0",
 		"@aero/corona-graphs": "^1.0.2",
-		"@aero/dbio": "^1.2.0",
+		"@aero/dbio": "^1.2.1",
 		"@aero/drep": "^2.0.2",
 		"@aero/ksoft": "^3.1.8",
 		"@aero/member-gateway": "^1.0.1",
