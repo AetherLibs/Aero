@@ -1,7 +1,7 @@
 {
 	"type": "commonjs",
 	"name": "aero",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "Aero is an intuitive Discord bot perfect for your server.",
 	"main": "src/index",
 	"repository": "https://git.farfrom.earth/aero/aero.git",
@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"@aero/centra": "^1.0.4",
-		"@aero/chatwatch": "^1.5.9",
+		"@aero/chatwatch": "^1.5.12",
 		"@aero/corona": "^1.4.0",
 		"@aero/corona-graphs": "^1.0.2",
 		"@aero/dbio": "^1.2.1",
