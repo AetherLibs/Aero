@@ -1,16 +1,3 @@
 {
-	"extends": "@aero",
-	"rules": {
-		"lines-around-comment": "off",
-		"no-unused-expressions": "off",
-		"no-return-assign": "off",
-		"complexity": "off",
-		"no-mixed-operators": "off"
-	},
-	"globals": {
-		"BigInt": true
-	},
-	"parserOptions": {
-		"ecmaVersion": 11
-	}
+	"extends": "@aero"
 }

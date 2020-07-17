@@ -49,7 +49,7 @@
 		"ws": "^7.2.3"
 	},
 	"devDependencies": {
-		"@aero/eslint-config": "^1.0.1",
+		"@aero/eslint-config": "^1.0.5",
 		"eslint": "^7.4.0"
 	},
 	"optionalDependencies": {
