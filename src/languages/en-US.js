@@ -152,6 +152,8 @@ module.exports = class extends Language {
 			COMMAND_HUG_SELF: user => `${user} hugged themselves. How awkward.`,
 			COMMAND_HUG_SOMEONE: (from, to) => `${from} hugged ${to}. How cute. 💕`,
 			COMMAND_HUG_DESCRIPTION: 'Give someone a hug! Yes. Be nice.',
+			COMMAND_HTTPCAT_DESCRIPTION: 'Returns the http.cat image for a specific status code.',
+			COMMAND_HTTPCAT_INVALID: 'This is not a valid status code, or doesn\'t exist on http.cat',
 			COMMAND_KISS_DESCRIPTION: 'Kiss somebody you really like.',
 			COMMAND_KISS_SELF: user => `${user} kissed themselves. I have no idea how and why.`,
 			COMMAND_KISS_SOMEONE: (from, to) => `${from} gave ${to} a kiss. How cute. 💕`,
