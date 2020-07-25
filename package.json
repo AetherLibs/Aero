@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"@aero/centra": "^1.0.4",
-		"@aero/chatwatch": "^1.5.12",
+		"@aero/chatwatch": "^1.5.21",
 		"@aero/corona": "^1.4.0",
 		"@aero/corona-graphs": "^1.0.2",
 		"@aero/dbio": "^1.2.1",
