@@ -19,8 +19,11 @@ module.exports = class extends Command {
 		const discordLatency = roundTrip - wsPing > 0 ? roundTrip - wsPing - cfPing : roundTrip - cfPing;
 		const wsLatency = wsPing - cfPing;
 		const netLatency = cfPing;
+
+		const totalLatency = discordLatency + wsLatency + netLatency;
 		
 		return message.sendLocale('COMMAND_PINGPONG', [
+			totalLatency,
 			discordLatency,
 			wsLatency,
 			netLatency
