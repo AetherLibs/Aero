@@ -21,5 +21,6 @@ module.exports = {
 	memegenURL: 'https://memes.aero.bot',
 	colorgenURL: 'https://color.aero.bot',
 	chartgenURL: 'https://charts.aero.bot',
+	pingURL: 'https://ping.aero.bot',
 	dailyPoints: 50
 };
