@@ -412,7 +412,7 @@ module.exports = class extends Language {
 			COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 			COMMAND_PING: 'Ping?',
 			COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
-			COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
+			COMMAND_PINGPONG: (diff, ping) => `Pong! (Discord latency: ${diff}ms. Connection latency: ${ping}ms.)`,
 			COMMAND_INVITE: () => [
 				`To add ${this.client.user.username} to your discord guild:`,
 				`<${this.client.invite}>`,
