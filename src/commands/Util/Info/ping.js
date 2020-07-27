@@ -15,10 +15,15 @@ module.exports = class extends Command {
 		const wsPing = Math.round(this.client.ws.ping);
 		const cfPing = parseInt(await req(this.client.config.pingURL).text());
 		const roundTrip = (msg.editedTimestamp || msg.createdTimestamp) - (message.editedTimestamp || message.createdTimestamp);
+
+		const discordLatency = roundTrip - wsPing > 0 ? roundTrip - wsPing - cfPing : roundTrip - cfPing;
+		const wsLatency = wsPing - cfPing;
+		const netLatency = cfPing;
+		
 		return message.sendLocale('COMMAND_PINGPONG', [
-			roundTrip - wsPing > 0 ? roundTrip - wsPing - cfPing : roundTrip - cfPing,
-			wsPing - cfPing,
-			cfPing
+			discordLatency,
+			wsLatency,
+			netLatency
 		]);
 	}
 
