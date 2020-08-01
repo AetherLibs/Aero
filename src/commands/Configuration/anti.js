@@ -33,7 +33,7 @@ module.exports = class extends Command {
 			const out = [];
 			out.push(msg.language.get('COMMAND_ANTI_DISPLAY_DIVIDER_CHAT'));
 			out.push('');
-			for (const anti of ['invites', 'duplicates', 'copypastas', 'toxicity']) {
+			for (const anti of ['invites', 'duplicates', 'copypastas', 'toxicity', 'gifts']) {
 				const enabled = msg.guild.settings.get(`mod.anti.${anti}`);
 				out.push(msg.language.get('COMMAND_ANTI_DISPLAY_ALL_CHAT', anti, enabled));
 			}
