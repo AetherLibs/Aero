@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		const netLatency = cfPing;
 
 		const totalLatency = discordLatency + wsLatency + netLatency;
-		
+
 		return message.sendLocale('COMMAND_PINGPONG', [
 			totalLatency,
 			discordLatency,
