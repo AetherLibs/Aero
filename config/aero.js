@@ -22,5 +22,6 @@ module.exports = {
 	colorgenURL: 'https://color.aero.bot',
 	chartgenURL: 'https://charts.aero.bot',
 	pingURL: 'https://ping.aero.bot',
+	langURL: 'https://language.aero.bot',
 	dailyPoints: 50
 };

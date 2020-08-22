@@ -13,7 +13,7 @@ module.exports = class extends Language {
 			PREFIX_REMINDER: (prefix = `@${this.client.user.tag}`) => `The prefix${Array.isArray(prefix)
 				? `es for this guild are: ${prefix.map(pre => `\`${pre}\``).join(', ')}`
 				: ` in this guild is set to: \`${prefix}\``
-			}`,
+				}`,
 
 			ERROR_GENERIC: (err) => `An error occurred: ${err}`,
 			ERROR_SHORT: (err) => err,
@@ -473,6 +473,7 @@ module.exports = class extends Language {
 				`• using Node.js ${processVersion}, Discord.js v${discordVersion}, and Klasa v${klasaVersion}.`
 			],
 			COMMAND_STATS_DESCRIPTION: 'Provides some details about the bot and stats.',
+			COMMAND_STATUS_DESCRIPTION: 'Displays current status updates from Discord.',
 			COMMAND_REACTIONROLE_DESCRIPTION: 'Adds a reaction to a message which grants and removes a role.',
 			COMMAND_REACTIONROLE_MESSAGE_UNSPECIFIED: 'Please specify a message ID for the reaction role to be removed from.',
 			COMMAND_REACTIONROLE_ROLE_EXIST: 'That reaction role is already active.',
