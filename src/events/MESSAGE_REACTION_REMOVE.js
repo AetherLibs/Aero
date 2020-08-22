@@ -27,7 +27,7 @@ module.exports = class extends Event {
 
 		this.rero({ userID, messageID, guild, emoji });
 
-		this.stars({ messageID, guild, emoji, channelID });
+		this.stars({ userID, messageID, guild, emoji, channelID });
 
 		return true;
 	}
@@ -52,12 +52,13 @@ module.exports = class extends Event {
 		return false;
 	}
 
-	async stars({ messageID, channelID, guild, emoji }) {
+	async stars({ userID, messageID, channelID, guild, emoji }) {
 		const starChannelID = guild.settings.get('starboard.channel');
 		if (!starChannelID) return false;
 		const starChannel = await guild.channels.get(starChannelID);
 		if (!starChannel) return false;
 		const isStarChannel = channelID === starChannelID;
+		if (userID === this.client.user.id) return false;
 
 		if (!['⭐', '🌟'].includes(emoji?.name)) return false;
 

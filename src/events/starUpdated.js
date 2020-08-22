@@ -13,6 +13,8 @@ module.exports = class extends Event {
 		const stars = this.generateStars(votes.length);
 		const embed = this.buildEmbed(msg, msg.guild, msg.channel.id, msg.id, stars);
 
+		if (!starMessage || !starMessage.edit) return;
+
 		starMessage.edit({ embed });
 	}
 

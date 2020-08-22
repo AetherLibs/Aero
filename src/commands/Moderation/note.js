@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 	async run(msg, [members, reason = msg.language.get('COMMAND_NOTE_NOREASON')]) {
 		const moderatable = await this.getModeratable(msg.member, members, true);
-		if (!moderatable.length) return msg.responder.error('COMMAND_NPTE_NOPERMS', members.length > 1);
+		if (!moderatable.length) return msg.responder.error('COMMAND_NOTE_NOPERMS', members.length > 1);
 
 		for (const member of moderatable) {
 			await member.settings.sync();
