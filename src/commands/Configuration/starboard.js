@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 	async run(msg, [channel, stars]) {
 		if (!channel && !stars) return msg.sendLocale('COMMAND_STARBOARD_EXPLAINER');
-		if (channel) this.setChannel(channel, msg.guild);
+		if (channel) await this.setChannel(channel, msg.guild);
 		if (!msg.guild.settings.get('starboard.channel') && stars) throw 'COMMAND_STARBOARD_NOCHANNEL';
 		if (stars) this.setStars(stars, msg.guild);
 
@@ -27,7 +27,7 @@ module.exports = class extends Command {
 	}
 
 	setChannel(channel, guild) {
-		guild.settings.update('starboard.channel', channel);
+		return guild.settings.update('starboard.channel', channel);
 	}
 
 	setStars(stars, guild) {
