@@ -71,6 +71,8 @@ module.exports = class extends Event {
 				: msg.id === messageID && msg.channel === channelID
 		);
 
+		if (isStarChannel && !starredMessage) return false;
+
 		const message = isStarChannel
 			? await guild.channels.get(starredMessage.channel).messages.fetch(starredMessage.id)
 			: await guild.channels.get(channelID).messages.fetch(messageID);

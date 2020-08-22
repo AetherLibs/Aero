@@ -70,10 +70,14 @@ module.exports = class extends Event {
 				: msg.id === messageID && msg.channel === channelID
 		);
 
+		if (isStarChannel && !starredMessage) return false;
+
 		const message = isStarChannel
 			? await guild.channels.get(starredMessage.channel).messages.fetch(starredMessage.id)
 			: await guild.channels.get(channelID).messages.fetch(messageID);
 		await guild.members.fetch(message.author.id);
+
+		if (userID === message.author.id) return message.reactions.get(emoji.name).users.remove(userID).catch(() => null);
 
 		let votes = await syncVotes(message);
 		if ((votes.length < threshold) && !isStarChannel) return false;
