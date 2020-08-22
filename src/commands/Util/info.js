@@ -1,9 +1,8 @@
 const { Command, Duration, Timestamp } = require('klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
-const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified } }, badges, url: { KSoftBans } } = require('../../../lib/util/constants');
+const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans } } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
 const { Ban, Warn } = require('@aero/drep');
-
 module.exports = class extends Command {
 
 	constructor(...args) {
@@ -100,12 +99,14 @@ module.exports = class extends Command {
 	}
 
 	async userinfo(msg, user) {
+		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 		let embed = new MessageEmbed();
 		embed = await this._addBaseData(user, embed);
 		embed = await this._addBadges(user, embed);
 		embed = await this._addMemberData(msg, user, embed);
 		embed = await this._addSecurity(msg, user, embed);
-		return msg.sendEmbed(embed);
+		await msg.sendEmbed(embed);
+		return loading.delete();
 	}
 
 	async _addBaseData(user, embed) {
@@ -180,6 +181,14 @@ module.exports = class extends Command {
 			embed.addField(
 				`• ${msg.language.get('COMMAND_INFO_USER_WARNINGS')} (${warnings.filter(warn => warn.active).length})`,
 				warnings.map((warn, idx) => `${idx + 1}. ${!warn.active ? '~~' : ''}**${warn.reason}** | ${this.client.users.get(warn.moderator).tag}${!warn.active ? '~~' : ''}`)
+			);
+		}
+		const notes = member.settings.get('notes');
+		if (notes.length) {
+			for (const { moderator } of notes) await this.client.users.fetch(moderator);
+			embed.addField(
+				`• ${msg.language.get('COMMAND_INFO_USER_NOTES')} (${notes.length})`,
+				notes.map((note, idx) => `${idx + 1}. **${note.reason}** | ${this.client.users.get(note.moderator).tag}`)
 			);
 		}
 

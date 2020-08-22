@@ -8,7 +8,6 @@ module.exports = class extends Command {
 			enabled: true,
 			runIn: ['text'],
 			requiredPermissions: ['MANAGE_WEBHOOKS'],
-			aliases: ['ul'],
 			description: language => language.get('COMMAND_LOG_DESCRIPTION'),
 			usage: '[moderation|messages|members] [channel:channel|disable]',
 			usageDelim: ' '

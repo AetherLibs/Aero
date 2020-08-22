@@ -30,6 +30,7 @@
 		"@aero/drep": "^2.0.2",
 		"@aero/ksoft": "^3.1.8",
 		"@aero/member-gateway": "^1.0.1",
+		"@aero/require": "^1.0.2",
 		"@aero/sanitizer": "^1.2.0",
 		"@aero/statuspage": "^1.0.1",
 		"@aero/tags": "^2.1.3",

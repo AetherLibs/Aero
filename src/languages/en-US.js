@@ -109,6 +109,12 @@ module.exports = class extends Language {
 			COMMAND_WELCOME_SHOW: (channel, text) => `Currently welcoming members in ${channel} with: ${code`${text}`}`,
 			COMMAND_WELCOME_DISABLED: 'Disabled welcoming members.',
 			COMMAND_WELCOME_ENABLED: (channel, text) => `Now welcoming members in ${channel} with: ${code`${text}`}`,
+			COMMAND_STARBOARD_DESCRIPTION: 'Configure your starboard.',
+			COMMAND_STARBOARD_EXPLAINER: [
+				'This command is used to configure a starboard, a channel into which users can vote messages into.',
+				'To begin configuring it, just re-run this command and specify a channel.'
+			].join(' '),
+			COMMAND_STARBOARD_NOCHANNEL: 'Please configure a channel for your starboard first.',
 
 			// fun commands
 			COMMAND_8BALL_DESCRIPTION: 'Magic 8-Ball, does exactly what the toy does.',
@@ -223,6 +229,7 @@ module.exports = class extends Language {
 				`Thank you for using ${this.client.user.username} ♥`
 			],
 			COMMAND_INFO_USER_WARNINGS: 'Warnings',
+			COMMAND_INFO_USER_NOTES: 'Notes',
 			COMMAND_INFO_USER_STATISTICS: 'Statistics',
 			COMMAND_INFO_USER_KSOFTBANNED: (reason, proof, profile) => `${banned} ${bold`Banned`} on [KSoft.Si Bans](${profile}) for ${code`${reason}`} ⎾[proof](${proof})⏌`,
 			COMMAND_INFO_USER_KSOFTCLEAN: profile => `${trusted} Unlikely to bother (according to [KSoft.Si Bans](${profile}))`,
@@ -333,6 +340,11 @@ module.exports = class extends Language {
 			COMMAND_WARN_NOPERMS: multiple => `You cannot warn ${multiple ? 'any of the specified users' : 'the specified user'}.`,
 			COMMAND_WARN_WARNED: reason => `You've been warned for: ${bold`${reason}`}`,
 			COMMAND_WARN_MODERATOR: tag => `Moderator: ${tag}`,
+			COMMAND_NOTE_DESCRIPTION: 'Add a server-only public note to a user\'s profile.',
+			COMMAND_NOTE_NOREASON: 'no note specified',
+			COMMAND_NOTE_NOPERMS: multiple => `You cannot add a note ${multiple ? 'any of the specified users' : 'the specified user'}.`,
+			COMMAND_CLEARNOTE_DESCRIPTION: 'Remove one or more public notes from a user\'s profile.',
+			COMMAND_CLEARNOTE_NOPERMS: 'You cannot manage this user\'s notes',
 			COMMAND_LOCK_DESCRIPTION: 'Denies users from writing messages in a channel.',
 			COMMAND_LOCK_REASON: 'Channel locked.',
 			COMMAND_UNLOCK_DESCRIPTION: 'Re-allows users to write messages in a channel.',
