@@ -284,6 +284,8 @@ module.exports = class extends Language {
 			COMMAND_CORONA_ABSOLUTE_TESTS_RATE: 'of population tested',
 			COMMAND_CORONAGRAPH_DESCRIPTION: 'Graphs relevant COVID-19 stats for a country.',
 			COMMAND_CORONAGRAPH_INVALID: 'Invalid country name',
+			COMMAND_WOLFRAM_DESCRIPTION: 'Gets a result from Wolfram|Alpha.',
+			COMMAND_WOLFRAM_ERROR: 'Your query did not return any result.',
 
 			// social commands
 			COMMAND_DAILY_DESCRIPTION: 'Claim your daily points! Add --reminder to be reminded in 12h.',
