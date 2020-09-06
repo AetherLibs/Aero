@@ -11,7 +11,7 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
-		this.inviteRegex = /(https?:\/\/)?(www\.)?((discord|invite)\.(gg|li|me|io)|discord(app)?\.com\/invite)\/(\s)?.+/ui;
+		this.inviteRegex = /(https?:\/\/)?(.*?@)?(www\.)?((discord|invite)\.(gg|li|me|io)|discord(app)?\.com\/invite)\/(\s)?.+/ui;
 	}
 
 	async run(msg) {
