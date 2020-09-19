@@ -214,6 +214,7 @@ module.exports = class extends Language {
 			COMMAND_TAG_LIST: (guild, total) => `**Tags on ${guild}** (${total})`,
 			COMMAND_TAGREGEX_DESCRIPTION: 'Allows you to create, remove or list advanced tags (custom commands) using regular expressions.',
 			COMMAND_TAGREGEX_NOTAGS: prefix => `There don't appear to be any regex tags configured. Add a tag using \`${prefix}rtag add\``,
+			COMMAND_TAGREGEX_BADREGEX: message => `You provided an invalid regex pattern: ${message}`,
 
 			// misc commands
 			COMMAND_INFO_DESCRIPTION: 'Get information about a user, role, the server, or this bot.',

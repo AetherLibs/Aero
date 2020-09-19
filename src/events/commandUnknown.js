@@ -14,7 +14,7 @@ module.exports = class extends Event {
 			channel: msg.channel,
 			member: msg.member
 		});
-		return msg.send(parsedTag);
+		return parsedTag.length ? msg.send(parsedTag) : false;
 	}
 
 	async init() {

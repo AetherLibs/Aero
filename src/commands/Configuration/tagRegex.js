@@ -22,10 +22,18 @@ module.exports = class extends Command {
 
 	async add(msg, [tag, ...content]) {
 		if (!tag || !content.length) throw msg.language.get('COMMAND_TAG_EMPTY');
-		if (msg.guild.settings.get('regexTags').find(tuple => tuple[0] === tag.toLowerCase())) throw msg.language.get('COMMAND_TAG_EXISTS');
+		if (msg.guild.settings.get('regexTags').find(tuple => tuple[0].toString().toLowerCase() === tag.toLowerCase())) throw msg.language.get('COMMAND_TAG_EXISTS');
 		content = content.join(this.usageDelim);
+		let flags = 'u';
+		if (msg.flagArgs.global) flags += 'g';
+		if (msg.flagArgs.insensitive) flags += 'i';
+		try {
+			tag = new RegExp(tag, flags);
+		} catch (err) {
+			throw msg.language.get('COMMAND_TAGREGEX_BADREGEX', err.message);
+		}
 		await msg.guild.settings.sync();
-		await msg.guild.settings.update('regexTags', [...msg.guild.settings.get('regexTags'), [tag.toLowerCase(), content]], { arrayAction: 'overwrite' });
+		await msg.guild.settings.update('regexTags', [...msg.guild.settings.get('regexTags'), [tag, content]], { arrayAction: 'overwrite' });
 		return msg.send(msg.language.get('COMMAND_TAG_ADDED', tag, djsUtil.escapeMarkdown(content)));
 	}
 

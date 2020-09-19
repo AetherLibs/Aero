@@ -30,7 +30,7 @@ module.exports = class extends Command {
 
 	async remove(msg, [tag]) {
 		const tags = msg.guild.settings.get('tags');
-		const filtered = tags.filter(([name]) => name !== tag.toLowerCase());
+		const filtered = tags.filter(([name]) => name.toString().toLowerCase() !== tag.toLowerCase());
 		if (tags.length === filtered.length) throw msg.language.get('COMMAND_TAG_NOEXIST', tag);
 		await msg.guild.settings.sync();
 		await msg.guild.settings.update('tags', filtered, { arrayAction: 'overwrite' });
