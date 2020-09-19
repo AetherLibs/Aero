@@ -24,11 +24,8 @@ module.exports = class extends Command {
 		if (!tag || !content.length) throw msg.language.get('COMMAND_TAG_EMPTY');
 		if (msg.guild.settings.get('regexTags').find(tuple => tuple[0].toString().toLowerCase() === tag.toLowerCase())) throw msg.language.get('COMMAND_TAG_EXISTS');
 		content = content.join(this.usageDelim);
-		let flags = 'u';
-		if (msg.flagArgs.global) flags += 'g';
-		if (msg.flagArgs.insensitive) flags += 'i';
 		try {
-			tag = new RegExp(tag, flags);
+			tag = new RegExp(tag);
 		} catch (err) {
 			throw msg.language.get('COMMAND_TAGREGEX_BADREGEX', err.message);
 		}
@@ -39,7 +36,7 @@ module.exports = class extends Command {
 
 	async remove(msg, [tag]) {
 		const tags = msg.guild.settings.get('regexTags');
-		const filtered = tags.filter(([name]) => name !== tag.toLowerCase());
+		const filtered = tags.filter(([name]) => name.toString().toLowerCase() !== tag.toLowerCase());
 		if (tags.length === filtered.length) throw msg.language.get('COMMAND_TAG_NOEXIST', tag);
 		await msg.guild.settings.sync();
 		await msg.guild.settings.update('regexTags', filtered, { arrayAction: 'overwrite' });
