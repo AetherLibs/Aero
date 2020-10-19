@@ -23,5 +23,6 @@ module.exports = {
 	chartgenURL: 'https://charts.aero.bot',
 	pingURL: 'https://ping.aero.bot',
 	langURL: 'https://language.aero.bot',
+	shortURL: 'https://ddlc.me',
 	dailyPoints: 50
 };
