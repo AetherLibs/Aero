@@ -26,3 +26,5 @@ module.exports = {
 	shortURL: 'https://ddlc.me',
 	dailyPoints: 50
 };
+
+module.exports.cwEnabled = !['true', true].includes(process.env.CHATWATCH_DISABLED);

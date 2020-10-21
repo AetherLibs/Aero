@@ -13,7 +13,7 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if (!this.client.chatwatch.ws || this.client.chatwatch?.ws?.socket?.readyState === 0) return;
+		if (!this.client.chatwatch?.ws || this.client.chatwatch?.ws?.socket?.readyState === 0) return;
 		if (!msg.guild || !msg.content) return;
 		this.client.chatwatch.ingest(msg.content, {
 			user: msg.author.id,
