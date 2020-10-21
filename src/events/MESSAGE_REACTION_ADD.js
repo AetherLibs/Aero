@@ -37,7 +37,7 @@ module.exports = class extends Event {
 		if (!reactionRoles) return null;
 		await guild.members.fetch(userID).catch(() => null);
 		reactionRoles.find(reactionRole => {
-			if (reactionRole.messageID === messageID && reactionRole.emoji === emoji.id || reactionRole.emoji === emoji.name) {
+			if (reactionRole.messageID === messageID && (reactionRole.emoji === emoji.id || reactionRole.emoji === emoji.name)) {
 				const member = guild.members.get(userID);
 				if (member.user.bot) return false;
 				const role = guild.roles.get(reactionRole.roleID);
