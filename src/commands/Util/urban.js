@@ -11,8 +11,7 @@ module.exports = class extends Command {
 			usageDelim: ', ',
 			cooldown: 5,
 			requiredPermissions: ['EMBED_LINKS'],
-			aliases: ['ud'],
-			nsfw: true
+			aliases: ['ud']
 		});
 
 		this
