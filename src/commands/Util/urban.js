@@ -1,5 +1,4 @@
 const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
 const req = require('@aero/centra');
 
 module.exports = class extends Command {
@@ -34,14 +33,12 @@ module.exports = class extends Command {
 		const wdef = result.definition.length > 1000
 			? `${this.splitText(result.definition, 1000)}...`
 			: result.definition;
-		return msg.sendEmbed(new MessageEmbed()
-			.setTitle(result.word)
-			.setDescription(`${this.removeBrackets(wdef)}\n\n\`👍\` ${result.thumbs_up}\n\`👎\` ${result.thumbs_down}`)
-			.setURL(result.permalink)
-			.setColor(16586)
-			.setThumbnail('http://i.imgur.com/qNTzb3k.png')
-			.setFooter(`By ${result.author}`)
-			.addField('Example', `*${this.splitText(this.removeBrackets(result.example), 1000)}...*`));
+
+		const wex = result.example.length > 1000
+			? `${this.splitText(result.example, 1000)}...`
+			: result.example;
+
+		return msg.send(`${this.removeBrackets(wdef)}\n\n*${this.removeBrackets(wex)}*`);
 	}
 
 	removeBrackets(text) {
