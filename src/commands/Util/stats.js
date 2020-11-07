@@ -1,7 +1,7 @@
 const { Command, version: klasaVersion, Duration } = require('@aero/klasa');
 const { version: discordVersion, MessageEmbed } = require('discord.js');
 const { hostname, totalmem, cpus, loadavg } = require('os');
-const { version: aeroVersion } = require('../../../../package');
+const { version: aeroVersion } = require('~/package');
 
 module.exports = class extends Command {
 
