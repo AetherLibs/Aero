@@ -25,7 +25,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [action, messageID, role]) {
-		if (messageID && !role && action === 'add') role = msg.guild.roles.get(messageID);
+		if (messageID && !role && action === 'add') role = msg.guild.roles.cache.get(messageID);
 
 		const reactionRole = {
 			messageID,
@@ -40,7 +40,7 @@ module.exports = class extends Command {
 
 		if (action === 'add') {
 			const { emoji, message: partialMessage } = await this.queryEmoji(msg);
-			const message = await this.client.channels.get(partialMessage.channel.id).messages.fetch(partialMessage.id);
+			const message = await this.client.channels.cache.get(partialMessage.channel.id).messages.fetch(partialMessage.id);
 			reactionRole.messageID = message.id;
 
 			const equalReactionRoles = reactionRoles.filter(item => filter(item));

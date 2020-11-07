@@ -180,7 +180,7 @@ module.exports = class extends Command {
 			for (const { moderator } of warnings) await this.client.users.fetch(moderator);
 			embed.addField(
 				`• ${msg.language.get('COMMAND_INFO_USER_WARNINGS')} (${warnings.filter(warn => warn.active).length})`,
-				warnings.map((warn, idx) => `${idx + 1}. ${!warn.active ? '~~' : ''}**${warn.reason}** | ${this.client.users.get(warn.moderator).tag}${!warn.active ? '~~' : ''}`)
+				warnings.map((warn, idx) => `${idx + 1}. ${!warn.active ? '~~' : ''}**${warn.reason}** | ${this.client.users.cache.get(warn.moderator).tag}${!warn.active ? '~~' : ''}`)
 			);
 		}
 		const notes = member.settings.get('notes');
@@ -188,7 +188,7 @@ module.exports = class extends Command {
 			for (const { moderator } of notes) await this.client.users.fetch(moderator);
 			embed.addField(
 				`• ${msg.language.get('COMMAND_INFO_USER_NOTES')} (${notes.length})`,
-				notes.map((note, idx) => `${idx + 1}. **${note.reason}** | ${this.client.users.get(note.moderator).tag}`)
+				notes.map((note, idx) => `${idx + 1}. **${note.reason}** | ${this.client.users.cache.get(note.moderator).tag}`)
 			);
 		}
 

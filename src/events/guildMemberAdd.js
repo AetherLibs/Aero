@@ -66,7 +66,7 @@ module.exports = class extends Event {
 		const { guild } = member;
 		const channelID = guild.settings.get('welcome.channel');
 		if (!channelID) return member;
-		const channel = guild.channels.get(channelID);
+		const channel = guild.channels.cache.get(channelID);
 		if (!channel) return member;
 
 		const message = guild.settings.get('welcome.message');

@@ -6,7 +6,7 @@ const ROLE_REGEXP = Argument.regex.role;
 
 function resolveRole(query, guild) {
 	if (query instanceof Role) return guild.roles.has(query.id) ? query : null;
-	if (typeof query === 'string' && ROLE_REGEXP.test(query)) return guild.roles.get(ROLE_REGEXP.exec(query)[1]);
+	if (typeof query === 'string' && ROLE_REGEXP.test(query)) return guild.roles.cache.get(ROLE_REGEXP.exec(query)[1]);
 	return null;
 }
 

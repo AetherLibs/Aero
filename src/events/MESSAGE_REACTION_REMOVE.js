@@ -39,9 +39,9 @@ module.exports = class extends Event {
 
 		reactionRoles.find(reactionRole => {
 			if (reactionRole.messageID === messageID && (reactionRole.emoji === emoji.id || reactionRole.emoji === emoji.name)) {
-				const member = guild.members.get(userID);
+				const member = guild.members.cache.get(userID);
 				if (member.user.bot) return false;
-				const role = guild.roles.get(reactionRole.roleID);
+				const role = guild.roles.cache.get(reactionRole.roleID);
 				if (!role) return false;
 				member?.roles?.remove(role, guild.language.get('COMMAND_REACTIONROLE_ROLEUPDATE_REASON'));
 				return true;
@@ -55,7 +55,7 @@ module.exports = class extends Event {
 	async stars({ userID, messageID, channelID, guild, emoji }) {
 		const starChannelID = guild.settings.get('starboard.channel');
 		if (!starChannelID) return false;
-		const starChannel = await guild.channels.get(starChannelID);
+		const starChannel = await guild.channels.cache.get(starChannelID);
 		if (!starChannel) return false;
 		const isStarChannel = channelID === starChannelID;
 		if (userID === this.client.user.id) return false;
@@ -74,8 +74,8 @@ module.exports = class extends Event {
 		if (isStarChannel && !starredMessage) return false;
 
 		const message = isStarChannel
-			? await guild.channels.get(starredMessage.channel).messages.fetch(starredMessage.id)
-			: await guild.channels.get(channelID).messages.fetch(messageID);
+			? await guild.channels.cache.get(starredMessage.channel).messages.fetch(starredMessage.id)
+			: await guild.channels.cache.get(channelID).messages.fetch(messageID);
 		await guild.members.fetch(message.author.id);
 
 		let votes = await syncVotes(message);

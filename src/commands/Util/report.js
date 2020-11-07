@@ -126,7 +126,7 @@ module.exports = class extends Command {
 	parseUser(msg) {
 		return msg.mentions.users.size
 			? msg.mentions.users.first()
-			: msg.client.users.get(msg.content);
+			: msg.client.users.cache.get(msg.content);
 	}
 
 	parseReason(msg) {

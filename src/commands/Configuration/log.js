@@ -28,13 +28,13 @@ module.exports = class extends Command {
 		if (type) {
 			const _channel = msg.guild.settings.get(`logs.${type}.channel`);
 			if (!_channel || !msg.guild.channels.has(_channel)) return msg.responder.error('COMMAND_LOG_DISPLAY_NOCHANNEL', type);
-			return msg.send(msg.language.get('COMMAND_LOG_DISPLAY_ONE', type, msg.guild.channels.get(_channel)));
+			return msg.send(msg.language.get('COMMAND_LOG_DISPLAY_ONE', type, msg.guild.channels.cache.get(_channel)));
 		} else {
 			const out = [];
 			for (const _type of ['moderation', 'messages', 'members']) {
 				const _channel = msg.guild.settings.get(`logs.${_type}.channel`);
 				_channel && msg.guild.channels.has(_channel)
-					? out.push(msg.language.get('COMMAND_LOG_DISPLAY_ONE', _type, msg.guild.channels.get(_channel)))
+					? out.push(msg.language.get('COMMAND_LOG_DISPLAY_ONE', _type, msg.guild.channels.cache.get(_channel)))
 					: out.push(msg.language.get('COMMAND_LOG_DISPLAY_NOCHANNEL', _type));
 			}
 
@@ -67,7 +67,7 @@ module.exports = class extends Command {
 
 		// delete webhook
 		if (msg.guild.channels.has(channelID)) {
-			const hooks = await msg.guild.channels.get(channelID).fetchWebhooks();
+			const hooks = await msg.guild.channels.cache.get(channelID).fetchWebhooks();
 			if (hooks.has(webhookID)) hooks.get(webhookID).delete().catch(() => null);
 		}
 

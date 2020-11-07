@@ -26,7 +26,7 @@ module.exports = class extends Command {
 	show(msg) {
 		const channelID = msg.guild.settings.get('welcome.channel');
 		if (!channelID) return msg.responder.error('COMMAND_WELCOME_SHOW_NONE');
-		const channel = msg.guild.channels.get(channelID);
+		const channel = msg.guild.channels.cache.get(channelID);
 		if (!channel) return msg.responder.error('COMMAND_WELCOME_SHOW_NONE');
 
 		const text = msg.guild.settings.get('welcome.message');
