@@ -46,36 +46,31 @@ module.exports = class extends Command {
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_CASES_TITLE'),
 				[
-					`**${stats.cases?.toLocaleString() ?? 'N/A'}** ${
-						stats.todayCases
-							? `(+${stats.todayCases.toLocaleString()} ${msg.language.get('COMMAND_CORONA_TODAY')})`
-							: ''
+					`**${stats.cases?.toLocaleString() ?? 'N/A'}** ${stats.todayCases
+						? `(+${stats.todayCases.toLocaleString()} ${msg.language.get('COMMAND_CORONA_TODAY')})`
+						: ''
 					}`,
 					`${stats.critical?.toLocaleString() ?? 'N/A'} ${msg.language.get('COMMAND_CORONA_CRITICAL')}`,
-					`${
-						stats.casesPerOneMillion
-							? `${(stats.casesPerOneMillion / 10000).toFixed(4)}%`
-							: 'N/A'
+					`${stats.casesPerOneMillion
+						? `${(stats.casesPerOneMillion / 10000).toFixed(4)}%`
+						: 'N/A'
 					} ${msg.language.get('COMMAND_CORONA_ABSOLUTE_INFECTION_RATE')}`
 				].join('\n')
 			)
 			.addField(
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_DEATHS_TITLE'),
 				[
-					`**${stats.deaths?.toLocaleString() ?? 'N/A'}** ${
-						stats.todayDeaths
-							? `(+${stats.todayDeaths.toLocaleString()} ${msg.language.get('COMMAND_CORONA_TODAY')})`
-							: ''
+					`**${stats.deaths?.toLocaleString() ?? 'N/A'}** ${stats.todayDeaths
+						? `(+${stats.todayDeaths.toLocaleString()} ${msg.language.get('COMMAND_CORONA_TODAY')})`
+						: ''
 					}`,
-					`${
-						stats.cases && stats.deaths
-							? `${((stats.deaths / stats.cases) * 100).toFixed(2)}%`
-							: 'N/A'
+					`${stats.cases && stats.deaths
+						? `${((stats.deaths / stats.cases) * 100).toFixed(2)}%`
+						: 'N/A'
 					} ${msg.language.get('COMMAND_CORONA_CASE_FATALITY_RATE')}`,
-					`${
-						stats.deathsPerOneMillion
-							? `${(stats.deathsPerOneMillion / 10000).toFixed(4)}%`
-							: 'N/A'
+					`${stats.deathsPerOneMillion
+						? `${(stats.deathsPerOneMillion / 10000).toFixed(4)}%`
+						: 'N/A'
 					} ${msg.language.get('COMMAND_CORONA_ABSOLUTE_FATALITY_RATE')}`
 				].join('\n')
 			)
@@ -83,10 +78,9 @@ module.exports = class extends Command {
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_RECOVERED_TITLE'),
 				[
 					`**${stats.recovered?.toLocaleString() ?? 'N/A'}**`,
-					`${
-						stats.recovered && stats.cases
-							? `${((stats.recovered / stats.cases) * 100).toFixed(2)}%`
-							: 'N/A'
+					`${stats.recovered && stats.cases
+						? `${((stats.recovered / stats.cases) * 100).toFixed(2)}%`
+						: 'N/A'
 					} ${msg.language.get('COMMAND_CORONA_CASE_RECOVERY_RATE')}`
 				].join('\n')
 			)
@@ -94,10 +88,9 @@ module.exports = class extends Command {
 				msg.language.get('COMMAND_CORONA_EMBED_FIELD_TESTS_TITLE'),
 				[
 					`**${stats.tests?.toLocaleString() ?? 'N/A'}**`,
-					`${
-						stats.testsPerOneMillion
-							? `${(stats.testsPerOneMillion / 10000).toFixed(4)}%`
-							: 'N/A'
+					`${stats.testsPerOneMillion
+						? `${(stats.testsPerOneMillion / 10000).toFixed(4)}%`
+						: 'N/A'
 					} ${msg.language.get('COMMAND_CORONA_ABSOLUTE_TESTS_RATE')}`
 				].join('\n')
 			)
