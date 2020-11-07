@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:lts-alpine
 
 RUN apk add git python g++ make pkgconf cairo-dev jpeg-dev pango-dev giflib-dev
 
