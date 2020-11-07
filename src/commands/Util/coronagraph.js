@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 
 const { infinity } = require('../../../lib/util/constants').emojis;
 

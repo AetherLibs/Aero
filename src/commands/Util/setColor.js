@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { FLAGS } = require('discord.js').Permissions;
 const tc = require('tinycolor2');
 

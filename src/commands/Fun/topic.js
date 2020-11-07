@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const req = require('@aero/centra');
 const url = 'https://www.conversationstarters.com/random.php';
 

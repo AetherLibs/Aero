@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { Ban } = require('@aero/ksoft');
 const req = require('@aero/centra');
 const { url: { ImgurAPI }, regexes: { imgur: { album, image }, discord: { cdn }, cancel } } = require('../../../lib/util/constants');

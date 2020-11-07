@@ -1,4 +1,4 @@
-const { Monitor } = require('klasa');
+const { Monitor } = require('@aero/klasa');
 const req = require('@aero/centra');
 const { PerspectiveAPI } = require('../../lib/util/constants').url;
 

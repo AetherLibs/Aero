@@ -1,4 +1,4 @@
-const { Monitor } = require('klasa');
+const { Monitor } = require('@aero/klasa');
 
 module.exports = class extends Monitor {
 

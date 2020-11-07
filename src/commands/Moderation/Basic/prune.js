@@ -1,5 +1,5 @@
 // derived from klasa-pieces, (c) 2017-2019 dirigeants / MIT license.
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends Command {

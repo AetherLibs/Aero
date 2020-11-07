@@ -1,4 +1,4 @@
-const { Event } = require('klasa');
+const { Event } = require('@aero/klasa');
 const { encode } = require('../../lib/ws/util/MessageUtil');
 const Message = require('../../lib/ws/Message');
 const { READY_CLIENT } = require('../../lib/ws/util/constants').types;

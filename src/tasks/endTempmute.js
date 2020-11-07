@@ -1,9 +1,9 @@
-const { Task } = require('klasa');
+const { Task } = require('@aero/klasa');
 
 module.exports = class extends Task {
 
 	async run({ users, guild }) {
-		guild = this.client.guilds.get(guild);
+		guild = this.client.guilds.cache.get(guild);
 		if (!guild) return false;
 		users.forEach(async user => {
 			guild.modCache.add(user);

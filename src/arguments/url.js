@@ -1,4 +1,4 @@
-const { Argument } = require('klasa');
+const { Argument } = require('@aero/klasa');
 
 module.exports = class extends Argument {
 

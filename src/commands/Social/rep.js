@@ -1,4 +1,4 @@
-const { Command, Duration, constants: { TIME } } = require('klasa');
+const { Command, Duration, constants: { TIME } } = require('@aero/klasa');
 
 module.exports = class extends Command {
 

@@ -1,5 +1,5 @@
 // Derived from klasa-pieces (c) 2017-2019 dirigeants / MIT license.
-const { Argument, util: { regExpEsc } } = require('klasa');
+const { Argument, util: { regExpEsc } } = require('@aero/klasa');
 const { GuildMember, User } = require('discord.js');
 
 const USER_REGEXP = Argument.regex.userOrMember;

@@ -1,4 +1,4 @@
-const { Event } = require('klasa');
+const { Event } = require('@aero/klasa');
 const { deconstruct } = require('discord.js').SnowflakeUtil;
 
 module.exports = class extends Event {

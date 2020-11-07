@@ -1,4 +1,4 @@
-const { Language, util } = require('klasa');
+const { Language, util } = require('@aero/klasa');
 const { bold, code } = require('discord-md-tags');
 const { success, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests } } = require('../../lib/util/constants').emojis;
 

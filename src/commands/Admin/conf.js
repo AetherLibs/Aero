@@ -1,4 +1,4 @@
-const { Command, util: { toTitleCase, codeBlock } } = require('klasa');
+const { Command, util: { toTitleCase, codeBlock } } = require('@aero/klasa');
 
 module.exports = class extends Command {
 

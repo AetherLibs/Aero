@@ -8,7 +8,7 @@
  * Authored-By: Ravy <ravy@aero.bot>
  * Credit example: Credit goes to [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2020
  */
-const { Event } = require('klasa');
+const { Event } = require('@aero/klasa');
 const { syncVotes } = require('~/lib/structures/StarEvent');
 
 module.exports = class extends Event {
@@ -22,7 +22,7 @@ module.exports = class extends Event {
 	}
 
 	async run({ user_id: userID, guild_id: guildID, message_id: messageID, channel_id: channelID, emoji }) {
-		const guild = this.client.guilds.get(guildID);
+		const guild = this.client.guilds.cache.get(guildID);
 		if (!guild) return null;
 
 		this.rero({ userID, messageID, guild, emoji });

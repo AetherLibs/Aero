@@ -3,7 +3,7 @@
  * Co-Authored-By: Ravy <ravy@aero.bot>
  * Credit example: Credit goes to [William Johnstone](https://endevrr.com) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2020
  */
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { Permissions: { FLAGS } } = require('discord.js');
 const GuildReactionCollector = require('../../../lib/extensions/GuildReactionCollector');
 

@@ -1,4 +1,4 @@
-const { Event } = require('klasa');
+const { Event } = require('@aero/klasa');
 const Parser = require('@aero/tags');
 
 module.exports = class extends Event {

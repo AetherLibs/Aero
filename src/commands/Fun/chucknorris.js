@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { AllHtmlEntities } = require('html-entities');
 const req = require('@aero/centra');
 

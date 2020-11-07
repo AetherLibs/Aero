@@ -1,5 +1,5 @@
 const { Permissions: { FLAGS } } = require('discord.js');
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { granted, denied, unspecified } = require('../../../lib/util/constants').emojis.perms;
 
 module.exports = class extends Command {

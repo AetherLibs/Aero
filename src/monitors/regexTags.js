@@ -1,4 +1,4 @@
-const { Monitor } = require('klasa');
+const { Monitor } = require('@aero/klasa');
 const Parser = require('@aero/tags');
 
 module.exports = class extends Monitor {

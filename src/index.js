@@ -1,7 +1,7 @@
 require('dotenv').config({
 	path: process.env.NODE_ENV === 'production' ? '.env' : 'dev.env'
 });
-require('@aero/require').config();
+require('@aero/require').config(process.cwd(), true);
 
 const Manager = require('../lib/Manager');
 const version = process.env.npm_package_gitHead || 'dev';

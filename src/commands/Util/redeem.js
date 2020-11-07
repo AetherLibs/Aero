@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { badges } = require('../../../lib/util/constants');
 
 module.exports = class extends Command {

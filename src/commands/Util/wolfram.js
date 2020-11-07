@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { MessageAttachment } = require('discord.js');
 const req = require('@aero/centra');
 const BASE_URL = 'http://api.wolframalpha.com/v1';

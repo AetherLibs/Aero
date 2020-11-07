@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { Canvas } = require('canvas-constructor');
 const { readFile } = require('fs-nextra');
 const req = require('@aero/centra');

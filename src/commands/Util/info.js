@@ -1,4 +1,4 @@
-const { Command, Duration, Timestamp } = require('klasa');
+const { Command, Duration, Timestamp } = require('@aero/klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
 const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans } } = require('../../../lib/util/constants');
 const req = require('@aero/centra');

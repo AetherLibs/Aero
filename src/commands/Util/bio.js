@@ -1,4 +1,4 @@
-const { Command, Timestamp } = require('klasa');
+const { Command, Timestamp } = require('@aero/klasa');
 const req = require('@aero/centra');
 
 const { infinity } = require('../../../lib/util/constants').emojis;

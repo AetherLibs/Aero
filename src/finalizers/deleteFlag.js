@@ -1,4 +1,4 @@
-const { Finalizer } = require('klasa');
+const { Finalizer } = require('@aero/klasa');
 
 const { Message } = require('discord.js');
 

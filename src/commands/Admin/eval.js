@@ -1,4 +1,4 @@
-const { Command, Stopwatch, Type, util } = require('klasa');
+const { Command, Stopwatch, Type, util } = require('@aero/klasa');
 const { inspect } = require('util');
 const req = require('@aero/centra'); /* eslint-disable-line no-unused-vars */
 

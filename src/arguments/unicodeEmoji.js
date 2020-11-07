@@ -1,4 +1,4 @@
-const { Argument } = require('klasa');
+const { Argument } = require('@aero/klasa');
 
 const { emoji: regex } = require('../../lib/util/constants').regexes;
 

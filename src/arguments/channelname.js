@@ -1,5 +1,5 @@
 // Derived from klasa-pieces (c) 2017-2019 dirigeants / MIT license.
-const { Argument, util: { regExpEsc } } = require('klasa');
+const { Argument, util: { regExpEsc } } = require('@aero/klasa');
 const { Channel, Message } = require('discord.js');
 
 const CHANNEL_REGEXP = Argument.regex.channel;

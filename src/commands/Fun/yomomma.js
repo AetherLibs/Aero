@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const req = require('@aero/centra');
 const { bold } = require('discord-md-tags');
 

@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('@aero/klasa');
 const { MessageEmbed } = require('discord.js');
 const { VERY_NEGATIVE } = require('../../../lib/util/constants').color;
 

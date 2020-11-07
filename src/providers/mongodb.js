@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2019 dirigeants. All rights reserved. MIT license.
-const { Provider, util: { mergeDefault, mergeObjects, isObject } } = require('klasa');
+const { Provider, util: { mergeDefault, mergeObjects, isObject } } = require('@aero/klasa');
 const { MongoClient: Mongo } = require('mongodb');
 
 module.exports = class extends Provider {
