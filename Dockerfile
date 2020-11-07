@@ -10,7 +10,7 @@ COPY package*.json ./
 
 ENV CXXFLAGS="-w"
 
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 COPY . .
 
