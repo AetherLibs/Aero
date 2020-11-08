@@ -110,7 +110,7 @@ module.exports = class extends Command {
 const awaitReaction = async (user, message) => {
 	await message.react('🇾');
 	await message.react('🇳');
-	const data = await message.awaitReactions(reaction => reaction.users.has(user.id), { time: 30000, max: 1 });
+	const data = await message.awaitReactions(reaction => reaction.users.cache.has(user.id), { time: 30000, max: 1 });
 	if (data.firstKey() === '🇾') return true;
 	return false;
 };
