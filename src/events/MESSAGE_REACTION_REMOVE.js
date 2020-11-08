@@ -40,7 +40,7 @@ module.exports = class extends Event {
 		reactionRoles.find(reactionRole => {
 			if (reactionRole.messageID === messageID && (reactionRole.emoji === emoji.id || reactionRole.emoji === emoji.name)) {
 				const member = guild.members.cache.get(userID);
-				if (member.user.bot) return false;
+				if (member?.user.bot) return false;
 				const role = guild.roles.cache.get(reactionRole.roleID);
 				if (!role) return false;
 				member?.roles?.remove(role, guild.language.get('COMMAND_REACTIONROLE_ROLEUPDATE_REASON'));
