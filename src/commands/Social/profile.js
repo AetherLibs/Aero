@@ -1,6 +1,6 @@
 const { Command } = require('@aero/klasa');
 const { Canvas } = require('canvas-constructor');
-const { readFile } = require('fs-nextra');
+const { readFile } = require('fs').promises;
 const req = require('@aero/centra');
 
 module.exports = class extends Command {
