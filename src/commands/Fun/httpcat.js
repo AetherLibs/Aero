@@ -14,6 +14,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [code]) {
+		console.log(arguments);
 		const res = await req(BASE_URL)
 			.path(code.toString())
 			.send();
