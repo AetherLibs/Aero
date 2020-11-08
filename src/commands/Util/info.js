@@ -150,7 +150,7 @@ module.exports = class extends Command {
 		embed.addField(`• ${msg.language.get('COMMAND_INFO_USER_STATISTICS')}`, statistics.join('\n'));
 		if (!member) return embed;
 
-		const roles = member.roles.sorted((a, b) => b.position - a.position);
+		const roles = member.roles.cache.sort((a, b) => b.position - a.position);
 		let spacer = false;
 		const roleString = roles
 			.array()
