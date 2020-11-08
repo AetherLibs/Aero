@@ -32,7 +32,7 @@ module.exports = class extends Command {
 	async executeUnbans(users, reason, guild, moderator) {
 		for (const user of users) {
 			guild.modCache.add(user.id);
-			await guild.members.unban(user.id, `${moderator.tag} | ${reason || guild.language.get('COMMAND_UNBAN_NOREASON')}`);
+			await guild.members.unban(user.id, `${moderator.tag} | ${reason || guild.language.get('COMMAND_UNBAN_NOREASON')}`).catch(() => null);
 			this.updateSchedule(user);
 		}
 	}
