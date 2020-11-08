@@ -7,7 +7,7 @@ module.exports = class extends Task {
 		if (!guild) return false;
 		users.forEach(async user => {
 			guild.modCache.add(user);
-			const member = await guild.members.fetch(user);
+			const member = await guild.members.fetch(user).catch(() => null);
 			if (member) await member.unmute(guild.language.get('COMMAND_MUTE_TEMPMUTERELEASED'));
 		});
 		return users.length > 1
