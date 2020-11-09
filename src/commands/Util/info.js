@@ -85,7 +85,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [arg = msg.author]) {
-		if (/^\d{17,18}$/.test(arg)) arg = await this.client.users.fetch(arg);
+		if (/^\d{17,18}$/.test(arg)) arg = await this.client.users.fetch(arg).catch(() => null);
 
 		if (arg === this.client.user.id) return this.botinfo(msg);
 		if (arg.id === this.client.user.id) return this.botinfo(msg);
@@ -94,6 +94,7 @@ module.exports = class extends Command {
 		if (arg instanceof Role) return this.roleinfo(msg, arg);
 		if (msg.guild && arg === 'server') return this.serverinfo(msg);
 		if (msg.guild && arg === msg.guild.id) return this.serverinfo(msg);
+		if (!arg) return msg.responder.error('COMMAND_INFO_INVALIDID');
 
 		return false;
 	}

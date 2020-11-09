@@ -220,6 +220,7 @@ module.exports = class extends Language {
 
 			// misc commands
 			COMMAND_INFO_DESCRIPTION: 'Get information about a user, role, the server, or this bot.',
+			COMMAND_INFO_INVALIDID: 'The ID you provided doesn\'t match any user or role. Maybe you copied a DM channel ID?',
 			COMMAND_INFO_USER_DISCORDJOIN: (joinedAt, joinDuration) => `Joined Discord on ${joinedAt} (${joinDuration} ago)`,
 			COMMAND_INFO_USER_GUILDJOIN: (guild, joinedAt, joinDuration) => `Joined ${guild} on ${joinedAt} (${joinDuration} ago)`,
 			COMMAND_INFO_USER_GUILDRCEATE: (guild, createdAt, createdDuration) => `Created ${guild} on ${createdAt} (${createdDuration} ago)`,
