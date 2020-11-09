@@ -77,7 +77,7 @@ module.exports = class extends Event {
 			: await guild.channels.cache.get(channelID).messages.fetch(messageID);
 		await guild.members.fetch(message.author.id);
 
-		if (userID === message.author.id) return message.reactions.get(emoji.name).users.remove(userID).catch(() => null);
+		if (userID === message.author.id) return message.reactions.cache.get(emoji.name).users.remove(userID).catch(() => null);
 
 		let votes = await syncVotes(message);
 		if ((votes.length < threshold) && !isStarChannel) return false;
