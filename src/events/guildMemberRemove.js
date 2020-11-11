@@ -12,7 +12,7 @@ module.exports = class extends Event {
 
 	async run(member) {
 		await member.settings.sync();
-		member.settings.update('persistRoles', member.roles.keyArray(), { arrayAction: 'overwrite' });
+		member.settings.update('persistRoles', member.roles.cache.keyArray(), { arrayAction: 'overwrite' });
 		if (member.nickname) member.settings.update('persistNick', member.nickname);
 		const { guild, user } = member;
 		if (guild.modCache.has(member.id)) return guild.modCache.delete(member.id);
