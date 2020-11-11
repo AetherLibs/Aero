@@ -26,6 +26,7 @@ module.exports = class extends Monitor {
 				guild: msg.guild,
 				channel: msg.channel,
 				member: msg.member,
+				trigger: msg,
 				logger: this.client.console
 			}).then(result => result?.trim());
 
