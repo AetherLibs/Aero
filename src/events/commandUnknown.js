@@ -12,7 +12,8 @@ module.exports = class extends Event {
 			user: msg.author,
 			guild: msg.guild,
 			channel: msg.channel,
-			member: msg.member
+			member: msg.member,
+			logger: this.client.console
 		});
 		return parsedTag.length ? msg.send(parsedTag) : false;
 	}

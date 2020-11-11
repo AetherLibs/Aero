@@ -25,10 +25,11 @@ module.exports = class extends Monitor {
 				user: msg.author,
 				guild: msg.guild,
 				channel: msg.channel,
-				member: msg.member
+				member: msg.member,
+				logger: this.client.console
 			}).then(result => result?.trim());
 
-			this.client.console.log(`[Tags] matched rtag ${tag[0]}. (c=${msg.channel.id}) (g=${msg.guild.id}) (o=${parsedTag})`);
+			this.client.console.log(`[Tags] matched rtag ${tag[0]}. (c=${msg.channel.id}) (g=${msg.guild.id}) (u=${msg.author.id}) (o=${parsedTag})`);
 
 			if (!parsedTag.length) continue;
 			msg.send(parsedTag);

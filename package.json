@@ -34,7 +34,7 @@
 		"@aero/require": "^1.0.3",
 		"@aero/sanitizer": "^1.2.0",
 		"@aero/statuspage": "^1.0.1",
-		"@aero/tags": "^3.0.1",
+		"@aero/tags": "^3.0.2",
 		"@aero/xkcd": "^1.0.0",
 		"@sentry/node": "^5.15.4",
 		"canvas": "^2.6.1",
