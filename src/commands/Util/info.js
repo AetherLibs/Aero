@@ -88,7 +88,7 @@ module.exports = class extends Command {
 		if (/^\d{17,18}$/.test(arg)) arg = await this.client.users.fetch(arg).catch(() => null);
 
 		if (arg === this.client.user.id) return this.botinfo(msg);
-		if (arg.id === this.client.user.id) return this.botinfo(msg);
+		if (arg?.id === this.client.user.id) return this.botinfo(msg);
 		if (arg instanceof User) return this.userinfo(msg, arg);
 		if (arg instanceof GuildMember) return this.userinfo(msg, arg.user);
 		if (arg instanceof Role) return this.roleinfo(msg, arg);
