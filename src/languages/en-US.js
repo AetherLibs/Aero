@@ -325,6 +325,7 @@ module.exports = class extends Language {
 				"Specify s[oft] before the reason to purge the user(s)'s last 24h of messages and unban them again (commonly referred to as a softban)."
 			],
 			COMMAND_BAN_NOPERMS: multiple => `You cannot ban ${multiple ? 'any of the specified users' : 'the specified user'}.`,
+			COMMAND_BAN_ERROR: (user, issue) => `Failed to ban ${user}: ${issue}`,
 			COMMAND_BAN_SOFTBANRELEASED: 'softban released',
 			COMMAND_BAN_CONFLICT: "You can't softban and tempban at the same time.",
 			COMMAND_BAN_NOREASON: 'no reason specified',

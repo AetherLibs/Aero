@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		const soft = ['soft', 's'].includes(purge);
 		if (duration && soft) return msg.responder.error('COMMAND_BAN_CONFLICT');
 
-		await this.executeBans(bannable, duration, reason, purge, soft, msg.guild, msg.author);
+		await this.executeBans(bannable, duration, reason, purge, soft, msg.guild, msg.author, msg);
 
 		const action = bannable.length > 1
 			? 'bulkBan'
@@ -39,11 +39,12 @@ module.exports = class extends Command {
 		return msg.responder.success();
 	}
 
-	async executeBans(users, duration, reason, purge, soft, guild, moderator) {
+	async executeBans(users, duration, reason, purge, soft, guild, moderator, msg) {
 		for (const user of users) {
 			guild.modCache.add(user.id);
 			if (!duration) this.updateSchedule(user);
-			await guild.members.ban(user.id, { reason: `${duration ? `[temp]` : ''} ${moderator.tag} | ${reason || guild.language.get('COMMAND_BAN_NOREASON')}`, days: purge ? 1 : 0 });
+			await guild.members.ban(user.id, { reason: `${duration ? `[temp]` : ''} ${moderator.tag} | ${reason || guild.language.get('COMMAND_BAN_NOREASON')}`, days: purge ? 1 : 0 })
+				.catch((err) => msg.responder.newError('COMMAND_BAN_ERROR', user, err.message));
 			if (soft) {
 				guild.modCache.add(user.id);
 				await guild.members.unban(user.id, guild.language.get('COMMAND_BAN_SOFTBANRELEASED'));
