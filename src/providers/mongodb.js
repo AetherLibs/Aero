@@ -61,7 +61,8 @@ module.exports = class extends Provider {
 	}
 
 	get(table, id) {
-		return this.db.collection(table).findOne(resolveQuery(id));
+		const res = this.db.collection(table).findOne(resolveQuery(id));
+		return res;
 	}
 
 	has(table, id) {
@@ -81,7 +82,11 @@ module.exports = class extends Provider {
 	}
 
 	update(table, id, doc) {
-		return this.db.collection(table).updateOne(resolveQuery(id), { $set: isObject(doc) ? flatten(doc) : parseEngineInput(doc) });
+		const update = parseEngineInput(doc);
+		if (!Object.keys(update).length) return {};
+		const res = this.db.collection(table).updateOne(resolveQuery(id), { $set: update });
+
+		return res;
 	}
 
 	replace(table, id, doc) {
@@ -93,15 +98,47 @@ module.exports = class extends Provider {
 // eslint-disable-next-line no-extra-parens
 const resolveQuery = query => isObject(query) ? query : { id: query };
 
-function flatten(obj, path = '') {
-	let output = {};
-	for (const [key, value] of Object.entries(obj)) {
-		if (isObject(value)) output = Object.assign(output, flatten(value, path ? `${path}.${key}` : key));
-		else output[path ? `${path}.${key}` : key] = value;
+function upsert(object, propertyPath, value) {
+	const spread = propertyPath.startsWith('...');
+	if (spread && typeof value !== 'object') throw new Error("Spread operator '...', can only be used with objects");
+
+	function rec(objectTail, propertyPathTail, spread) { /* eslint-disable-line no-shadow */
+		const propPaths = propertyPathTail.split('.');
+		const head = propPaths[0];
+		let tail = propPaths.splice(1);
+		tail = tail.join('.');
+
+		if (typeof objectTail[head] !== 'object') {
+			objectTail[head] = {};
+		}
+
+		if (tail) {
+			objectTail[head] = rec(objectTail[head], tail, spread);
+			return objectTail;
+		} else if (!head) {
+			return value;
+		} else {
+			objectTail[head] = spread ? Object.assign({}, objectTail[head], value) : value;
+			return objectTail;
+		}
 	}
-	return output;
+
+	return rec(object, spread ? propertyPath.slice(3) : propertyPath, spread);
 }
 
 function parseEngineInput(updated) {
-	return Object.assign({}, ...updated.map(entry => ({ [entry.key]: entry.value })));
+	const output = {};
+
+	for (const item of updated) {
+		if (item.previous === item.next) continue;
+		const value = item.next;
+		const { path } = item.entry;
+		if (path.split('.').length === 1) {
+			output[path] = value;
+		} else {
+			upsert(output, path, value);
+		}
+	}
+
+	return output;
 }
