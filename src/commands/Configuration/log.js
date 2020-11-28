@@ -66,7 +66,7 @@ module.exports = class extends Command {
 		await msg.guild.settings.reset(`logs.${type}.webhook`);
 
 		// delete webhook
-		if (msg.guild.channels.has(channelID)) {
+		if (msg.guild.channels.cache.has(channelID)) {
 			const hooks = await msg.guild.channels.cache.get(channelID).fetchWebhooks();
 			if (hooks.has(webhookID)) hooks.get(webhookID).delete().catch(() => null);
 		}
