@@ -8,7 +8,7 @@ module.exports = class extends Event {
 		if (error instanceof Error) {
 			this.client.emit('wtf', `[COMMAND] ${command.path}\n${error.stack || error}`);
 			this.client?.sentry?.setTag('command', command.name);
-			this.client?.sentry?.setTag('params', JSON.stringify(params));
+			this.client?.sentry?.setTag('params', JSON.stringify(params) || 'none');
 			this.client?.sentry?.captureException(error);
 		} else {
 			if (typeof error === 'string' && message.language.language[error]) error = message.language.get(error);

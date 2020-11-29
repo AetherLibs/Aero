@@ -73,6 +73,7 @@ module.exports = class extends Language {
 			COMMAND_ANTI_NOTYPE: 'No auto moderation type specified.',
 			COMMAND_ANTI_SUCCESS: (type, enabled, users) => `Successfully **${enabled ? 'enabled' : 'disabled'}** filtering **${type}**${users ? ' usernames' : ''}.`,
 			COMMAND_EXEMPT_DESCRIPTION: 'Exempt a user/role/channel from being filtered by automod.',
+			COMMAND_EXEMPT_DUPLICATE: (name, typePlural) => `${name} is already in the list of exempt ${typePlural}`,
 			COMMAND_UNEXEMPT_DESCRIPTION: 'Remove the exemption of a user/role/channel from automod.',
 			COMMAND_RAID_DESCRIPTION: 'Configures raid prevention settings.',
 			COMMAND_RAID_HOWTO: (username, prefix) => [

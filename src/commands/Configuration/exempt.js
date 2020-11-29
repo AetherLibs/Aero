@@ -23,6 +23,7 @@ module.exports = class extends Command {
 				? 'roles'
 				: 'channels';
 		await msg.guild.settings.sync();
+		if (msg.guild.settings.get(`mod.ignored.${type}`).includes(target.id)) return msg.responder.error('COMMAND_EXEMPT_DUPLICATE', target.name, type);
 		await msg.guild.settings.update(`mod.ignored.${type}`, target, { arrayAction: 'add' });
 		return msg.responder.success();
 	}
