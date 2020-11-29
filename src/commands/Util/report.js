@@ -108,7 +108,7 @@ module.exports = class extends Command {
 		if (!msg.content) return false;
 		if (msg.mentions.users.size > 0) return true;
 		if (/^(\d{17,19})$/.test(msg.content)) {
-			const user = await this.client.users.fetch(msg.content);
+			const user = await this.client.users.fetch(msg.content).catch(() => false);
 			return !!user;
 		}
 		return false;
