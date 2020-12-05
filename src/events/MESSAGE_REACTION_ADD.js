@@ -73,8 +73,9 @@ module.exports = class extends Event {
 		if (isStarChannel && !starredMessage) return false;
 
 		const message = isStarChannel
-			? await guild.channels.cache.get(starredMessage.channel).messages.fetch(starredMessage.id)
-			: await guild.channels.cache.get(channelID).messages.fetch(messageID);
+			? await guild.channels.cache.get(starredMessage.channel).messages.fetch(starredMessage.id).catch(() => null)
+			: await guild.channels.cache.get(channelID).messages.fetch(messageID).catch(() => null);
+		if (!message) return false;
 		await guild.members.fetch(message.author.id);
 
 		if (userID === message.author.id) return message.reactions.cache.get(emoji.name).users.remove(userID).catch(() => null);
