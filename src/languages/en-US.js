@@ -294,6 +294,7 @@ module.exports = class extends Language {
 			COMMAND_CORONAGRAPH_INVALID: 'Invalid country name',
 			COMMAND_WOLFRAM_DESCRIPTION: 'Gets a result from Wolfram|Alpha.',
 			COMMAND_WOLFRAM_ERROR: 'Your query did not return any result.',
+			COMMAND_WOLFRAM_LENGTH: url => `Failed to display the response due to too many characters. Try searching manually at: <${url}>`,
 
 			// social commands
 			COMMAND_DAILY_DESCRIPTION: 'Claim your daily points! Add --reminder to be reminded in 12h.',
