@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		}
 
 		const { errors } = await this.client.settings.update([['userBlacklist', queries[0]], ['guildBlacklist', queries[1]]]);
-		if (errors.length) throw String(errors[0]);
+		if (errors?.length) throw String(errors[0]);
 
 		return message.sendLocale('COMMAND_BLACKLIST_SUCCESS', changes);
 	}
