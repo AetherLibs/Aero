@@ -1,5 +1,6 @@
 const { Command } = require('@aero/klasa');
 const req = require('@aero/centra');
+const BASE_URL = 'http://api.urbandictionary.com/v0';
 
 module.exports = class extends Command {
 
@@ -24,8 +25,10 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [search, resultNum = 0]) {
-		const url = `http://api.urbandictionary.com/v0/define?term=${search}`;
-		const body = await req(url).json();
+		const body = await req(BASE_URL)
+			.path('define')
+			.query('term', search)
+			.json();
 		if (resultNum > 1) resultNum--;
 
 		const result = body.list[resultNum];
