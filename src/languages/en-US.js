@@ -758,6 +758,7 @@ module.exports = class extends Language {
 
 			LOG_ACTION_MEMBERJOINED: 'member joined',
 			LOG_ACTION_MEMBERLEFT: 'member left',
+			LOG_ACTION_MEMBERPASSEDGATE: 'member passed screening',
 
 			LOG_ARGS_USER: (tag, mention, id) => `**user:** ${tag} ${mention} [${id}]`,
 			LOG_ARGS_MEMBER: (name, mention, id) => `**member:** ${name} ${mention} [${id}]`,
