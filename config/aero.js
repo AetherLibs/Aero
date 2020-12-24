@@ -24,6 +24,7 @@ module.exports = {
 	pingURL: 'https://ping.aero.bot',
 	langURL: 'https://language.aero.bot',
 	shortURL: 'https://ddlc.me',
+	lgbtURL: 'https://api.ravy.lgbt',
 	dailyPoints: 50
 };
 
