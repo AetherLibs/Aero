@@ -42,10 +42,10 @@ module.exports = class extends Command {
 		return this.display(msg, random.toHex());
 	}
 
-	async draw(hex) {
+	async draw(color) {
 		const { body } = await req(this.client.config.colorgenURL)
 			.path('color')
-			.query({ color: encodeURIComponent(hex) })
+			.query({ color })
 			.send();
 		return body;
 	}
