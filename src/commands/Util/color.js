@@ -1,6 +1,6 @@
 const { Command } = require('@aero/klasa');
 const req = require('@aero/centra');
-const color = require('tinycolor2');
+const tc2 = require('tinycolor2');
 
 const toTitleCase = str => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -25,7 +25,7 @@ module.exports = class extends Command {
 
 	async display(msg, hexCode) {
 		if (!hexCode) return msg.responder.error('COMMAND_COLOR_NOCOLOR');
-		const colorData = color(hexCode);
+		const colorData = tc2(hexCode);
 		if (colorData._format === false) return msg.responder.error('COMMAND_COLOR_INVALIDCOLOR');
 		const img = await this.draw(colorData.toHex());
 		return msg.channel.sendFile(img, 'color.png', [
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 	}
 
 	random(msg) {
-		const random = color.random();
+		const random = tc2.random();
 		return this.display(msg, random.toHex());
 	}
 
