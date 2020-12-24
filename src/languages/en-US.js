@@ -189,6 +189,7 @@ module.exports = class extends Language {
 			COMMAND_YOMAMMA_DESCRIPTION: 'Yo momma is so fat, yo.',
 			COMMAND_JOKE_DESCRIPTION: 'Fetch a *very* funny joke.',
 			COMMAND_TOPIC_DESCRIPTION: 'Suggests a random topic as a conversation starter.',
+			COMMAND_TRANS_DESCRIPTION: 'Adds a trans-pride-flag colored circle around a user\'s avatar.',
 			COMMAND_ROLL_DESCRIPTION: 'Roll one or more die.',
 
 			// games
