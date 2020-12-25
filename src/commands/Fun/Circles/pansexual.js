@@ -6,8 +6,9 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: language => language.get('COMMAND_TRANS_DESCRIPTION'),
-			usage: '[user:username]'
+			description: language => language.get('COMMAND_PANSEXUAL_DESCRIPTION'),
+			usage: '[user:username]',
+			aliases: ['pan']
 		});
 	}
 
@@ -16,7 +17,7 @@ module.exports = class extends Command {
 
 		const img = await req(this.client.config.lgbtURL)
 			.path('circle')
-			.query({ image: avatar })
+			.query({ image: avatar, type: 'pansexual' })
 			.raw();
 
 		return msg.channel.sendFile(img, 'avatar.png');
