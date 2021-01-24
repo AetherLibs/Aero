@@ -69,19 +69,19 @@ module.exports = class extends Command {
 			russia: 'Russia'
 		};
 
-		this.verificationLevels = [
-			'None',
-			'Low',
-			'Medium',
-			'(╯°□°）╯︵ ┻━┻',
-			'┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
-		];
+		this.verificationLevels = {
+			NONE: 'None',
+			LOW: 'Low',
+			MEDIUM: 'Medium',
+			HIGH: '(╯°□°）╯︵ ┻━┻',
+			VERY_HIGH: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
+		};
 
-		this.filterLevels = [
-			"Don't scan any messages",
-			'Scan messages from members without a role',
-			'Scan messages by all members'
-		];
+		this.filterLevels = {
+			DISABLED: "Don't scan any messages",
+			MEMBERS_WITHOUT_ROLES: 'Scan messages from members without a role',
+			ALL_MEMBERS: 'Scan messages by all members'
+		};
 	}
 
 	async run(msg, [arg = msg.author]) {
