@@ -1,26 +1,10 @@
-const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
+const LGBTImageCommand = require('~/lib/structures/LGBTImageCommand');
 
-module.exports = class extends Command {
+module.exports = class extends LGBTImageCommand {
 
 
 	constructor(...args) {
-		super(...args, {
-			description: language => language.get('COMMAND_PANSEXUAL_DESCRIPTION'),
-			usage: '[user:username]',
-			aliases: ['pan']
-		});
-	}
-
-	async run(msg, [user = msg.author]) {
-		const avatar = user.displayAvatarURL({ size: 1024, format: 'png' });
-
-		const img = await req(this.client.config.lgbtURL)
-			.path('circle')
-			.query({ image: avatar, type: 'pansexual' })
-			.raw();
-
-		return msg.channel.sendFile(img, 'avatar.png');
+		super('pansexual', ...args, { aliases: ['pan'] });
 	}
 
 };

@@ -1,6 +1,7 @@
 // Copyright (c) 2017-2019 dirigeants. All rights reserved. MIT license.
 const { Provider, util: { mergeDefault, mergeObjects, isObject } } = require('@aero/klasa');
 const { MongoClient: Mongo } = require('mongodb');
+const { inspect } = require('util');
 
 module.exports = class extends Provider {
 
@@ -74,23 +75,33 @@ module.exports = class extends Provider {
 	}
 
 	create(table, id, doc = {}) {
-		return this.db.collection(table).insertOne(mergeObjects(this.parseUpdateInput(doc), resolveQuery(id)));
+		const content = mergeObjects(this.parseUpdateInput(doc), resolveQuery(id));
+		this.client.console.log(`[Mongo] create `, { table, id }, content);
+		return this.db.collection(table).insertOne(content);
 	}
 
 	delete(table, id) {
-		return this.db.collection(table).deleteOne(resolveQuery(id));
+		const query = resolveQuery(id);
+		this.client.console.log(`[Mongo] delete `, { table, id, query });
+		return this.db.collection(table).deleteOne();
 	}
 
 	update(table, id, doc) {
+		console.log(doc)
 		const update = parseEngineInput(doc);
 		if (!Object.keys(update).length) return {};
-		const res = this.db.collection(table).updateOne(resolveQuery(id), { $set: update });
+		const query = resolveQuery(id);
+		this.client.console.log(`[Mongo] update `, { table, id }, query, inspect(update, false, 10, true));
+		const res = this.db.collection(table).updateOne(query, { $set: update });
 
 		return res;
 	}
 
 	replace(table, id, doc) {
-		return this.db.collection(table).replaceOne(resolveQuery(id), this.parseUpdateInput(doc));
+		const query = resolveQuery(id);
+		const update = this.parseUpdateInput(doc);
+		this.client.console.log(`[Mongo] replace `, { table, id }, query, inspect(update, false, 10, true));
+		return this.db.collection(table).replaceOne(query, update);
 	}
 
 };
