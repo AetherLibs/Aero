@@ -14,7 +14,7 @@ module.exports = {
 	}[stage],
 	stage,
 	version,
-	supportServer: 'https://discord.gg/n6eZ3Z5',
+	supportServer: 'https://discord.gg/7yfaYjeN6B',
 	inviteURL: 'https://get.aero.bot',
 	repoURL: 'https://git.aero.bot',
 	hasteURL: 'https://haste.aero.bot',
