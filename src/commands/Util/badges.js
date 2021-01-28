@@ -64,15 +64,16 @@ module.exports = class extends Command {
 				if (chunk.nonce !== nonce) return;
 				chunksReceived++;
 				console.log(chunk.index, chunk.count);
-				for (const member of members.values()) {
+				for (let member of members.values()) {
 					/* eslint-disable no-bitwise */
-					guild.members.cache.delete(member.id);
 					for (let i = 0; i < 18; i++) if (((member.user.flags?.bitfield ?? 0) & (1 << i)) === 1 << i) flags[i]++;
 					if (((member.user.flags?.bitfield ?? 0) & 1) === 1) employees.push(`${member.user.tag} [${member.user.id}]`);
 					/* eslint-enable no-bitwise */
 					if (member.user.bot) bots++;
 					if (member.user?.avatar?.startsWith('a_') || ['0001', '1337', '9999', '6969', '0420', '1234'].includes(member.user.discriminator)) nitros++;
+					member = null;
 				}
+				members = null;
 				if (chunksReceived === chunk.count) {
 					guild.client.removeListener(Events.GUILD_MEMBERS_CHUNK, handler);
 					guild.client.decrementMaxListeners();

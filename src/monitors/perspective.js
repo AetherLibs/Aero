@@ -38,7 +38,7 @@ module.exports = class extends Monitor {
 
 		const TOXICITY = scores.TOXICITY.summaryScore.value;
 
-		for (const obj of [msg.member, msg.author, msg.guild]) {
+		for (const obj of [msg.member, msg.author, msg.guild].filter(i => !!i)) {
 			await obj.settings.sync();
 			const messages = obj.settings.get('stats.messages');
 			const prev = obj.settings.get('stats.toxicity');
