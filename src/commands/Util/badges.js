@@ -15,12 +15,12 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
-		const [badges, bots, nitros] = await this.getBadgeCounts(msg, loading);
+		const [badges, bots, nitros, employees] = await this.getBadgeCounts(msg);
 		const boosters = await this.client.api.guilds(msg.guild.id).get().then(res => res.premium_subscription_count);
 
 		/* eslint-disable indent */
 		const description = [
-			badges[0] > 0 && `${emojis.staff} ${badges[0]} x Discord employee`,
+			badges[0] > 0 && `${emojis.staff} ${badges[0]} x Discord employee (${employees.join(',')})`,
 			badges[1] > 0 && `${emojis.partner} ${badges[1]} x Partnered Server Owner`,
 			badges[2] > 0 && `${emojis.hypesquadEvents} ${badges[2]} x HypeSquad Events`,
 			nitros > 0 && `${emojis.nitro} ${nitros} x Nitro ${(boosters > 0) || (badges[9] > 0)
@@ -50,33 +50,25 @@ module.exports = class extends Command {
 		return loading.delete();
 	}
 
-	async getBadgeCounts(msg, loading) {
-		const max = msg.guild.memberCount;
-		let count = 0;
-		let members = [];
-		let after = '0';
+	async getBadgeCounts(msg) {
 		let bots = 0;
 		let nitros = 0;
+		const employees = [];
 
-		while (count < max) {
-			count += 100;
-			const chunk = await this.client.api.guilds(msg.guild.id).members.get({ query: { limit: 100, after } });
-			after = chunk[chunk.length - 1].user.id;
-			members = members.concat(chunk);
-			console.log(after, '   ', members.length, '    ', chunk.length);
-			if (count < max && (count % 300) === 0) loading.edit(`${infinity} this might take a few seconds (${((count / max) * 100).toFixed(1)}%)`);
-		}
+		const members = await msg.guild.members.fetch({ time: 300e3 });
 
 		const flags = Array(18).fill(0);
 
-		for (const member of members) {
-			/* eslint-disable-next-line no-bitwise */
-			for (let i = 0; i < 18; i++) if ((member.user.public_flags & (1 << i)) === 1 << i) flags[i]++;
+		for (const member of members.values()) {
+			/* eslint-disable no-bitwise */
+			for (let i = 0; i < 18; i++) if (((member.user.flags?.bitfield ?? 0) & (1 << i)) === 1 << i) flags[i]++;
+			if (((member.user.flags?.bitfield ?? 0) & 1) === 1) employees.push(`${member.user.tag} [${member.user.id}]`);
+			/* eslint-enable no-bitwise */
 			if (member.user.bot) bots++;
-			if (member.user.avatar.startsWith('a_') || ['0001', '1337', '9999', '6969', '0420', '1234'].includes(member.user.discriminator)) nitros++;
+			if (member.user?.avatar?.startsWith('a_') || ['0001', '1337', '9999', '6969', '0420', '1234'].includes(member.user.discriminator)) nitros++;
 		}
 
-		return [flags, bots, nitros];
+		return [flags, bots, nitros, employees];
 	}
 
 };
