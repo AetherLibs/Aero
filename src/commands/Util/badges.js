@@ -1,5 +1,6 @@
 const { Command } = require('@aero/klasa');
 const { discordBadges: emojis, emojis: { infinity } } = require('~/lib/util/constants');
+const { SnowflakeUtil, Constants: { OPCodes, Events } } = require('discord.js');
 
 module.exports = class extends Command {
 
@@ -51,24 +52,50 @@ module.exports = class extends Command {
 	}
 
 	async getBadgeCounts(msg) {
-		let bots = 0;
-		let nitros = 0;
-		const employees = [];
+		return new Promise((resolve) => {
+			let bots = 0;
+			let nitros = 0;
+			const employees = [];
+			let chunksReceived = 0;
+			const flags = Array(18).fill(0);
+			const nonce = SnowflakeUtil.generate();
 
-		const members = await msg.guild.members.fetch({ time: 300e3 });
+			function handler(members, guild, chunk) {
+				if (chunk.nonce !== nonce) return;
+				chunksReceived++;
+				console.log(chunk.index, chunk.count);
+				for (const member of members.values()) {
+					/* eslint-disable no-bitwise */
+					guild.members.cache.delete(member.id);
+					for (let i = 0; i < 18; i++) if (((member.user.flags?.bitfield ?? 0) & (1 << i)) === 1 << i) flags[i]++;
+					if (((member.user.flags?.bitfield ?? 0) & 1) === 1) employees.push(`${member.user.tag} [${member.user.id}]`);
+					/* eslint-enable no-bitwise */
+					if (member.user.bot) bots++;
+					if (member.user?.avatar?.startsWith('a_') || ['0001', '1337', '9999', '6969', '0420', '1234'].includes(member.user.discriminator)) nitros++;
+				}
+				if (chunksReceived === chunk.count) {
+					guild.client.removeListener(Events.GUILD_MEMBERS_CHUNK, handler);
+					guild.client.decrementMaxListeners();
+					resolve([flags, bots, nitros, employees]);
+				}
+			}
 
-		const flags = Array(18).fill(0);
 
-		for (const member of members.values()) {
-			/* eslint-disable no-bitwise */
-			for (let i = 0; i < 18; i++) if (((member.user.flags?.bitfield ?? 0) & (1 << i)) === 1 << i) flags[i]++;
-			if (((member.user.flags?.bitfield ?? 0) & 1) === 1) employees.push(`${member.user.tag} [${member.user.id}]`);
-			/* eslint-enable no-bitwise */
-			if (member.user.bot) bots++;
-			if (member.user?.avatar?.startsWith('a_') || ['0001', '1337', '9999', '6969', '0420', '1234'].includes(member.user.discriminator)) nitros++;
-		}
-
-		return [flags, bots, nitros, employees];
+			/* eslint-disable */
+			msg.guild.shard.send({
+				op: OPCodes.REQUEST_GUILD_MEMBERS,
+				d: {
+					guild_id: msg.guild.id,
+					presences: false,
+					limit: 0,
+					query: '',
+					nonce
+				},
+			});
+			/* eslint-enable */
+			this.client.incrementMaxListeners();
+			this.client.on(Events.GUILD_MEMBERS_CHUNK, handler);
+		});
 	}
 
 };
