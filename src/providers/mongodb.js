@@ -87,11 +87,11 @@ module.exports = class extends Provider {
 	}
 
 	update(table, id, doc) {
-		console.log(doc)
+		// console.log(doc)
 		const update = parseEngineInput(doc);
 		if (!Object.keys(update).length) return {};
 		const query = resolveQuery(id);
-		this.client.console.log(`[Mongo] update `, { table, id }, query, inspect(update, false, 10, true));
+		// this.client.console.log(`[Mongo] update `, { table, id }, query, inspect(update, false, 10, true));
 		const res = this.db.collection(table).updateOne(query, { $set: update });
 
 		return res;

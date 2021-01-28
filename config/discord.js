@@ -4,6 +4,7 @@ const { GUILDS, GUILD_MEMBERS, GUILD_BANS, GUILD_MESSAGES, GUILD_MESSAGE_REACTIO
 module.exports = {
 	allowedMentions: { parse: ['users'] },
 	fetchAllMembers: false,
+	restTimeOffset: 0,
 	retryLimit: 2,
 	partials: ['REACTION', 'MESSAGE', 'CHANNEL'],
 	ws: {
