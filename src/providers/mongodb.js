@@ -87,7 +87,7 @@ module.exports = class extends Provider {
 	}
 
 	update(table, id, doc) {
-		// console.log(doc)
+		// console.log(doc);
 		const update = parseEngineInput(doc);
 		if (!Object.keys(update).length) return {};
 		const query = resolveQuery(id);
