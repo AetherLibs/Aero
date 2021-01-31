@@ -281,6 +281,8 @@ module.exports = class extends Language {
 			COMMAND_REDEEM_SUCCESS: (icon, title) => `Successfully redeemed ${icon} ${title}`,
 			COMMAND_REPORT_SUBMITERR: (err) => `An issue occurred when submitting the ban: ${err}`,
 			COMMAND_AVATAR_DESCRIPTION: 'Get the avatar from a user.',
+			COMMAND_BADGES_DESCRIPTION: 'Calculates estimates on how many members in a guild have which profile badges.',
+			COMMAND_BADGES_GUILDSIZE: 'Requesting badges from this guild is not possible due to an issue with large guilds in discord.js.',
 			COMMAND_REVERSEAVATAR_DESCRIPTION: "Perform a reverse image search for a user's avatar.",
 			COMMAND_CORONA_DESCRIPTION: 'Get current statistics of the COVID-19 pandemic.',
 			COMMAND_CORONA_UNAVAILABLE: 'Fetching current data from disease.sh failed, please retry later',

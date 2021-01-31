@@ -7,14 +7,14 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: language => language.get('COMMAND_AVATAR_DESCRIPTION'),
-			permissionLevel: 10,
-			usage: '[user:username]',
-			aliases: ['av']
+			description: language => language.get('COMMAND_BADGES_DESCRIPTION'),
+			runIn: ['text']
 		});
 	}
 
 	async run(msg) {
+		if (msg.guild.memberCount > 1000) return msg.responder.error('COMMAND_BADGES_GUILDSIZE');
+
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 		const [badges, bots, nitros, employees] = await this.getBadgeCounts(msg);
 		const boosters = await this.client.api.guilds(msg.guild.id).get().then(res => res.premium_subscription_count);
