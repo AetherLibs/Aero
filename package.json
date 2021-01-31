@@ -28,7 +28,7 @@
 		"@aero/corona-graphs": "^1.1.0",
 		"@aero/dbio": "^1.2.1",
 		"@aero/drep": "^2.0.2",
-		"@aero/klasa": "^0.5.0-rc4",
+		"@aero/klasa": "^0.6.0-rc4",
 		"@aero/ksoft": "^3.1.8",
 		"@aero/member-gateway": "^1.0.4-rc1",
 		"@aero/require": "^1.0.3",
