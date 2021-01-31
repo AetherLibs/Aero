@@ -30,8 +30,6 @@ module.exports = class extends Monitor {
 				logger: this.client.console
 			}).then(result => result?.trim());
 
-			this.client.console.log(`[Tags] matched rtag ${tag[0]}. (c=${msg.channel.id}) (g=${msg.guild.id}) (u=${msg.author.id}) (o=${parsedTag})`);
-
 			if (!parsedTag.length) continue;
 			msg.send(parsedTag);
 		}
