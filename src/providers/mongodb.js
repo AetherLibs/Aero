@@ -48,6 +48,7 @@ module.exports = class extends Provider {
 	/* Document methods */
 
 	getAll(table, filter = []) {
+		this.client.console.log(`[Mongo] get `, { table, filter });
 		if (filter.length) {
 			return this.db.collection(table).find({ id: { $in: filter } }, { _id: 0 })
 				.toArray();
@@ -62,6 +63,7 @@ module.exports = class extends Provider {
 	}
 
 	get(table, id) {
+		this.client.console.log(`[Mongo] get `, { table, id });
 		const res = this.db.collection(table).findOne(resolveQuery(id));
 		return res;
 	}
@@ -87,11 +89,10 @@ module.exports = class extends Provider {
 	}
 
 	update(table, id, doc) {
-		// console.log(doc);
 		const update = parseEngineInput(doc);
 		if (!Object.keys(update).length) return {};
 		const query = resolveQuery(id);
-		// this.client.console.log(`[Mongo] update `, { table, id }, query, inspect(update, false, 10, true));
+		if (!doc.stats) this.client.console.log(`[Mongo] update `, { table, id }, query, inspect(update, false, 10, true));
 		const res = this.db.collection(table).updateOne(query, { $set: update });
 
 		return res;
