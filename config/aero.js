@@ -23,6 +23,7 @@ module.exports = {
 	chartgenURL: 'https://charts.aero.bot',
 	pingURL: 'https://ping.aero.bot',
 	langURL: 'https://language.aero.bot',
+	carbonURL: 'https://carbonara.aero.bot',
 	shortURL: 'https://ddlc.me',
 	lgbtURL: 'https://api.ravy.lgbt',
 	dailyPoints: 50
