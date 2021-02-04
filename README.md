@@ -33,7 +33,7 @@ Before selfhosting, please look at the LICENSE. Generally, you're allowed to do 
 If you're taking code from this project, or are working on a project inspired by Aero, you might be required to credit us. We've written up a few templates to save you some time:
 
 ### Command
-`Credit goes to [ravy](https://ravy.xyz) from [The Aero Team](https://aero.bot)` (ravy may be replaced by the contributor that wrote the command. If you don't know who did it, it was probably ravy)
+`Credit goes to [ravy](https://ravy.pink) from [The Aero Team](https://aero.bot)` (ravy may be replaced by the contributor that wrote the command. If you don't know who did it, it was probably ravy). You can also find occasional credit examples in the command code.
 
 ### Idea
 `This project was inspired by [Aero](https://aero.bot).`
@@ -47,7 +47,8 @@ Feel free to contact us about licensing at licensing@aero.bot
 ## Contributors
 
 You can find all contributors in the package.json and listed below:
-- [Ravy](https://ravy.pink) (Project Lead, Community Architect)
-- [Rxsto](https://rxs.to) (Infrastructure Engineer)
-- [Dragon](https://dragondev.party/) (Software Engineer)
-- [Stitch](https://github.com/Soumil07/) (Software Engineer)
+- [Ravy](https://ravy.pink) (Project Lead, Community Architecture)
+- [Rxsto](https://rxs.to) (Infrastructure Engineering)
+- [Dragon](https://dragondev.party/) (Software Engineering)
+- [Stitch](https://github.com/Soumil07/) (Software Engineering)
+- Harsh Peshwani (Software Engineering)

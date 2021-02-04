@@ -1,12 +1,12 @@
 /*
  * rero():
- * Co-Authored-By: William Johnstone <william@endevrr.com>
- * Co-Authored-By: Ravy <ravy@aero.bot>
- * Credit example: Credit goes to [William Johnstone](https://endevrr.com) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2020
+ * Co-Authored-By: William Johnstone <william@endevrr.com> (https://endevrr.com)
+ * Co-Authored-By: Ravy <ravy@aero.bot> (https://ravy.pink)
+ * Credit example: Credit goes to [William Johnstone](https://endevrr.com) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2021
  *
  * run, stars():
  * Authored-By: Ravy <ravy@aero.bot>
- * Credit example: Credit goes to [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2020
+ * Credit example: Credit goes to [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2021
  */
 const { Event } = require('@aero/klasa');
 const { syncVotes } = require('~/lib/structures/StarEvent');

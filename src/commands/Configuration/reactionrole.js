@@ -1,7 +1,7 @@
 /*
- * Co-Authored-By: William Johnstone <william@endevrr.com>
- * Co-Authored-By: Ravy <ravy@aero.bot>
- * Credit example: Credit goes to [William Johnstone](https://endevrr.com) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2020
+ * Co-Authored-By: William Johnstone <william@endevrr.com> (https://endevrr.com)
+ * Co-Authored-By: Ravy <ravy@aero.bot> (https://ravy.pink)
+ * Credit example: Credit goes to [William Johnstone](https://endevrr.com) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2021
  */
 const { Command } = require('@aero/klasa');
 const { Permissions: { FLAGS } } = require('discord.js');

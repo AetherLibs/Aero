@@ -1,3 +1,8 @@
+/*
+ * Co-Authored-By: Stitch07 (https://github.com/Stitch07)
+ * Co-Authored-By: Ravy <ravy@aero.bot> (https://ravy.pink)
+ * Credit example: Credit goes to [Stitch07](https://github.com/Stitch07) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2021
+ */
 const { Command, Duration, constants: { TIME } } = require('@aero/klasa');
 
 module.exports = class extends Command {
