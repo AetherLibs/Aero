@@ -3,7 +3,7 @@
  * Co-Authored-By: Ravy <ravy@aero.bot> (https://ravy.pink)
  * License: MIT License
  * Credit example: Copyright (c) 2019 dirigeants, MIT License
- */ 
+ */
 const { Command, Stopwatch, Type, util } = require('@aero/klasa');
 const { inspect } = require('util');
 const req = require('@aero/centra'); /* eslint-disable-line no-unused-vars */

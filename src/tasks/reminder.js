@@ -3,7 +3,7 @@
  * Co-Authored-By: Ravy <ravy@aero.bot> (https://ravy.pink)
  * License: MIT License
  * Credit example: Copyright (c) 2019 dirigeants, MIT License
- */ 
+ */
 const { Task } = require('@aero/klasa');
 
 module.exports = class extends Task {
