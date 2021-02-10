@@ -17,7 +17,10 @@ If you're currently using a bot like Dyno, Carl, Mee6, or any of the major multi
 On its own, Aero is pretty cool. But there's some tools we use to extend this even further. Those are:
 - [The KSoft.Si API](https://api.ksoft.si) - A swiss-army-knife for images, a huge yet transparent global ban list, and a lot of utilities
 - [ChatWatch](https://chatwat.ch) - A joint effort between the teams at Aero and KSoft.Si to prevent spam
+- [Perspective](https://www.perspectiveapi.com/) - An API using machine learning to reduce toxicity online
 - [DiscordRep](https://discordrep.com) - An online fraud prevention project
+- [Dank Memer Imgen](https://dankmemer.services/) - An image generation API for generating memes and more
+- [Carbon](https://carbon.now.sh/)/[Carbonara](https://github.com/petersolopov/carbonara) - A website to create beautiful code screenshots and the corresponding API
 
 Aero isn't built from scratch, there's a few libraries that we used to build Aero. The most important are:
 - [Klasa](https://klasa.js.org) - An object-oriented framework around discord.js which saves us from writing all the basics
