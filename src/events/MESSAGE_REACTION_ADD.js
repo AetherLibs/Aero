@@ -52,6 +52,8 @@ module.exports = class extends Event {
 	}
 
 	async stars({ userID, messageID, channelID, guild, emoji }) {
+		const { bot } = await this.client.users.fetch(userId);
+		if (bot) return false;
 		const starChannelID = guild.settings.get('starboard.channel');
 		if (!starChannelID) return false;
 		const starChannel = await guild.channels.cache.get(starChannelID);
