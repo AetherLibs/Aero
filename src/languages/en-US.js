@@ -541,6 +541,7 @@ module.exports = class extends Language {
 			COMMAND_REPORT_ERRIMGUR: 'The imgur API returned an error.',
 			COMMAND_KSOFT_POWEREDBY: 'powered by api.ksoft.si',
 			COMMAND_MEME_DESCRIPTION: 'Fetches a random meme from reddit.',
+			COMMAND_OWOIFY_DESCRIPTION: 'Transforms your text into the owo language.',
 			COMMAND_VOICEKICK_DESCRIPTION: 'Voice kicks the mentioned member.',
 
 			// events
