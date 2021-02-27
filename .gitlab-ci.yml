@@ -72,7 +72,7 @@ sentry-commit:
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases new $CI_COMMIT_SHA
-    - sentry-cli releases set-commits --auto $CI_COMMIT_SHA
+    - sentry-cli releases set-commits --log-level=debug --auto $CI_COMMIT_SHA 
     - sentry-cli releases finalize $CI_COMMIT_SHA
   tags:
   - unprivileged
