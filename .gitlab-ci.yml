@@ -71,9 +71,9 @@ sentry-commit:
   stage: build
   image: getsentry/sentry-cli
   script:
-    - sentry-cli releases new $CI_COMMIT_SHA
-    - sentry-cli releases set-commits --auto $CI_COMMIT_SHA 
-    - sentry-cli releases finalize $CI_COMMIT_SHA
+    - sentry-cli releases new ${CI_COMMIT_SHA}
+    - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA} 
+    - sentry-cli releases finalize ${CI_COMMIT_SHA}
   tags:
   - unprivileged
   allow_failure: true
@@ -82,7 +82,7 @@ sentry-deploy:
   stage: deploy
   image: getsentry/sentry-cli
   script:
-    - sentry-cli releases deploys $CI_COMMIT_SHA new -e $CI_COMMIT_REF_SLUG
+    - sentry-cli releases deploys ${CI_COMMIT_SHA} new -e ${CI_COMMIT_REF_SLUG}
   tags:
   - unprivileged
   allow_failure: true
