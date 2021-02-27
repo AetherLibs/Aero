@@ -72,10 +72,11 @@ sentry-commit:
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases new $CI_COMMIT_SHA
-    - sentry-cli releases set-commits --log-level=debug --auto $CI_COMMIT_SHA 
+    - sentry-cli releases set-commits --auto $CI_COMMIT_SHA 
     - sentry-cli releases finalize $CI_COMMIT_SHA
   tags:
   - unprivileged
+  allow_failure: true
 
 sentry-deploy:
   stage: deploy
@@ -84,6 +85,7 @@ sentry-deploy:
     - sentry-cli releases deploys $CI_COMMIT_SHA new -e $CI_COMMIT_REF_SLUG
   tags:
   - unprivileged
+  allow_failure: true
 
 include:
   - template: Dependency-Scanning.gitlab-ci.yml
