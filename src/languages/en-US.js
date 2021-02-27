@@ -71,6 +71,7 @@ module.exports = class extends Language {
 			],
 			COMMAND_LOG_REASON: 'Initializing logging',
 			COMMAND_LOG_SUCCESS: (type, channel) => `Now logging ${bold`${type}`} in ${channel}.`,
+			COMMAND_LOG_NOWEBHOOKPERMS: 'I don\'t have permission to create a webhook for that channel.',
 			COMMAND_LOG_DISPLAY_NOCHANNEL: type => `Not logging ${bold`${type}`}.`,
 			COMMAND_LOG_DISPLAY_ONE: (type, channel) => `Currently logging ${bold`${type}`} in ${channel}.`,
 			COMMAND_ANTI_DESCRIPTION: 'Configures auto moderation settings.',

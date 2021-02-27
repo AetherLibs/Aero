@@ -42,19 +42,22 @@ module.exports = class extends Command {
 		}
 	}
 
-	async setLogs(msg, type, channel) {
+	setLogs(msg, type, channel) {
 		// create hook
-		const hook = await channel.createWebhook(`${this.client.user.username} Log: ${type}`,
-			{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') });
+		return channel.createWebhook(`${this.client.user.username} Log: ${type}`,
+			{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') })
+			.then(async hook => {
+				// set db entries
+				await msg.guild.settings.update(`logs.${type}.channel`, channel);
+				await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
 
-		// set db entries
-		await msg.guild.settings.update(`logs.${type}.channel`, channel);
-		await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
+				// populate logger cache
+				msg.guild.log.webhooks[type] = hook;
 
-		// populate logger cache
-		msg.guild.log.webhooks[type] = hook;
-
-		return msg.responder.success('COMMAND_LOG_SUCCESS', type, channel);
+				return msg.responder.success('COMMAND_LOG_SUCCESS', type, channel);
+			})
+			.catch(() =>
+				msg.responder.error('COMMAND_LOG_NOWEBHOOKPERMS'));
 	}
 
 	async disableLogs(msg, type) {
