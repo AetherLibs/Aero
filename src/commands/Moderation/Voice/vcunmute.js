@@ -17,7 +17,7 @@ module.exports = class extends Command {
 		});
 	}
 	async run(msg, [user, reason]) {
-		if (!msg.member.hasPermission('MUTE_MEMBERS')) return msg.responder.error('COMMAND_VOICEUNMUTE_NOPERMS');
+		if (!msg.member.permissions.has('MUTE_MEMBERS')) return msg.responder.error('COMMAND_VOICEUNMUTE_NOPERMS');
 		if (!user.voice.channelID) return msg.responder.error('COMMAND_VOICEUNMUTE_NOVOICE');
 		if (!user.voice.serverMute) return msg.responder.error('COMMAND_VOICEMUTE_ALREADY_UNMUTED');
 		user.voice.setMute(false, reason || msg.language.get('COMMAND_VOICEUNMUTE_NOREASON'));

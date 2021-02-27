@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 	async run(msg, [user]) {
-		if (!msg.member.hasPermission('MOVE_MEMBERS')) return msg.responder.error('COMMAND_VOICEKICK_NOPERMS');
+		if (!msg.member.permissions.has('MOVE_MEMBERS')) return msg.responder.error('COMMAND_VOICEKICK_NOPERMS');
 		if (!user.voice.channelID) return msg.responder.error('COMMAND_VOICEKICK_NOVOICE');
 		user.voice.setChannel(null);
 		return msg.responder.success();
