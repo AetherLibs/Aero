@@ -99,7 +99,7 @@ module.exports = class extends Provider {
 		const query = resolveQuery(id);
 		if (!doc.stats) this.client.console.log(`[Mongo] update `, { table, id }, query, inspect(update, false, 10, true));
 		const res = this.db.collection(table).updateOne(query, { $set: update });
-
+		console.log(res);
 		return res;
 	}
 
@@ -115,11 +115,12 @@ module.exports = class extends Provider {
 // eslint-disable-next-line no-extra-parens
 const resolveQuery = query => isObject(query) ? query : { id: query };
 
+/*
 function upsert(object, propertyPath, value) {
 	const spread = propertyPath.startsWith('...');
 	if (spread && typeof value !== 'object') throw new Error("Spread operator '...', can only be used with objects");
 
-	function rec(objectTail, propertyPathTail, spread) { /* eslint-disable-line no-shadow */
+	function rec(objectTail, propertyPathTail, spread) { // eslint-disable-line no-shadow
 		const propPaths = propertyPathTail.split('.');
 		const head = propPaths[0];
 		let tail = propPaths.splice(1);
@@ -142,6 +143,7 @@ function upsert(object, propertyPath, value) {
 
 	return rec(object, spread ? propertyPath.slice(3) : propertyPath, spread);
 }
+*/
 
 function parseEngineInput(updated) {
 	const output = {};
@@ -150,11 +152,7 @@ function parseEngineInput(updated) {
 		if (item.previous === item.next) continue;
 		const value = item.next;
 		const { path } = item.entry;
-		if (path.split('.').length === 1) {
-			output[path] = value;
-		} else {
-			upsert(output, path, value);
-		}
+		output[path] = value;
 	}
 
 	return output;
