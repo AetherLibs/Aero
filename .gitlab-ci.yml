@@ -11,10 +11,6 @@ stages:
 variables:
   IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}
   KUBECONFIG: /etc/deploy/config
-  DS_DISABLE_DIND: "true"
-  DS_PYTHON_VERSION: 2
-  SAST_DISABLE_DIND: "true"
-  SCAN_KUBERNETES_MANIFESTS: "true"
   CI_APPLICATION_REPOSITORY: ${CI_REGISTRY}/${CI_PROJECT_PATH}
   CI_APPLICATION_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}
 
@@ -72,7 +68,7 @@ sentry-commit:
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases new ${CI_COMMIT_SHA}
-    - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA} 
+    - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA}
     - sentry-cli releases finalize ${CI_COMMIT_SHA}
   tags:
   - unprivileged
@@ -86,31 +82,3 @@ sentry-deploy:
   tags:
   - unprivileged
   allow_failure: true
-
-include:
-  - template: Dependency-Scanning.gitlab-ci.yml
-  - template: SAST.gitlab-ci.yml
-  - template: Container-Scanning.gitlab-ci.yml
-
-
-dependency_scanning:
-  stage: post-deploy
-  tags:
-  - unprivileged
-
-retire-js-dependency_scanning:
-  script:
-  - apk add --no-cache pkgconf cairo-dev jpeg-dev pango-dev giflib-dev
-  - ln -sf pkgconf /usr/bin/pkg-config
-  - export CXXFLAGS="-w"
-  - /analyzer run
-
-sast:
-  stage: post-deploy
-  tags:
-  - unprivileged
-
-container_scanning:
-  stage: post-deploy
-  tags:
-  - unprivileged
