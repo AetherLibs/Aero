@@ -1,5 +1,6 @@
 const { Command } = require('@aero/klasa');
-const { owoify } = require('~/lib/util/util');
+const { default: owoify } = require('owoify-js');
+
 
 module.exports = class extends Command {
 
@@ -12,7 +13,10 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [text]) {
-		return msg.send(owoify(text.slice(0, 2000)));
+		const content = owoify(text.slice(0, 2000), msg.flagArgs.uwu || msg.flagArgs.uvu)
+			.replace(/`/g, '\\`')
+			.replace(/\*/g, '\\*');
+		return msg.send(content);
 	}
 
 };
