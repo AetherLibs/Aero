@@ -169,6 +169,8 @@ module.exports = class extends Language {
 			COMMAND_COLOR_NOCOLOR: 'You need to provide a valid color to display.',
 			COMMAND_COLOR_INVALIDCOLOR: 'You provided an invalid color!',
 			COMMAND_COLOR_DESCRIPTION: 'Outputs the chosen color from hex.',
+			COMMAND_CONVERT_DESCRIPTION: 'Converts one currency to another',
+			COMMAND_CONVERT_SUCCESS: (from, to) => `${from} = ${to}`,
 			COMMAND_CUDDLE_SELF: user => `${user} cuddled themselves. How is that even possible.`,
 			COMMAND_CUDDLE_SOMEONE: (from, to) => `${from} cuddled ${to}. How cute. 💕`,
 			COMMAND_CUDDLE_DESCRIPTION: `Cuddle with someone! Please!`,
