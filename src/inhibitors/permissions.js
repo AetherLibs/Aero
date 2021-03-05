@@ -22,6 +22,8 @@ module.exports = class extends Inhibitor {
 		if (this.client.options.owners.includes(message.author.id)) return;
 		// permission nodes don't work in DMs. the runIn inhibitor will deal with them.
 		if (!message.guild) return;
+		// only in guilds owned by a bot owner
+		if (command.permissionLevel >= 7 && !this.client.options.owners.includes(message.guild.ownerID)) throw true;
 		const check = await this.client.permissions.canUse(message, command);
 		if (!check) {
 			await message.responder.error('INHIBITOR_PERM_NODES', `${command.category.toLowerCase()}.${command.name}`);
