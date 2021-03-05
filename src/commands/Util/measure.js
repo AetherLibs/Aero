@@ -11,6 +11,7 @@ module.exports = class extends Command {
 		super(...args, {
 			description: language => language.get('COMMAND_MEASURE_DESCRIPTION'),
 			usage: '<url:url>',
+			aliases: ['lhr'],
 			permissionLevel: 7
 		});
 	}
