@@ -27,7 +27,7 @@ module.exports = class extends Command {
 
 		const embed = new MessageEmbed()
 			.setTitle(`Performance audit for ${url}`)
-			.addField('Scores', lhrSlim.map(i => `${scoreToEmoji(i.score)} ${i.title}: ${i.score * 100}`).join('\n'))
+			.addField('Scores', lhrSlim.map(i => `${scoreToEmoji(i.score)} ${i.title}: ${Math.round(i.score * 100)}`).join('\n'))
 			.addField('Metrics', lhrToMetrics(lhr).map(audit => `${scoreToEmoji(audit.score)} ${audit.title}: ${audit.displayValue}`).join('\n'));
 
 		await msg.send({ embed });
