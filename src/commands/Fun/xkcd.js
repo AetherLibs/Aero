@@ -1,5 +1,6 @@
 const { Command } = require('@aero/klasa');
 const { MessageEmbed } = require('discord.js');
+const explainURL = id => `https://www.explainxkcd.com/wiki/index.php/${id}`;
 
 module.exports = class extends Command {
 
@@ -17,6 +18,7 @@ module.exports = class extends Command {
 
 		const embed = new MessageEmbed()
 			.setTitle(`[${comic.id}] ${comic.title}`)
+			.setDescription(`[explained](${explainURL(comic.id)})`)
 			.setURL(comic.url)
 			.setImage(comic.image)
 			.setFooter(comic.text);
