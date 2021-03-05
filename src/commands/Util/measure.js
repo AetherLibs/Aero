@@ -23,14 +23,17 @@ module.exports = class extends Command {
 			.body({ url, replace: true, save: false }, 'json')
 			.json();
 
-		const { lhrSlim, lhr } = res;
+		const { lhrSlim, lhr, errors } = res;
+		if (lhrSlim && lhr) {
+			const embed = new MessageEmbed()
+				.setTitle(`Performance audit for ${url}`)
+				.addField('Scores', lhrSlim.map(i => `${scoreToEmoji(i.score)} ${i.title}: ${Math.round(i.score * 100)}`).join('\n'))
+				.addField('Metrics', lhrToMetrics(lhr).map(audit => `${scoreToEmoji(audit.score)} ${audit.title}: ${audit.displayValue}`).join('\n'));
 
-		const embed = new MessageEmbed()
-			.setTitle(`Performance audit for ${url}`)
-			.addField('Scores', lhrSlim.map(i => `${scoreToEmoji(i.score)} ${i.title}: ${Math.round(i.score * 100)}`).join('\n'))
-			.addField('Metrics', lhrToMetrics(lhr).map(audit => `${scoreToEmoji(audit.score)} ${audit.title}: ${audit.displayValue}`).join('\n'));
-
-		await msg.send({ embed });
+			await msg.send({ embed });
+		} else {
+			await msg.responder.error('ERROR_SHORT', errors);
+		}
 
 		return loading.delete();
 	}
