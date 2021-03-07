@@ -17,7 +17,11 @@ module.exports = class extends Argument {
 		try {
 			url = new URL(arg);
 		} catch {
-			throw message.language.get('RESOLVER_INVALID_URL', possible.name);
+			try {
+				url = new URL(arg.replace(/<(.*?)>/, '$1'));
+			} catch {
+				throw message.language.get('RESOLVER_INVALID_URL', possible.name);
+			}
 		}
 
 		if (!['https:', 'http:'].includes(url.protocol)) throw message.language.get('RESOLVER_URL_BADPROTO', possible.name);
