@@ -321,6 +321,8 @@ module.exports = class extends Language {
 			COMMAND_CORONA_ABSOLUTE_TESTS_RATE: 'of population tested',
 			COMMAND_CORONAGRAPH_DESCRIPTION: 'Graphs relevant COVID-19 stats for a country.',
 			COMMAND_CORONAGRAPH_INVALID: 'Invalid country name',
+			COMMAND_DEFINE_DESCRIPTION: 'Defines a term using the Merriam-Webster Dictionary API',
+			COMMAND_DEFINE_NOTFOUND: 'No word matching your query was found.',
 			COMMAND_WOLFRAM_DESCRIPTION: 'Gets a result from Wolfram|Alpha.',
 			COMMAND_WOLFRAM_ERROR: 'Your query did not return any result.',
 			COMMAND_WOLFRAM_LENGTH: url => `Failed to display the response due to too many characters. Try searching manually at: <${url}>`,
