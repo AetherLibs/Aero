@@ -292,6 +292,7 @@ module.exports = class extends Language {
 			COMMAND_CREATEKEY_INVALID: 'There is no badge with this id.',
 			COMMAND_LYRICS_FAILED: url => `Too many characters to display, check out the lyrics on KSoft: ${url}`,
 			COMMAND_LYRICS_DESCRIPTION: 'Fetches lyrics for a song from api.ksoft.si',
+			COMMAND_MEASURE_DESCRIPTION: 'Get a website\'s performance using lighthouse analytics',
 			COMMAND_POLL_DESCRIPTION: 'Creates a poll that people can vote on. Seperate options using commas.',
 			COMMAND_POLL_TOO_MANY_OPTIONS: 'The maximum amount of options is **10**',
 			COMMAND_POLL_TOO_FEW_OPTIONS: 'The minimum amount of options required is **2**',
