@@ -1,12 +1,6 @@
-FROM node:lts-alpine
+FROM node:lts
 
-RUN apk add git python g++ make pkgconf cairo-dev jpeg-dev pango-dev giflib-dev openssh-client
-
-RUN ln -sf pkgconf /usr/bin/pkg-config
-
-RUN mkdir ~/.ssh
-
-RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
+RUN apt install git build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
 WORKDIR /opt/aero/aero
 
