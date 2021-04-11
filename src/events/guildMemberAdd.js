@@ -53,7 +53,7 @@ module.exports = class extends Event {
 
 	dehoist(member) {
 		if (!member.guild.settings.get('mod.anti.hoisting')) return member;
-		if (member.displayName[0] < '0') member.dehoist();
+		if (member.hoisting) member.dehoist();
 		return member;
 	}
 
