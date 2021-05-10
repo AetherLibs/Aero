@@ -8,7 +8,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			description: language => language.get('COMMAND_BADGES_DESCRIPTION'),
-			runIn: ['text']
+			runIn: ['text'],
+			permissionLevel: 9
 		});
 	}
 
