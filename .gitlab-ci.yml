@@ -70,7 +70,7 @@ sentry-commit:
   image: getsentry/sentry-cli
   script:
     - apk add git
-    - git fetch --unshallow
+    - ls
     - sentry-cli releases new ${CI_COMMIT_SHA}
     - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA}
     - sentry-cli releases finalize ${CI_COMMIT_SHA}
