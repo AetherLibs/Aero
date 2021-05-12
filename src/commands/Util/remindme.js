@@ -12,14 +12,14 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [time, text]) {
-		await this.client.schedule.create('reminder', time, {
+		const { id } = await this.client.schedule.create('reminder', time, {
 			data: {
 				channel: msg.channel.id,
 				user: msg.author.id,
 				text
 			}
 		});
-		return msg.responder.success('COMMAND_REMIND_REPLY', Duration.toNow(time));
+		return msg.responder.success('COMMAND_REMIND_REPLY', Duration.toNow(time), id);
 	}
 
 };
