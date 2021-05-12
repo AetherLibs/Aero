@@ -69,6 +69,7 @@ sentry-commit:
   stage: build
   image: getsentry/sentry-cli
   script:
+    - git fetch --unshallow
     - sentry-cli releases new ${CI_COMMIT_SHA}
     - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA}
     - sentry-cli releases finalize ${CI_COMMIT_SHA}
