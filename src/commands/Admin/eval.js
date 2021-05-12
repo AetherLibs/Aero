@@ -33,6 +33,7 @@ module.exports = class extends Command {
 		if (output.length > 2000) {
 			const { key } = await req(this.client.config.hasteURL, 'POST')
 				.path('documents')
+				.body(result)
 				.json();
 
 			return message.send(message.language.get('COMMAND_EVAL_SENDHASTE', time, `${this.client.config.hasteURL}/${key}`, footer));
