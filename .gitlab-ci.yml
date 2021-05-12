@@ -13,8 +13,7 @@ variables:
   KUBECONFIG: /etc/deploy/config
   CI_APPLICATION_REPOSITORY: ${CI_REGISTRY}/${CI_PROJECT_PATH}
   CI_APPLICATION_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}
-  GIT_DEPTH: 1000
-  SENTRY_LOG_LEVEL: debug
+  GIT_DEPTH: 10000
 
 
 build:
@@ -69,8 +68,6 @@ sentry-commit:
   stage: build
   image: getsentry/sentry-cli
   script:
-    - apk add git
-    - ls
     - sentry-cli releases new ${CI_COMMIT_SHA}
     - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA}
     - sentry-cli releases finalize ${CI_COMMIT_SHA}
