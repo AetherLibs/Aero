@@ -36,6 +36,7 @@ module.exports = class extends Monitor {
 			msg.delete({ reason: msg.language.get('EVENT_PERSPECTIVE_DELETEREASON') });
 		}
 
+		/*
 		const TOXICITY = scores.TOXICITY.summaryScore.value;
 
 		for (const obj of [msg.member, msg.author, msg.guild].filter(i => !!i)) {
@@ -47,6 +48,7 @@ module.exports = class extends Monitor {
 				obj.settings.update('stats.toxicity', updated);
 			}
 		}
+		*/
 	}
 
 
