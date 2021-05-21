@@ -1,5 +1,7 @@
 const { Event } = require('@aero/klasa');
 
+const { FLAGS } = require('discord.js').Permissions;
+
 module.exports = class extends Event {
 
 	constructor(...args) {
@@ -22,8 +24,9 @@ module.exports = class extends Event {
 		}
 
 		// persistency
-		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id));
-		if (persistroles.length) await member.roles.add(persistroles, member.guild.language.get('EVENT_JOIN_PERSISTREASON')).catch(() => null);
+		const botsHighestRole = member.guild.me.roles.highest;
+		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id)).filter(id => botsHighestRole.comparePositionTo(id) > 0);
+		if (persistroles.length && member.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) await member.roles.add(persistroles, member.guild.language.get('EVENT_JOIN_PERSISTREASON')).catch(() => null);
 		const persistnick = member.settings.get('persistNick');
 		if (persistnick) await member.setNickname(persistnick);
 
