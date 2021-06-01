@@ -14,21 +14,27 @@ module.exports = class extends Event {
 	async run(member) {
 		await member.settings.sync();
 
+		// persistency
+		const botsHighestRole = member.guild.me.roles.highest;
+		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id)).filter(id => botsHighestRole.comparePositionTo(id) > 0).array();
+		const persistnick = member.settings.get('persistNick');
+		if (persistnick) await member.setNickname(persistnick);
+
 		// botroles
 		const autoroles = await member.guild.settings.get('mod.roles.auto');
 		const botrole = await member.guild.settings.get('mod.roles.bots');
-		if (autoroles.length && !member.user.bot && !member.pending) {
-			await member.roles.add(autoroles, member.guild.language.get('EVENT_AUTOROLE_REASON')).catch(() => null);
-		} else if (member.user.bot && botrole) {
-			await member.roles.add(botrole, member.guild.language.get('EVENT_BOTROLE_REASON')).catch(() => null);
-		}
+		
+		if (member.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
+			let roles = persistroles;
 
-		// persistency
-		const botsHighestRole = member.guild.me.roles.highest;
-		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id)).filter(id => botsHighestRole.comparePositionTo(id) > 0);
-		if (persistroles.length && member.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) await member.roles.add(persistroles, member.guild.language.get('EVENT_JOIN_PERSISTREASON')).catch(() => null);
-		const persistnick = member.settings.get('persistNick');
-		if (persistnick) await member.setNickname(persistnick);
+			if (autoroles.length && !member.user.bot && !member.pending) {
+				roles = roles.concat(autoroles);
+			} else if (member.user.bot && botrole) {
+				roles.push(botrole);
+			}
+
+			member.roles.add(roles);
+		}
 
 		// raid prevention
 		member.guild.joinCache.add(member.id);
