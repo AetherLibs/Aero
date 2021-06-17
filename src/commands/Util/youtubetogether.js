@@ -17,9 +17,9 @@ module.exports = class extends Command {
 		this.defaultPermissions = FLAGS.CREATE_INSTANT_INVITE;
 	}
 
-	async run(msg, [channelid]) {
+	async run(msg, [channel]) {
 		const res = await req('https://discord.com/api/v8')
-			.path('/channels').path(channelid.id).path('/invites')
+			.path(`/channels/${channel.id}/invites`)
 			.method('POST')
 			.header('Authorization', `Bot ${this.client.token}`)
 			.body({
