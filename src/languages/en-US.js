@@ -617,6 +617,7 @@ module.exports = class extends Language {
 			// eslint-disable-next-line max-len
 			MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) => `${tag} | **${name}** is a repeating argument | You have **${time}** seconds to respond to this prompt with additional valid arguments. Type **${cancelOptions.join('**, **')}** to cancel this prompt.`,
 			MONITOR_COMMAND_HANDLER_ABORTED: `${success} aborted.`,
+			MONITOR_ANTI_SCAMS: (percentage, message) => `Marked as ${percentage}% fraudulent by anti-scams module: ${message}`,
 			// eslint-disable-next-line max-len
 			INHIBITOR_COOLDOWN: (remaining, guildCooldown) => `${guildCooldown ? 'Someone has' : 'You have'} already used this command. You can use this command again in ${remaining}.`,
 			INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild.',

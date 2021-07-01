@@ -14,16 +14,16 @@ module.exports = class extends Event {
 	async run(member) {
 		await member.settings.sync();
 
+		const autoroles = await member.guild.settings.get('mod.roles.auto');
+		const botrole = await member.guild.settings.get('mod.roles.bots');
+
 		// persistency
 		const botsHighestRole = member.guild.me.roles.highest;
-		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id)).filter(id => botsHighestRole.comparePositionTo(id) > 0).array();
+		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id)).filter(id => botsHighestRole.comparePositionTo(id) > 0);
 		const persistnick = member.settings.get('persistNick');
 		if (persistnick) await member.setNickname(persistnick);
 
 		// botroles
-		const autoroles = await member.guild.settings.get('mod.roles.auto');
-		const botrole = await member.guild.settings.get('mod.roles.bots');
-		
 		if (member.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
 			let roles = persistroles;
 
