@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 
 		if (alphanumContent.includes('csgo') || alphanumContent.includes('trade') || alphanumContent.includes('knife') || msg.mentions.everyone) fraudFlags++;
 
-		if (/https?:\/\/st(ea|ae)(m|n|rn)/.test(msg.content)) fraudFlags += 2;
+		if (/https?:\/\/st(ea|ae)(m|n|rn)/.test(msg.content)) fraudFlags ++;
 
 		if (/https?:\/\//.test(msg.content) && /\w+\.ru/.test(msg.content)) fraudFlags++;
 
