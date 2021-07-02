@@ -14,7 +14,7 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild || !msg.guild.settings.get('mod.anti.duplicates') || msg.exempt) return;
-		if (msg.content === msg.member.lastContent) {
+		if (msg.content === msg.member.lastMessageContent) {
 			msg.delete();
 			if (msg.member.duplicateCount > 4) {
 				msg.member.mute('Possible raid.');
@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 			}
 			msg.member.duplicateCount++;
 		} else {
-			msg.member.lastContent = msg.content;
+			msg.member.lastMessageContent = msg.content;
 		}
 	}
 
