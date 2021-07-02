@@ -10,6 +10,8 @@ module.exports = class extends Monitor {
 			ignoreEdits: false,
 			ignoreOthers: false
 		});
+
+		this.knownBads = ['stencommunity.com', 'stearncomminuty.ru'];
 	}
 
 	async run(msg) {
@@ -24,9 +26,11 @@ module.exports = class extends Monitor {
 
 		if (/https?:\/\/st(ea|ae)(m|n|rn)/.test(msg.content)) fraudFlags++;
 
+		if (/st(ea|ae)(m|n|rn)comm?(un(i|y)ty)|(inuty)\.\w/.test(msg.content)) fraudFlags++;
+
 		if (/https?:\/\//.test(msg.content) && /\w+\.ru/.test(msg.content)) fraudFlags++;
 
-		if (fraudFlags > 1) {
+		if (fraudFlags > 1 || this.knownBads.reduce((acc, cur) => acc || msg.includes(cur), false)) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', fraudFlags * 50, msg.content), days: 1 });
 			return true;
 		} else {
