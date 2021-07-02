@@ -1,7 +1,7 @@
 {
 	"type": "commonjs",
 	"name": "aero",
-	"version": "1.2.0-rc5",
+	"version": "1.2.0-rc6",
 	"description": "Aero is an intuitive Discord bot perfect for your server.",
 	"main": "src/index",
 	"repository": "https://ravy.dev/aero/aero.git",
@@ -29,7 +29,7 @@
 		"@aero/corona-graphs": "^1.1.0",
 		"@aero/dbio": "^1.2.1",
 		"@aero/drep": "^2.0.2",
-		"@aero/klasa": "^0.6.0-rc5",
+		"@aero/klasa": "^0.6.0-rc12",
 		"@aero/ksoft": "^3.1.8",
 		"@aero/member-gateway": "^1.0.4-rc1",
 		"@aero/require": "^1.0.3",
