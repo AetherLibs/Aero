@@ -24,9 +24,7 @@ module.exports = class extends Monitor {
 
 		if (alphanumContent.includes('csgo') || alphanumContent.includes('trade') || alphanumContent.includes('knife') || msg.mentions.everyone) fraudFlags++;
 
-		if (/https?:\/\/st(ea|ae)(m|n|rn)/.test(msg.content)) fraudFlags++;
-
-		if (/st(ea|ae)(m|n|rn)comm?(un(i|y)ty)|(inuty)\.\w/.test(msg.content)) fraudFlags++;
+		if (/https?:\/\/st(ea|ae)(m|n|rn)/.test(msg.content) || /st(ea|ae)(m|n|rn)comm?(un(i|y)ty)|(inuty)\.\w/.test(msg.content)) fraudFlags++;
 
 		if (/https?:\/\//.test(msg.content) && /\w+\.ru/.test(msg.content)) fraudFlags++;
 
