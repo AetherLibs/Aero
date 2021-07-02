@@ -28,7 +28,7 @@ module.exports = class extends Monitor {
 
 		if (/https?:\/\//.test(msg.content) && /\w+\.ru/.test(msg.content)) fraudFlags++;
 
-		if (fraudFlags > 1 || this.knownBads.reduce((acc, cur) => acc || msg.includes(cur), false)) {
+		if (fraudFlags > 1 || this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false)) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', fraudFlags * 50, msg.content), days: 1 });
 			return true;
 		} else {
