@@ -24,9 +24,11 @@ module.exports = class extends Monitor {
 
 		if (alphanumContent.includes('csgo') || alphanumContent.includes('trade') || alphanumContent.includes('knife') || alphanumContent.includes('steam') || msg.mentions.everyone) fraudFlags++;
 
-		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content) || /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content)) fraudFlags++;
+		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content) || /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content) || /https?:\/\/bit.ly\/\w/.test(msg.content)) fraudFlags++;
 
 		if (/https?:\/\//.test(msg.content) && /\w+\.ru/.test(msg.content)) fraudFlags++;
+
+		if (msg.alphanumContent.includes('password')) fraudFlags++;
 
 		if (fraudFlags > 1 || this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false)) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', fraudFlags * 50, msg.content), days: 1 });
