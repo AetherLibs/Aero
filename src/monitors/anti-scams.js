@@ -11,7 +11,7 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
-		this.knownBads = ['stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru'];
+		this.knownBads = ['stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com'];
 	}
 
 	async run(msg) {
@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 
 		let fraudFlags = 0;
 
-		if (alphanumContent.includes('csgo') || alphanumContent.includes('trade') || alphanumContent.includes('knife') || alphanumContent.includes('steam') || msg.mentions.everyone) fraudFlags++;
+		if (alphanumContent.includes('csgo') || alphanumContent.includes('trade') || alphanumContent.includes('knife') || alphanumContent.includes('steam') || alphanumContent.includes('@everyone') || alphanumContent.includes('skins')) fraudFlags++;
 
 		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content) || /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content) || /https?:\/\/bit.ly\/\w/.test(msg.content)) fraudFlags++;
 
