@@ -8,7 +8,8 @@ module.exports = class extends Monitor {
 			ignoreBots: false,
 			ignoreSelf: false,
 			ignoreEdits: false,
-			ignoreOthers: false
+			ignoreOthers: false,
+			ignoreWebhooks: false
 		});
 	}
 
