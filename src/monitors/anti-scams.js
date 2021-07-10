@@ -22,9 +22,9 @@ module.exports = class extends Monitor {
 		const cleanedContent = require('@aero/sanitizer')(msg.content).toLowerCase();
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
-		if (hasKnownBad(msg)
-			|| isSteamFraud(msg, cleanedContent, alphanumContent)
-			|| isNitroFraud(msg, cleanedContent, alphanumContent)) {
+		if (this.hasKnownBad(msg)
+			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
+			|| this.isNitroFraud(msg, cleanedContent, alphanumContent)) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', fraudFlags * 50, msg.content), days: 1 });
 		}
 	}
