@@ -12,6 +12,8 @@ module.exports = class extends Monitor {
 		});
 
 		this.knownBads = ['stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com'];
+		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins'];
+		this.nitroBads = ['nitro', 'generator'];
 	}
 
 	async run(msg) {
@@ -20,9 +22,17 @@ module.exports = class extends Monitor {
 		const cleanedContent = require('@aero/sanitizer')(msg.content).toLowerCase();
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
+		if (hasKnownBad(msg)
+			|| isSteamFraud(msg, cleanedContent, alphanumContent)
+			|| isNitroFraud(msg, cleanedContent, alphanumContent)) {
+			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', fraudFlags * 50, msg.content), days: 1 });
+		}
+	}
+
+	isSteamFraud(msg, cleanedContent, alphanumContent) {
 		let fraudFlags = 0;
 
-		if (alphanumContent.includes('csgo') || alphanumContent.includes('trade') || alphanumContent.includes('knife') || alphanumContent.includes('steam') || alphanumContent.includes('@everyone') || alphanumContent.includes('skins')) fraudFlags++;
+		if (this.steamBads.reduce((acc, cur) => acc || alphanumContent.includes(cur), false)) fraudFlags++;
 
 		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content) || /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content) || /https?:\/\/bit.ly\/\w/.test(msg.content)) fraudFlags++;
 
@@ -30,12 +40,21 @@ module.exports = class extends Monitor {
 
 		if (alphanumContent.includes('password')) fraudFlags++;
 
-		if (fraudFlags > 1 || this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false)) {
-			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', fraudFlags * 50, msg.content), days: 1 });
-			return true;
-		} else {
-			return false;
-		}
+		return fraudFlags > 1;
+	}
+
+	isNitroFraud(msg, cleanedContent, alphanumContent) {
+		let fraudFlags = 0;
+
+		if (/(https?:)?\/\/bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
+
+		if (this.nitroBads.reduce((acc, cur) => acc || alphanumContent.includes(cur), false)) fraudFlags++;
+
+		return fraudFlags > 1;
+	}
+
+	hasKnownBad(msg) {
+		this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false)
 	}
 
 };
