@@ -17,7 +17,7 @@ module.exports = class extends Monitor {
 
 		const threshold = msg.guild.settings.get('mod.mentionThreshold');
 
-		if (msg.mentions.users >= threshold)
+		if (msg.mentions.users.size >= threshold)
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_MASSMENTIONS', threshold), days: 1 });
 	}
 
