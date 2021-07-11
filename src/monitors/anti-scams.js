@@ -25,7 +25,7 @@ module.exports = class extends Monitor {
 		if (this.hasKnownBad(msg)
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
 			|| this.isNitroFraud(msg, cleanedContent, alphanumContent)) {
-			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', fraudFlags * 50, msg.content), days: 1 });
+			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
 		}
 	}
 
