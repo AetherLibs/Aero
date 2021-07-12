@@ -25,7 +25,9 @@ module.exports = class extends Monitor {
 					text: msg.content
 				},
 				languages: ['en'],
-				requestedAttributes: { SEVERE_TOXICITY: {}, IDENTITY_ATTACK: {}, TOXICITY: {}, SEXUALLY_EXPLICIT: {}, THREAT: {}, INSULT: {}, PROFANITY: {} }
+				requestedAttributes: { SEVERE_TOXICITY: {}, IDENTITY_ATTACK: {}, TOXICITY: {}, SEXUALLY_EXPLICIT: {}, THREAT: {}, INSULT: {}, PROFANITY: {} },
+				communityId: msg.guild.id,
+				sessionId: msg.channel.id
 			}, 'json')
 			.header('user-agent', `${this.client.user.username}/${this.client.config.version}`)
 			.send()
