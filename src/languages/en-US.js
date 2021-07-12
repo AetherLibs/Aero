@@ -570,7 +570,7 @@ module.exports = class extends Language {
 			EVENT_GLOBALBAN_REASON: 'Globally banned user.',
 			EVENT_AUTOROLE_REASON: 'Autorole - configured to be automatically assigned to each member upon joining.',
 			EVENT_BOTROLE_REASON: 'Botrole - configured to be automatically assigned to each bot upon joining.',
-			EVENT_PERSPECTIVE_DELETEREASON: 'Identified as toxic by Perspective.',
+			EVENT_PERSPECTIVE_DELETEREASON: 'Identified as unwanted by Perspective.',
 
 			SETTING_GATEWAY_EXPECTS_GUILD: 'The parameter <Guild> expects either a Guild or a Guild Object.',
 			SETTING_GATEWAY_VALUE_FOR_KEY_NOEXT: (data, key) => `The value ${data} for the key ${key} does not exist.`,
