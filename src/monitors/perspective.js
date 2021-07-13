@@ -15,7 +15,7 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if(!msg.guild || (!msg.guild.settings.get('mod.anti.toxicity') && !msg.guild.settings.get('mod.anti.profanity'))) return;
+		if(!msg.guild || msg.exempt || (!msg.guild.settings.get('mod.anti.toxicity') && !msg.guild.settings.get('mod.anti.profanity'))) return;
 
 		const scores = await req(PerspectiveAPI, 'POST')
 			.path('comments:analyze')
