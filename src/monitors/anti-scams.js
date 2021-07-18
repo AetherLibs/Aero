@@ -11,7 +11,7 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
-		this.knownBads = ['stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com'];
+		this.knownBads = ['stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru', 'store-steampowereb.com', 'steamcommunityz.com'];
 		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins'];
 		this.nitroBads = ['nitro', 'generator'];
 	}
