@@ -11,8 +11,11 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
-		this.knownBads = ['stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru', 'store-steampowereb.com', 'steamcommunityz.com'];
-		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins'];
+		this.knownBads = [
+			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
+			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com'
+		];
+		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins', 'sale'];
 		this.nitroBads = ['nitro', 'generator'];
 	}
 
@@ -34,7 +37,11 @@ module.exports = class extends Monitor {
 
 		if (this.steamBads.reduce((acc, cur) => acc || alphanumContent.includes(cur), false)) fraudFlags++;
 
-		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content) || /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content) || /https?:\/\/bit.ly\/\w/.test(msg.content)) fraudFlags++;
+		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content)
+			|| /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content)
+			|| /https?:\/\/bit.ly\/\w/.test(msg.content)
+			|| /(https?:)?store-stea?mpo?we?re?(d|b)/.test(msg.content)
+			) fraudFlags++;
 
 		if (/https?:\/\//.test(msg.content) && /\w+\.ru/.test(msg.content)) fraudFlags++;
 
