@@ -13,6 +13,7 @@ module.exports = class extends Monitor {
 		});
 
 		this.knownGoods = ['steamcommunity.com', 'store.steampowered.com', 'discord.gift', 'steampowered.com'];
+		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com'];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com'
@@ -81,6 +82,7 @@ module.exports = class extends Monitor {
 
 		return processedLinks.reduce((acc, link) => {
 			if (acc) return true;
+			if (this.exemptions.includes(link)) return acc;
 			for (const knownGood of this.knownGoods) {
 				if (link === knownGood) continue;
 				const distance = leven(link, knownGood);
