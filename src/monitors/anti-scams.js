@@ -1,4 +1,5 @@
 const { Monitor } = require('@aero/klasa');
+const leven = require('js-levenshtein');
 
 module.exports = class extends Monitor {
 
@@ -11,6 +12,7 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
+		this.knownGoods = ['steamcommunity.com', 'store.steampowered.com', 'discord.gift', 'steampowered.com'];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com'
@@ -26,6 +28,7 @@ module.exports = class extends Monitor {
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
 		if (this.hasKnownBad(msg)
+			|| this.matchesBadLevenshtein(msg)
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
 			|| this.isNitroFraud(msg, cleanedContent, alphanumContent)) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
@@ -62,6 +65,29 @@ module.exports = class extends Monitor {
 
 	hasKnownBad(msg) {
 		this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false)
+	}
+
+	matchesBadLevenshtein(msg) {
+		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
+
+		const processedLinks = rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`).map(href => {
+			try {
+				const url = new URL(href);
+				return url;
+			} catch {
+				return false;
+			}
+		}).filter(i => !!i).map(url => url.hostname.toLowerCase());
+
+		return processedLinks.reduce((acc, link) => {
+			if (acc) return true;
+			for (const knownGood of this.knownGoods) {
+				if (link === knownGood) continue;
+				const distance = leven(link, knownGood);
+				if (distance > 0 && distance < 8) return true;
+			}
+			return acc;
+		}, false);
 	}
 
 };
