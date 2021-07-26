@@ -202,6 +202,8 @@ module.exports = class extends Command {
 		const DRepReputation = await this.client.drep?.rep(user.id).catch(() => ({ reputation: 0, staff: false })) ?? { reputation: 0, staff: false };
 		const DRepProfile = `https://discordrep.com/u/${user.id}`;
 		const CWProfile = await this.client.chatwatch?.profile?.(user.id)?.catch(() => ({ whitelisted: false, score: 50 })) ?? { whitelisted: false, score: 50 };
+		const RiversideWhitelisted = await this.client.riverside.whitelist().then(whitelist => whitelist.includes(user.id));
+		const RiversideProfile = await this.client.riverside.check(user.id);
 		const rating = KSoftBan || CWProfile.blacklisted
 			? 'COMMAND_INFO_TRUST_VERYLOW'
 			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0 || CWProfile.score > 50
@@ -218,6 +220,11 @@ module.exports = class extends Command {
 					: CWProfile.score === 50
 						? 'COMMAND_INFO_USER_CWNEUTRAL'
 						: 'COMMAND_INFO_USER_CWBAD';
+		const riversideRating = RiversideProfile.score === 0
+			? 'COMMAND_INFO_USER_RIVERSIDEGOOD'
+			: RiversideProfile.score < 50
+				? 'COMMAND_INFO_USER_RIVERSIDESUSPICIOUS'
+				: 'COMMAND_INFO_USER_RIVERSIDEBAD';
 
 		const KSoftBansProfile = `${KSoftBans}?user=${user.id}`;
 
@@ -238,7 +245,10 @@ module.exports = class extends Command {
 							? DRepReputation.staff
 								? msg.language.get('COMMAND_INFO_USER_DREPSTAFF', DRepProfile)
 								: msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
-							: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile)
+							: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile),
+			RiversideWhitelisted
+				? msg.language.get('COMMAND_INFO_USER_RIVERSIDEWHITELISTED')
+				: msg.language.get(riversideRating, RiversideProfile.reportCount)
 		].join('\n'));
 
 		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan?.active || CWProfile.blacklisted || CWProfile.score > 80
