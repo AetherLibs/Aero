@@ -16,10 +16,11 @@ module.exports = class extends Monitor {
 		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com'];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
-			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com'
+			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com',
+			'discrod-nitro.fun'
 		];
 		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins', 'sale'];
-		this.nitroBads = ['nitro', 'generator'];
+		this.nitroBads = ['nitro', 'generator', 'free'];
 	}
 
 	async run(msg) {
@@ -57,7 +58,9 @@ module.exports = class extends Monitor {
 	isNitroFraud(msg, cleanedContent, alphanumContent) {
 		let fraudFlags = 0;
 
-		if (/(https?:)?\/\/bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
+		if (/(https?:\/\/)?bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
+
+		if (/(https?:\/\/)?disc(or|ro)d-?nitro/.test(msg.content)) fraudFlags++;
 
 		if (this.nitroBads.reduce((acc, cur) => acc || alphanumContent.includes(cur), false)) fraudFlags++;
 
