@@ -13,11 +13,11 @@ module.exports = class extends Monitor {
 		});
 
 		this.knownGoods = ['steamcommunity.com', 'store.steampowered.com', 'discord.gift', 'steampowered.com', 'disord.com/nitro'];
-		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com'];
+		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio', 'discords.com'];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com',
-			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com'
+			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com', 'steamgivenitro.com'
 		];
 		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins', 'sale'];
 		this.nitroBads = ['nitro', 'generator', 'free'];
