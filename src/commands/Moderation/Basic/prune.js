@@ -17,7 +17,7 @@ module.exports = class extends Command {
 		this.defaultPermissions = FLAGS.MANAGE_MESSAGES;
 	}
 
-	async run(msg, [limit = 50, filter = null]) {
+	async run(msg, [limit = 1, filter = null]) {
 		let messages = await msg.channel.messages.fetch({ limit: 100 });
 		if (filter) {
 			const user = typeof filter !== 'string' ? filter : null;
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 		return msg.channel.bulkDelete(messages)
 			.then(async () => {
 				const message = await msg.responder.success('COMMAND_PRUNE_RESPONSE', messages.length - 1);
-				message.delete({ timeout: 3000 }).catch(() => null);
+				message.delete({ timeout: 1500 }).catch(() => null);
 			})
 			.catch(err => msg.responder.error('ERROR_SHORT', err.message));
 	}
