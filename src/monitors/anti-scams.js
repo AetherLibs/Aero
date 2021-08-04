@@ -17,7 +17,7 @@ module.exports = class extends Monitor {
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com',
-			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com', 'steamgivenitro.com'
+			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com', 'steamgivenitro.com', 'giveawayd.shop', 'lildurk.com'
 		];
 		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins', 'sale'];
 		this.nitroBads = ['nitro', 'generator', 'free'];
@@ -59,6 +59,8 @@ module.exports = class extends Monitor {
 		let fraudFlags = 0;
 
 		if (/(https?:\/\/)?bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
+
+		if (alphanumContent.includes('free') && alphanumContent.includes('nitro')) fraudFlags++;
 
 		if (/(https?:\/\/)?disc(or|ro)d-?nitro/.test(msg.content)) fraudFlags++;
 		if (/(https?:\/\/)?nitro-?disc(or|ro)d/.test(msg.content)) fraudFlags++;
