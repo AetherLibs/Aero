@@ -13,7 +13,7 @@ module.exports = class extends Monitor {
 		});
 
 		this.knownGoods = ['steamcommunity.com', 'store.steampowered.com', 'discord.gift', 'steampowered.com', 'disord.com/nitro'];
-		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio', 'discords.com'];
+		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio'];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com',
@@ -29,10 +29,21 @@ module.exports = class extends Monitor {
 		const cleanedContent = require('@aero/sanitizer')(msg.content).toLowerCase();
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
+		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
+
+		const processedLinks = rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`).map(href => {
+			try {
+				const url = new URL(href);
+				return url;
+			} catch {
+				return false;
+			}
+		}).filter(i => !!i).map(url => url.hostname.toLowerCase());
+
 		if (this.hasKnownBad(msg)
-			|| this.matchesBadLevenshtein(msg)
+			|| this.matchesBadLevenshtein(msg, processedLinks)
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
-			|| this.isNitroFraud(msg, cleanedContent, alphanumContent)) {
+			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
 		}
 	}
@@ -55,12 +66,15 @@ module.exports = class extends Monitor {
 		return fraudFlags > 1;
 	}
 
-	isNitroFraud(msg, cleanedContent, alphanumContent) {
+	isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks) {
 		let fraudFlags = 0;
 
 		if (/(https?:\/\/)?bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
 
-		if (alphanumContent.includes('free') && alphanumContent.includes('nitro')) fraudFlags++;
+		if (processedLinks.reduce((accumulator, link) => {
+				if (accumulator) return accumulator;
+				return this.nitroBads.reduce((acc, cur) => acc || link.includes(cur), false) || accumulator;
+		}, false)) fraudFlags++;
 
 		if (/(https?:\/\/)?disc(or|ro)d-?nitro/.test(msg.content)) fraudFlags++;
 		if (/(https?:\/\/)?nitro-?disc(or|ro)d/.test(msg.content)) fraudFlags++;
@@ -74,18 +88,7 @@ module.exports = class extends Monitor {
 		this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false)
 	}
 
-	matchesBadLevenshtein(msg) {
-		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
-
-		const processedLinks = rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`).map(href => {
-			try {
-				const url = new URL(href);
-				return url;
-			} catch {
-				return false;
-			}
-		}).filter(i => !!i).map(url => url.hostname.toLowerCase());
-
+	matchesBadLevenshtein(msg, processedLinks) {
 		return processedLinks.reduce((acc, link) => {
 			if (acc) return true;
 			if (this.exemptions.includes(link)) return acc;

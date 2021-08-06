@@ -8,6 +8,7 @@ module.exports = class extends Command {
 			enabled: true,
 			runIn: ['text'],
 			aliases: ['cns'],
+			permissionLevel: 6,
 			description: language => language.get('COMMAND_CARBON_DESCRIPTION')
 		});
 
