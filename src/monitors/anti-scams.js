@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 		];
 		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins', 'sale'];
 		this.nitroBads = ['nitro', 'generator', 'free'];
-		this.financeBads = ['bitcoin', 'profits', 'trading'];
+		this.financeBads = ['bitcoin', 'profits', 'trading', 'algorithm', 'reveal', 'high'];
 	}
 
 	async run(msg) {
@@ -89,7 +89,7 @@ module.exports = class extends Monitor {
 	}
 
 	isFinancialFraud(msg, cleanedContent, alphanumContent) {
-		if (this.financeBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) > 2) return true;
+		if (this.financeBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) >= 5) return true;
 	}
 
 	hasKnownBad(msg) {
