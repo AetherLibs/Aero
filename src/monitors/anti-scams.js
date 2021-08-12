@@ -12,15 +12,17 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
-		this.knownGoods = ['steamcommunity.com', 'store.steampowered.com', 'discord.gift', 'steampowered.com', 'disord.com/nitro'];
+		this.knownGoods = ['steamcommunity.com', 'store.steampowered.com', 'discord.gift', 'steampowered.com', 'disord.com/nitro', 'mirror.co.uk'];
 		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio'];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com',
-			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com', 'steamgivenitro.com', 'giveawayd.shop', 'lildurk.com'
+			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com', 'steamgivenitro.com', 'giveawayd.shop', 'lildurk.com',
+			'nnirror.co.uk', 'cointrackguide.com', 'profitcoinnow.com'
 		];
 		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins', 'sale'];
 		this.nitroBads = ['nitro', 'generator', 'free'];
+		this.financeBads = ['bitcoin', 'profits', 'trading'];
 	}
 
 	async run(msg) {
@@ -43,7 +45,9 @@ module.exports = class extends Monitor {
 		if (this.hasKnownBad(msg)
 			|| this.matchesBadLevenshtein(msg, processedLinks)
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
-			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)) {
+			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)
+			|| this.isFinancialFraud(msg, cleanedContent, alphanumContent)
+		) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
 		}
 	}
@@ -82,6 +86,10 @@ module.exports = class extends Monitor {
 		if (this.nitroBads.reduce((acc, cur) => acc || alphanumContent.includes(cur), false)) fraudFlags++;
 
 		return fraudFlags > 1;
+	}
+
+	isFinancialFraud(msg, cleanedContent, alphanumContent) {
+		if (this.financeBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) > 2) return true;
 	}
 
 	hasKnownBad(msg) {
