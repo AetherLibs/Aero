@@ -24,7 +24,7 @@ module.exports = class extends Monitor {
 		];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
-			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com',
+			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com', 'steamcommunitlu.com',
 			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com', 'steamgivenitro.com', 'giveawayd.shop', 'lildurk.com',
 			'nnirror.co.uk', 'cointrackguide.com', 'profitcoinnow.com'
 		];
