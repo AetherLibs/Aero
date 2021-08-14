@@ -15,9 +15,13 @@ module.exports = class extends Monitor {
 		this.knownGoods = [
 			'steamcommunity.com', 'store.steampowered.com', 'steampowered.com',
 			'disord.com/nitro', 'discord.gift', 
-			'mirror.co.uk', 'tenor.com'
+			'mirror.co.uk'
 		];
-		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio'];
+		this.exemptions = [
+			'discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com',
+			'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio',
+			'tenor.com'
+		];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com',
