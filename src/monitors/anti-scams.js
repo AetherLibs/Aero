@@ -12,7 +12,11 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
-		this.knownGoods = ['steamcommunity.com', 'store.steampowered.com', 'discord.gift', 'steampowered.com', 'disord.com/nitro', 'mirror.co.uk'];
+		this.knownGoods = [
+			'steamcommunity.com', 'store.steampowered.com', 'steampowered.com',
+			'disord.com/nitro', 'discord.gift', 
+			'mirror.co.uk', 'tenor.com'
+		];
 		this.exemptions = ['discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com', 'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio'];
 		this.knownBads = [
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
@@ -103,7 +107,7 @@ module.exports = class extends Monitor {
 			for (const knownGood of this.knownGoods) {
 				if (link === knownGood) continue;
 				const distance = leven(link, knownGood);
-				if (distance > 0 && distance < 8) return true;
+				if (distance > 0 && distance < 8 * (knownGood.length / 22)) return true;
 			}
 			return acc;
 		}, false);
