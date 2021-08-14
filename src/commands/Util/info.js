@@ -1,6 +1,6 @@
 const { Command, Duration, Timestamp } = require('@aero/klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
-const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans } } = require('../../../lib/util/constants');
+const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans }, pronounDB } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
 const { Ban, Warn } = require('@aero/drep');
 module.exports = class extends Command {
@@ -111,8 +111,18 @@ module.exports = class extends Command {
 	}
 
 	async _addBaseData(user, embed) {
+		let authorString = `${user.tag} [${user.id}]`;
+		const pdbRes = await req('https://pronoundb.org/api/v1')
+			.path('/lookup')
+			.query({
+				platform: 'discord',
+				id: user.id
+			})
+			.json();
+		if (pdbRes.pronouns && pronounDB[pdbRes.pronouns]) authorString += ` (${pronounDB[pdbRes.pronouns]})`;
 		return embed
-			.setAuthor(`${user.tag} [${user.id}]`, user.displayAvatarURL({ dynamic: true }))
+			.setAuthor(authorString
+				, user.displayAvatarURL({ dynamic: true }))
 			.setThumbnail(user.displayAvatarURL({ dynamic: true }));
 	}
 
