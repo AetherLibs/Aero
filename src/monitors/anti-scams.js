@@ -25,6 +25,7 @@ module.exports = class extends Monitor {
 			'stencommunity.com', 'stearncomminuty.ru', 'streancommuntiy.com', 'stearncommunytu.ru', 'steamcommunyru.com', 'csgocyber.ru',
 			'store-steampowereb.com', 'steamcommunityz.com', 'store-stempowered.com', 'steamcommunitlu.com',
 			'discrod-nitro.fun', 'nitro-discord.com', 'discordgivenitro.com', 'steamgivenitro.com', 'giveawayd.shop', 'lildurk.com',
+			'discord-glft.com',
 			'nnirror.co.uk', 'cointrackguide.com', 'profitcoinnow.com'
 		];
 		this.steamBads = ['csgo', 'trade', 'knife', 'steam', 'skins', 'sale'];
@@ -110,7 +111,7 @@ module.exports = class extends Monitor {
 			for (const knownGood of this.knownGoods) {
 				if (link === knownGood) continue;
 				const distance = leven(link, knownGood);
-				if (distance > 0 && distance < 8 * (knownGood.length / 22)) return true;
+				if (distance > 0 && distance < 8 * (knownGood.length / 20)) return true;
 			}
 			return acc;
 		}, false);
