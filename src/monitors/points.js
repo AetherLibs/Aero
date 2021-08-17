@@ -14,7 +14,7 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if (!msg.guild || !msg.guild.settings.get('social.enabled') || !msg.guild.me.permissions.has(['SEND_MESSAGES'])) return;
+		if (!msg.guild || !msg.guild.settings.get('social.enabled') || !msg.guild.me.permissions.has(['SEND_MESSAGES']) || !msg.member) return;
 		// cache
 		const key = `${msg.guild.id}.${msg.author.id}`;
 		if (this.cache.has(key)) return;

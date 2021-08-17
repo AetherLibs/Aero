@@ -111,7 +111,7 @@ module.exports = class extends Monitor {
 			for (const knownGood of this.knownGoods) {
 				if (link === knownGood) continue;
 				const distance = leven(link, knownGood);
-				if (distance > 0 && distance < 8 * (knownGood.length / 20)) return true;
+				if (distance > 0 && distance < 8) return true;
 			}
 			return acc;
 		}, false);
