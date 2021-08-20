@@ -1,4 +1,5 @@
 const { Monitor } = require('@aero/klasa');
+const centra = require('@aero/centra');
 const leven = require('js-levenshtein');
 
 module.exports = class extends Monitor {
@@ -41,20 +42,23 @@ module.exports = class extends Monitor {
 
 		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
 
-		const processedLinks = rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`).map(href => {
+		const parsedLinks = rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`).map(href => {
 			try {
 				const url = new URL(href);
 				return url;
 			} catch {
 				return false;
 			}
-		}).filter(i => !!i).map(url => url.hostname.toLowerCase());
+		}).filter(i => !!i);
+
+		const processedLinks = parsedLinks.map(url => url.hostname.toLowerCase());
 
 		if (this.hasKnownBad(msg)
 			|| this.matchesBadLevenshtein(msg, processedLinks)
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
 			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)
 			|| this.isFinancialFraud(msg, cleanedContent, alphanumContent)
+			|| await this.isFraudulentByAPI(parsedLinks)
 		) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
 		}
@@ -115,6 +119,23 @@ module.exports = class extends Monitor {
 			}
 			return acc;
 		}, false);
+	}
+
+	async isFraudulentByAPI(links) {
+		const statuses = await Promise.all(links.map(async link => {
+			const req = centra('https://ravy.org/api/v1')
+				.header('Authorization', process.env.RAVY_TOKEN)
+				.path('/urls')
+				.path(encodeURIComponent(link.href));
+			
+			const res = await req.json();
+
+			console.log(res);
+
+			return res;
+		}));
+
+		return statuses.reduce((acc, cur) => acc || cur.isFraudulent, false);
 	}
 
 };
