@@ -237,7 +237,7 @@ module.exports = class extends Command {
 				: 'COMMAND_INFO_USER_RIVERSIDEBAD';
 
 		const KSoftBansProfile = `${KSoftBans}?user=${user.id}`;
-		const RiversideProfile = `https://discord.riverside.rocks/check?id=${user.id}&ref=aero`
+		const RiversideLink = `https://discord.riverside.rocks/check?id=${user.id}&ref=aero`
 
 		embed.addField(`• Trust (${msg.language.get(rating)})`, [
 			KSoftBan?.active
@@ -258,8 +258,8 @@ module.exports = class extends Command {
 								: msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
 							: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile),
 			RiversideWhitelisted
-				? msg.language.get('COMMAND_INFO_USER_RIVERSIDEWHITELISTED', RiversideProfile)
-				: msg.language.get(riversideRating, RiversideProfile.reportCount, RiversideProfile)
+				? msg.language.get('COMMAND_INFO_USER_RIVERSIDEWHITELISTED', RiversideLink)
+				: msg.language.get(riversideRating, RiversideProfile.reportCount, RiversideLink)
 		].join('\n'));
 
 		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan?.active || CWProfile.blacklisted || CWProfile.score > 80
