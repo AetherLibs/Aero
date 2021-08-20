@@ -123,14 +123,11 @@ module.exports = class extends Monitor {
 
 	async isFraudulentByAPI(links) {
 		const statuses = await Promise.all(links.map(async link => {
-			const req = centra('https://ravy.org/api/v1')
+			const res = await centra('https://ravy.org/api/v1')
 				.header('Authorization', process.env.RAVY_TOKEN)
 				.path('/urls')
-				.path(encodeURIComponent(link.href));
-			
-			const res = await req.json();
-
-			console.log(res);
+				.path(encodeURIComponent(link.href))
+				.json();
 
 			return res;
 		}));
