@@ -6,11 +6,10 @@
 stages:
 - build
 - deploy
-- post-deploy
 
 variables:
   IMAGE: ${CI_REGISTRY}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}
-  KUBECONFIG: /etc/deploy/config
+ # KUBECONFIG: /etc/deploy/config
   CI_APPLICATION_REPOSITORY: ${CI_REGISTRY}/${CI_PROJECT_PATH}
   CI_APPLICATION_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHA}
   GIT_DEPTH: 10000
@@ -28,41 +27,41 @@ build:
   tags:
   - privileged
 
-stage:
-  stage: deploy
-  image: lwolf/helm-kubectl-docker:latest
-  before_script:
-    - mkdir -p /etc/deploy
-    - echo ${kubeconfig} | base64 -d > ${KUBECONFIG}
-    - kubectl config use-context default
-  script:
-    - kubectl -n aero patch statefulset aero-staging -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"aero-staging\",\"image\":\"${IMAGE}\"}]},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}"
-  only:
-    - develop
-  tags:
-  - unprivileged
-  environment:
-    name: aero-staging
-    kubernetes:
-      namespace: aero
+# stage:
+#   stage: deploy
+#   image: lwolf/helm-kubectl-docker:latest
+#   before_script:
+#     - mkdir -p /etc/deploy
+#     - echo ${kubeconfig} | base64 -d > ${KUBECONFIG}
+#     - kubectl config use-context default
+#   script:
+#     - kubectl -n aero patch statefulset aero-staging -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"aero-staging\",\"image\":\"${IMAGE}\"}]},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}"
+#   only:
+#     - develop
+#   tags:
+#   - unprivileged
+#   environment:
+#     name: aero-staging
+#     kubernetes:
+#       namespace: aero
 
-deploy:
-  stage: deploy
-  image: lwolf/helm-kubectl-docker:latest
-  before_script:
-    - mkdir -p /etc/deploy
-    - echo ${kubeconfig} | base64 -d > ${KUBECONFIG}
-    - kubectl config use-context default
-  script:
-    - kubectl -n aero patch statefulset aero -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"aero\",\"image\":\"${IMAGE}\"}]},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}"
-  only:
-    - master
-  tags:
-  - unprivileged
-  environment:
-    name: aero
-    kubernetes:
-      namespace: aero
+# deploy:
+#   stage: deploy
+#   image: lwolf/helm-kubectl-docker:latest
+#   before_script:
+#     - mkdir -p /etc/deploy
+#     - echo ${kubeconfig} | base64 -d > ${KUBECONFIG}
+#     - kubectl config use-context default
+#   script:
+#     - kubectl -n aero patch statefulset aero -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"aero\",\"image\":\"${IMAGE}\"}]},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}},\"metadata\":{\"annotations\":{\"app.gitlab.com/env\":\"${CI_ENVIRONMENT_SLUG}\",\"app.gitlab.com/app\":\"${CI_PROJECT_PATH_SLUG}\"}}}"
+#   only:
+#     - master
+#   tags:
+#   - unprivileged
+#   environment:
+#     name: aero
+#     kubernetes:
+#       namespace: aero
 
 sentry-commit:
   stage: build
