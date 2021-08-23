@@ -13,7 +13,7 @@ module.exports = class extends Command {
 	async run(message) {
 		const msg = await message.sendLocale('COMMAND_PING');
 		const wsPing = Math.round(this.client.ws.ping);
-		const cfPing = parseInt(await req(this.client.config.pingURL).text());
+		const cfPing = 2;
 		const roundTrip = (msg.editedTimestamp || msg.createdTimestamp) - (message.editedTimestamp || message.createdTimestamp);
 
 		const discordLatency = roundTrip - wsPing > 0 ? roundTrip - wsPing - cfPing : roundTrip - cfPing;
