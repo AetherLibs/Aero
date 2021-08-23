@@ -1,10 +1,6 @@
 const { hostname } = require('os');
 const { version } = require('../package');
-const stage = process.env.NODE_ENV === 'production'
-	? hostname().includes('staging')
-		? 'staging'
-		: 'production'
-	: 'development';
+const stage = process.env.AERO_ENV;
 
 module.exports = {
 	prefix: {
