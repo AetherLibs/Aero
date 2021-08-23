@@ -24,8 +24,6 @@ build:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
     - docker build --pull -t ${IMAGE} .
     - docker push ${IMAGE}
-  tags:
-  - privileged
 
 # stage:
 #   stage: deploy
@@ -70,8 +68,6 @@ sentry-commit:
     - sentry-cli releases new ${CI_COMMIT_SHA}
     - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA}
     - sentry-cli releases finalize ${CI_COMMIT_SHA}
-  tags:
-  - unprivileged
   allow_failure: true
 
 sentry-deploy:
@@ -79,6 +75,4 @@ sentry-deploy:
   image: getsentry/sentry-cli
   script:
     - sentry-cli releases deploys ${CI_COMMIT_SHA} new -e ${CI_COMMIT_REF_SLUG}
-  tags:
-  - unprivileged
   allow_failure: true
