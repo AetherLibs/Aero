@@ -20,6 +20,7 @@ module.exports = class extends Monitor {
 		this.exemptions = [
 			'discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com',
 			'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio',
+			'discord.js', 'discord.js.org', 'discord.py',
 			'tenor.com', 'imgur.com'
 		];
 		this.knownBads = [
