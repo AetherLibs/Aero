@@ -17,7 +17,7 @@ module.exports = class extends Monitor {
 		if (msg.content === msg.member.prevMessageContent) {
 			msg.delete();
 			if (msg.member.duplicateCount > 4) {
-				msg.member.mute('Possible raid.');
+				msg.member.mute('Muted by anti-duplicates, "[p]anti duplicates disable" to turn off.');
 				this.client.emit('raid', msg.guild, [msg.member.id]);
 			}
 			msg.member.duplicateCount++;
