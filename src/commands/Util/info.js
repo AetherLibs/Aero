@@ -214,7 +214,7 @@ module.exports = class extends Command {
 		const CWProfile = await this.client.chatwatch?.profile?.(user.id)?.catch(() => ({ whitelisted: false, score: 50 })) ?? { whitelisted: false, score: 50 };
 		const RiversideWhitelisted = await this.client.riverside.whitelist().then(whitelist => whitelist.includes(user.id));
 		const RiversideProfile = await this.client.riverside.check(user.id);
-		const rating = KSoftBan || CWProfile.blacklisted
+		const rating = KSoftBan?.active || CWProfile.blacklisted
 			? 'COMMAND_INFO_TRUST_VERYLOW'
 			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0 || CWProfile.score > 50
 				? 'COMMAND_INFO_TRUST_LOW'
