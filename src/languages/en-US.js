@@ -565,7 +565,7 @@ module.exports = class extends Language {
 				bold`Thanks for inviting ${name} to your server`,
 				'',
 				`${name} is a moderation-focused multi-purpose bot originally built for Groovy Community.`,
-				'It features everything you need to keep a community clean, as well as some utility functions you\'d expect in a modern bot',
+				'It features everything you need to keep a community clean, as well as some utility functions you\'d expect in a modern bot.',
 				`To get an overview of all commands, run \`${prefix}help\`.`,
 				`You can find specific details about a command by running help followed by its name, e.g. \`${prefix}help ping\`.`,
 				'If you have any further questions, or would like a demo, feel free to reach out to us at <https://aero.bot/community>!'
