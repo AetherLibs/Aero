@@ -23,7 +23,10 @@ module.exports = {
 		default: 'mongodb',
 		mongodb: {
 			connectionString: `mongodb://${user}:${pass}@${host}:${port}/`,
-			db
+			db,
+			options: {
+				forceServerObjectId: true
+			}
 		}
 	},
 	typing: false,
