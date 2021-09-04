@@ -4,11 +4,11 @@ require('dotenv').config({
 require('@aero/require').config(process.cwd(), true);
 
 const Manager = require('../lib/Manager');
-const version = process.env.npm_package_gitHead || 'dev';
+const version = require('../config/aero').stage;
 
 let sentry;
 
-if (version !== 'dev') {
+if (version !== 'development') {
 	sentry = require('@sentry/node');
 
 	sentry.init({

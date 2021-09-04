@@ -1,6 +1,7 @@
 const { hostname } = require('os');
 const { version } = require('../package');
 const stage = process.env.AERO_ENV;
+const [commitHash, ...commitMessage] = require('child_process').execSync('git log -1 --date-order --format=format:"%h - %s"').toString().split(' - ');
 
 module.exports = {
 	prefix: {
@@ -9,6 +10,8 @@ module.exports = {
 		development: 'd.'
 	}[stage],
 	stage,
+	commitHash,
+	commitMessage: commitMessage.join(' - '),
 	version,
 	supportServer: 'https://discord.gg/7yfaYjeN6B',
 	inviteURL: 'https://get.aero.bot',
