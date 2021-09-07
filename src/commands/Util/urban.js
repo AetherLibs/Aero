@@ -5,7 +5,7 @@
  */
 const { Command } = require('@aero/klasa');
 const req = require('@aero/centra');
-const BASE_URL = 'http://api.urbandictionary.com/v0';
+const BASE_URL = 'https://api.urbandictionary.com/v0';
 
 module.exports = class extends Command {
 
