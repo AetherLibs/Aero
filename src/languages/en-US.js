@@ -213,6 +213,7 @@ module.exports = class extends Language {
 			COMMAND_URBAN_DESCRIPTION: 'Searches the urban dictionary for the definition to a search term.',
 			COMMAND_URBAN_MISSINGTERM: 'What would you like to search?',
 			COMMAND_URBAN_MAX: length => `Invalid definition. Only found ${length} possible definitions.`,
+			COMMAND_URBAN_NODEF: "Couldn't find a definition for this query'",
 			COMMAND_YOMAMMA_DESCRIPTION: 'Yo momma is so fat, yo.',
 			COMMAND_JOKE_DESCRIPTION: 'Fetch a *very* funny joke.',
 			COMMAND_TOPIC_DESCRIPTION: 'Suggests a random topic as a conversation starter.',
