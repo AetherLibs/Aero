@@ -10,7 +10,7 @@ module.exports = class extends Event {
 	}
 
 	async run(msg, { starChannel }) {
-		const stars = this.generateStars(msg.guild.settings.get('starboard.trigger'));
+		const stars = this.generateReacts(msg.guild.settings.get('starboard.trigger'));
 		const embed = this.buildEmbed(msg, msg.guild, msg.channel.id, msg.id, stars);
 		const starMessage = await starChannel.send({ embed });
 		await starMessage.react('⭐');

@@ -10,7 +10,7 @@ module.exports = class extends Event {
 	}
 
 	async run(msg, { votes, starMessage }) {
-		const stars = this.generateStars(votes.length);
+		const stars = this.generateReacts(votes.length);
 		const embed = this.buildEmbed(msg, msg.guild, msg.channel.id, msg.id, stars);
 
 		if (!starMessage || !starMessage.edit) return;

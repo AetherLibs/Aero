@@ -132,6 +132,12 @@ module.exports = class extends Language {
 				'To begin configuring it, just re-run this command and specify a channel.'
 			].join(' '),
 			COMMAND_STARBOARD_NOCHANNEL: 'Please configure a channel for your starboard first.',
+			COMMAND_LEMONBOARD_DESCRIPTION: 'Configure your lemonboard.',
+			COMMAND_LEMONBOARD_EXPLAINER: [
+				'This command is used to configure a lemonboard, a channel into which users can vote messages into.',
+				'To begin configuring it, just re-run this command and specify a channel.'
+			].join(' '),
+			COMMAND_LEMONBOARD_NOCHANNEL: 'Please configure a channel for your lemonboard first.',
 
 			// fun commands
 			COMMAND_8BALL_DESCRIPTION: 'Magic 8-Ball, does exactly what the toy does.',
