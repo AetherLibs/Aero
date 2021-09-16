@@ -112,14 +112,13 @@ module.exports = class extends Command {
 
 	async _addBaseData(user, embed) {
 		let authorString = `${user.tag} [${user.id}]`;
-		const pdbRes = await req('https://pronoundb.org/api/v1')
-			.path('/lookup')
-			.query({
-				platform: 'discord',
-				id: user.id
-			})
+		const { pronouns } = await req('https://ravy.org/api/v1/')
+			.path('/users')
+			.path(user.id)
+			.path('pronouns')
+			.header('Authorization', process.env.RAVY_TOKEN)
 			.json();
-		if (pdbRes.pronouns && pronounDB[pdbRes.pronouns]) authorString += ` (${pronounDB[pdbRes.pronouns]})`;
+		authorString += ` (${pronouns})`;
 		return embed
 			.setAuthor(authorString
 				, user.displayAvatarURL({ dynamic: true }))

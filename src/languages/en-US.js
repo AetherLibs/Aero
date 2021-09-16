@@ -488,6 +488,9 @@ module.exports = class extends Language {
 			COMMAND_PING: 'Ping?',
 			COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
 			COMMAND_PINGPONG: (total, diff, ping, net) => `Pong! Took ${total}ms. (Discord latency: ${diff}ms. Connection latency: ${ping}ms. Network latency: ${net}ms.)`,
+			COMMAND_PRONOUNS_DESCRIPTION: 'Allows you to set your pronouns in Ravy\'s pronoun DB.',
+			COMMAND_PRONOUNS_UNKNOWN: 'Couldn\'t find these pronouns in our list. If they are uncommon, try using "other".',
+			COMMAND_PRONOUNS_SUCCESS: (value) => `Set your pronouns to **${value}**.`,
 			COMMAND_INVITE: () => [
 				`To add ${this.client.user.username} to your discord guild:`,
 				`<${this.client.invite}>`,
