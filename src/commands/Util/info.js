@@ -148,7 +148,6 @@ module.exports = class extends Command {
 				msg.guild.name,
 				this.timestamp.display(member.joinedAt),
 				Duration.toNow(member.joinedAt)));
-			statistics.push(`${member.settings.get('stats.messages')} messages sent`);
 		}
 
 		const totalRep = user.settings.get('stats.reputation.total');
@@ -210,25 +209,15 @@ module.exports = class extends Command {
 		const DRepInfraction = await this.client.drep?.infractions(user.id).catch(() => null);
 		const DRepReputation = await this.client.drep?.rep(user.id).catch(() => ({ reputation: 0, staff: false })) ?? { reputation: 0, staff: false };
 		const DRepProfile = `https://discordrep.com/u/${user.id}`;
-		const CWProfile = await this.client.chatwatch?.profile?.(user.id)?.catch(() => ({ whitelisted: false, score: 50 })) ?? { whitelisted: false, score: 50 };
 		const RiversideWhitelisted = await this.client.riverside.whitelist().then(whitelist => whitelist.includes(user.id));
 		const RiversideProfile = await this.client.riverside.check(user.id);
-		const rating = KSoftBan?.active || CWProfile.blacklisted
+		const rating = KSoftBan?.active
 			? 'COMMAND_INFO_TRUST_VERYLOW'
-			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0 || CWProfile.score > 50
+			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0
 				? 'COMMAND_INFO_TRUST_LOW'
-				: this.client.owners.has(user) || CWProfile.whitelisted
+				: this.client.owners.has(user)
 					? 'COMMAND_INFO_TRUST_VERYHIGH'
 					: 'COMMAND_INFO_TRUST_HIGH';
-		const cwRating = CWProfile.whitelisted
-			? 'COMMAND_INFO_USER_CWWHITELISTED'
-			: CWProfile.blacklisted
-				? 'COMMAND_INFO_USER_CWBANNED'
-				: CWProfile.score < 50
-					? 'COMMAND_INFO_USER_CWGOOD'
-					: CWProfile.score === 50
-						? 'COMMAND_INFO_USER_CWNEUTRAL'
-						: 'COMMAND_INFO_USER_CWBAD';
 		const riversideRating = RiversideProfile.score === 0
 			? 'COMMAND_INFO_USER_RIVERSIDEGOOD'
 			: RiversideProfile.score < 50
@@ -241,10 +230,7 @@ module.exports = class extends Command {
 		embed.addField(`• Trust (${msg.language.get(rating)})`, [
 			KSoftBan?.active
 				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof, KSoftBansProfile)
-				: CWProfile.whitelisted
-					? msg.language.get('COMMAND_INFO_USER_KSOFTSTAFF', KSoftBansProfile)
-					: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
-			msg.language.get(cwRating, KSoftBansProfile, CWProfile.blacklisted_reason),
+				: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
 			DRepInfraction instanceof Ban
 				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepInfraction.reason)
 				: DRepInfraction instanceof Warn
@@ -261,7 +247,7 @@ module.exports = class extends Command {
 				: msg.language.get(riversideRating, RiversideProfile.reportCount, RiversideLink)
 		].join('\n'));
 
-		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan?.active || CWProfile.blacklisted || CWProfile.score > 80
+		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan?.active
 			? embed.setColor(VERY_NEGATIVE)
 			: embed.setColor(POSITIVE);
 
