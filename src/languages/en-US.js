@@ -421,6 +421,9 @@ module.exports = class extends Language {
 			COMMAND_PRUNE_DESCRIPTION: 'Bulk deletes a certain amount of messages with optional filters.',
 			COMMAND_DECANCER_DESCRIPTION: 'Clean a member\'s nickname from unmentionable characters.',
 			COMMAND_DECANCER_NOPERMS: 'You don\'t have permission to update that member\'s nickname.',
+			COMMAND_NICK_DESCRIPTION: 'Allows you to nick another member.',
+			COMMAND_NICK_NOPERMS: "You're not allowed to change the nickname for this member.",
+			COMMAND_NICK_ERROR: (err) => `Discord rejected this nickname: ${err}`,
 
 			// voice commands
 			COMMAND_VOICEDEAFEN_DESCRIPTION: 'Voice deafen a user.',
