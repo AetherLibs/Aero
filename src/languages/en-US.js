@@ -82,6 +82,8 @@ module.exports = class extends Language {
 			COMMAND_ANTI_DISPLAY_DIVIDER_USERS: '__Username issues:__',
 			COMMAND_ANTI_NOTYPE: 'No auto moderation type specified.',
 			COMMAND_ANTI_SUCCESS: (type, enabled, users) => `Successfully **${enabled ? 'enabled' : 'disabled'}** filtering **${type}**${users ? ' usernames' : ''}.`,
+			COMMAND_ANTI_MUTEX_HOISTING: "Can't enable anti unmentionable while anti hoisting is enabled.",
+			COMMAND_ANTI_MUTEX_UNMENTIONABLE: "Can't enable anti hoisting while anti unmentionable is enabled.",
 			COMMAND_AUTOPUBLISH_DESCRIPTION: 'Automatically publishes/crossposts messages in a channel',
 			COMMAND_AUTOPUBLISH_ADDED: (name) => `Added ${name} to automatically published channels.`,
 			COMMAND_AUTOPUBLISH_REMOVED: (name) => `Removed ${name} from automatically published channels.`,
