@@ -63,6 +63,13 @@ module.exports = class extends Language {
 			COMMAND_PERMS_ERR_USAGE_INVALIDCATEGORY: 'Invalid usage: choose a valid command category.',
 			COMMAND_PERMS_ERR_USAGE_INVALIDCOMMAND: 'Invalid usage: choose a valid command or use the * wildcard.',
 
+			COMMAND_PERSIST_DESCRIPTION: 'Allows you to enable or disable persisting roles and nicknames',
+			COMMAND_PERSIST_ENABLE: 'Successfully **enabled** persisting roles and nicknames',
+			COMMAND_PERSIST_DISABLE: 'Successfully **disabled** persisting roles and nicknames',
+			COMMAND_PERSISTBLACKLIST_DESCRIPTION: 'Allows you to blacklist certain roles from being persisted',
+			COMMAND_PERSISTBLACKLIST_ADD: (role) => `Successfully **blacklisted** \`${role}\` from being persisted.`,
+			COMMAND_PERSISTBLACKLIST_REMOVE: (role) => `Successfully **un-blacklisted** \`${role}\` from being persisted.`,
+
 			COMMAND_LOG_DESCRIPTION: [
 				'Configures logging. Possible types:',
 				'• messages',
