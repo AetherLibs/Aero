@@ -4,11 +4,11 @@ const Message = require('../../lib/ws/Message');
 const { READY_CLIENT } = require('../../lib/ws/util/constants').types;
 const req = require('@aero/centra');
 
-function updateWsPing(client) {
+function updateWsPing(ping) {
 	const epochInSeconds = Math.floor(new Date() / 1000);
 	const data = {
 		timestamp: epochInSeconds,
-		value: client.ws.ping
+		value: ping
 	};
 
 	req('https://api.statuspage.io/v1/pages')
@@ -18,7 +18,7 @@ function updateWsPing(client) {
 		.path('data.json')
 		.method('POST')
 		.header('Authorization', `OAuth ${process.env.STATUS_TOKEN}`)
-		.body({data}, 'json')
+		.body({ data }, 'json')
 		.send();
 }
 
@@ -36,7 +36,8 @@ module.exports = class extends Event {
 			this.client.manager.ws.send(encode(new Message(READY_CLIENT, { id: this.client.manager.id })));
 		}
 		if (this.client.config.stage === 'staging') {
-			this.client.setInterval(() => updateWsPing(this.client), 60 * 1000);
+			this.client.console.log(`[Status] Posting stats with initial ping of ${this.client.ws.ping}ms.`);
+			this.client.setInterval(() => updateWsPing(this.client.ws.ping), 60 * 1000);
 		}
 	}
 
