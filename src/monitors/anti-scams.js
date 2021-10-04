@@ -43,14 +43,17 @@ module.exports = class extends Monitor {
 
 		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
 
-		const parsedLinks = rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`).map(href => {
-			try {
-				const url = new URL(href);
-				return url;
-			} catch {
-				return false;
-			}
-		}).filter(i => !!i);
+		const parsedLinks = [...new Set(
+			rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`)
+		)]
+			.map(href => {
+				try {
+					const url = new URL(href);
+					return url;
+				} catch {
+					return false;
+				}
+			}).filter(i => !!i);
 
 		const processedLinks = parsedLinks.map(url => url.hostname.toLowerCase());
 
