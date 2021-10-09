@@ -1,9 +1,13 @@
+const { join } = require('path');
 require('dotenv').config({
 	path: process.env.NODE_ENV === 'production' ? '.env' : 'dev.env'
 });
 require('@aero/require').config(process.cwd(), true);
 
-const Manager = require('../lib/Manager');
+// const Manager = require('../lib/Manager');
+const { ShardingManager } = require('kurasuta');
+const Aero = require('~/lib/Aero');
+
 const version = require('../config/aero').stage;
 
 let sentry;
@@ -17,4 +21,13 @@ if (version !== 'development') {
 	});
 }
 
-new Manager(sentry).init();
+// new Manager(sentry).init();
+const sharder = new ShardingManager(join(__dirname, 'launch'), {
+	client: Aero,
+	clientOptions: {
+		sentry
+	},
+	token: process.env.DISCORD_TOKEN
+});
+
+sharder.spawn();
