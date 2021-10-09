@@ -9,6 +9,11 @@ module.exports = {
 		staging: 's.',
 		development: 'd.'
 	}[stage],
+	ipcSocket: {
+		production: 9991,
+		staging: 9992,
+		development: 9999
+	}[stage],
 	stage,
 	commitHash,
 	commitMessage: commitMessage.join(' - '),
