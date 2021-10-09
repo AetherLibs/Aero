@@ -16,10 +16,9 @@ module.exports = class extends Inhibitor {
 	}
 
 	async run(message, command) {
+		if (this.client.options.owners.includes(message.author.id) || this.client.config.ownerAccess.includes(message.author.id)) return;
 		// secure admin commands, all others don't need permissionLevels
-		if (command.permissionLevel >= 9 && !this.client.options.owners.includes(message.author.id)) throw true;
-		// overwrite for bot owners
-		if (this.client.options.owners.includes(message.author.id)) return;
+		if (command.permissionLevel >= 9) throw true;
 		// permission nodes don't work in DMs. the runIn inhibitor will deal with them.
 		if (!message.guild) return;
 		// only in guilds owned by a bot owner

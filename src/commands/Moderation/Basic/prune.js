@@ -19,10 +19,17 @@ module.exports = class extends Command {
 
 	async run(msg, [limit = 1, filter = null]) {
 		let messages = await msg.channel.messages.fetch({ limit: 100 });
+		messages = messages.filter(mes => !mes.pinned);
+		messages = messages.filter(mes => {
+			const now = new Date().getTime();
+			const then = mes.createdTimestamp;
+
+			return (now - then) < 14 * 24 * 60 * 60 * 1000;
+		});
 		if (filter) {
 			const user = typeof filter !== 'string' ? filter : null;
 			const type = typeof filter === 'string' ? filter : 'user';
-			messages = messages.filter(this.getFilter(msg, type, user)).filter(mes => !mes.pinned);
+			messages = messages.filter(this.getFilter(msg, type, user));
 		}
 		if (messages.has(msg.id)) limit++;
 		messages = messages.keyArray().slice(0, limit);

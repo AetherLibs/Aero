@@ -11,6 +11,8 @@ module.exports = class extends Command {
 			aliases: ['ly'],
 			requiredPermissions: ['EMBED_LINKS']
 		});
+
+		this.deprecated = 'API deprecated the lyrics endpoint.';
 	}
 
 	async run(msg, [query]) {

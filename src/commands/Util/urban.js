@@ -36,6 +36,8 @@ module.exports = class extends Command {
 			.json();
 		if (resultNum > 1) resultNum--;
 
+		if (!body.list) throw 'COMMAND_URBAN_NODEF';
+
 		const result = body.list[resultNum];
 		if (!result) throw msg.language.get('COMMAND_URBAN_MAX', body.list.length);
 		const wdef = result.definition.length > 1000

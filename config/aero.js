@@ -25,7 +25,8 @@ module.exports = {
 	carbonURL: 'https://carbonara.aero.bot',
 	shortURL: 'https://ddlc.me',
 	lgbtURL: 'https://api.ravy.lgbt',
-	dailyPoints: 50
+	dailyPoints: 50,
+	ownerAccess: ['234390727113703424']
 };
 
 module.exports.cwEnabled = !['true', true].includes(process.env.CHATWATCH_DISABLED);

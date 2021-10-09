@@ -1,5 +1,5 @@
 const { Command } = require('@aero/klasa');
-const { Permissions: { FLAGS } } = require('discord.js');
+const { Permissions: { FLAGS }, VoiceChannel } = require('discord.js');
 
 module.exports = class extends Command {
 
@@ -17,14 +17,23 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [channel = msg.channel]) {
+		let override = {
+			SEND_MESSAGES: false,
+			ADD_REACTIONS: false
+		};
+
+		if (channel instanceof VoiceChannel) {
+			override = {
+				CONNECT: false
+			}
+		}
+
 		await channel.updateOverwrite(
 			msg.guild.id,
-			{
-				SEND_MESSAGES: false,
-				ADD_REACTIONS: false
-			},
+			override,
 			msg.guild.language.get('COMMAND_LOCK_REASON')
 		);
+		
 
 		return msg.responder.lock();
 	}

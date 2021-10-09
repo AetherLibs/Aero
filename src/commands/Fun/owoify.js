@@ -13,10 +13,10 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [text]) {
-		const content = owoify(text.slice(0, 2000), msg.flagArgs.uwu || msg.flagArgs.uvu)
+		const content = owoify(text.slice(0, 1500), msg.flagArgs.uwu || msg.flagArgs.uvu)
 			.replace(/`/g, '\\`')
 			.replace(/\*/g, '\\*');
-		return msg.send(content);
+		return msg.send(`**owoified:** ${content}`);
 	}
 
 };

@@ -15,12 +15,12 @@ module.exports = class extends Monitor {
 
 		this.knownGoods = [
 			'steamcommunity.com', 'store.steampowered.com', 'steampowered.com',
-			'disord.com/nitro', 'discord.gift'
+			'discord.com/nitro', 'discord.gift'
 		];
 		this.exemptions = [
 			'discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com',
 			'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio',
-			'discord.js', 'discord.js.org', 'discord.py',
+			'discord.js', 'discord.js.org', 'discord.py', 'discord.id', 'discordgift.site',
 			'tenor.com', 'imgur.com'
 		];
 		this.knownBads = [
@@ -43,14 +43,17 @@ module.exports = class extends Monitor {
 
 		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
 
-		const parsedLinks = rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`).map(href => {
-			try {
-				const url = new URL(href);
-				return url;
-			} catch {
-				return false;
-			}
-		}).filter(i => !!i);
+		const parsedLinks = [...new Set(
+			rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`)
+		)]
+			.map(href => {
+				try {
+					const url = new URL(href);
+					return url;
+				} catch {
+					return false;
+				}
+			}).filter(i => !!i);
 
 		const processedLinks = parsedLinks.map(url => url.hostname.toLowerCase());
 

@@ -1,7 +1,7 @@
 {
 	"type": "commonjs",
 	"name": "aero",
-	"version": "1.3.1",
+	"version": "1.4.0",
 	"description": "Aero is an intuitive Discord bot perfect for your server.",
 	"main": "src/index",
 	"repository": "https://ravy.dev/aero/aero.git",
@@ -48,6 +48,7 @@
 		"express": "^4.17.1",
 		"html-entities": "^1.3.1",
 		"js-levenshtein": "^1.1.6",
+		"kurasuta": "^3.0.1",
 		"mongodb": "^3.5.7",
 		"owoify-js": "^1.0.7",
 		"tinycolor2": "^1.4.1",

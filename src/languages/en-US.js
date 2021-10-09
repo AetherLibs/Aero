@@ -63,6 +63,13 @@ module.exports = class extends Language {
 			COMMAND_PERMS_ERR_USAGE_INVALIDCATEGORY: 'Invalid usage: choose a valid command category.',
 			COMMAND_PERMS_ERR_USAGE_INVALIDCOMMAND: 'Invalid usage: choose a valid command or use the * wildcard.',
 
+			COMMAND_PERSIST_DESCRIPTION: 'Allows you to enable or disable persisting roles and nicknames',
+			COMMAND_PERSIST_ENABLE: 'Successfully **enabled** persisting roles and nicknames',
+			COMMAND_PERSIST_DISABLE: 'Successfully **disabled** persisting roles and nicknames',
+			COMMAND_PERSISTBLACKLIST_DESCRIPTION: 'Allows you to blacklist certain roles from being persisted',
+			COMMAND_PERSISTBLACKLIST_ADD: (role) => `Successfully **blacklisted** \`${role}\` from being persisted.`,
+			COMMAND_PERSISTBLACKLIST_REMOVE: (role) => `Successfully **un-blacklisted** \`${role}\` from being persisted.`,
+
 			COMMAND_LOG_DESCRIPTION: [
 				'Configures logging. Possible types:',
 				'• messages',
@@ -82,6 +89,8 @@ module.exports = class extends Language {
 			COMMAND_ANTI_DISPLAY_DIVIDER_USERS: '__Username issues:__',
 			COMMAND_ANTI_NOTYPE: 'No auto moderation type specified.',
 			COMMAND_ANTI_SUCCESS: (type, enabled, users) => `Successfully **${enabled ? 'enabled' : 'disabled'}** filtering **${type}**${users ? ' usernames' : ''}.`,
+			COMMAND_ANTI_MUTEX_HOISTING: "Can't enable anti unmentionable while anti hoisting is enabled.",
+			COMMAND_ANTI_MUTEX_UNMENTIONABLE: "Can't enable anti hoisting while anti unmentionable is enabled.",
 			COMMAND_AUTOPUBLISH_DESCRIPTION: 'Automatically publishes/crossposts messages in a channel',
 			COMMAND_AUTOPUBLISH_ADDED: (name) => `Added ${name} to automatically published channels.`,
 			COMMAND_AUTOPUBLISH_REMOVED: (name) => `Removed ${name} from automatically published channels.`,
@@ -213,6 +222,7 @@ module.exports = class extends Language {
 			COMMAND_URBAN_DESCRIPTION: 'Searches the urban dictionary for the definition to a search term.',
 			COMMAND_URBAN_MISSINGTERM: 'What would you like to search?',
 			COMMAND_URBAN_MAX: length => `Invalid definition. Only found ${length} possible definitions.`,
+			COMMAND_URBAN_NODEF: "Couldn't find a definition for this query'",
 			COMMAND_YOMAMMA_DESCRIPTION: 'Yo momma is so fat, yo.',
 			COMMAND_JOKE_DESCRIPTION: 'Fetch a *very* funny joke.',
 			COMMAND_TOPIC_DESCRIPTION: 'Suggests a random topic as a conversation starter.',
@@ -420,6 +430,9 @@ module.exports = class extends Language {
 			COMMAND_PRUNE_DESCRIPTION: 'Bulk deletes a certain amount of messages with optional filters.',
 			COMMAND_DECANCER_DESCRIPTION: 'Clean a member\'s nickname from unmentionable characters.',
 			COMMAND_DECANCER_NOPERMS: 'You don\'t have permission to update that member\'s nickname.',
+			COMMAND_NICK_DESCRIPTION: 'Allows you to nick another member.',
+			COMMAND_NICK_NOPERMS: "You're not allowed to change the nickname for this member.",
+			COMMAND_NICK_ERROR: (err) => `Discord rejected this nickname: ${err}`,
 
 			// voice commands
 			COMMAND_VOICEDEAFEN_DESCRIPTION: 'Voice deafen a user.',
@@ -487,6 +500,9 @@ module.exports = class extends Language {
 			COMMAND_PING: 'Ping?',
 			COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
 			COMMAND_PINGPONG: (total, diff, ping, net) => `Pong! Took ${total}ms. (Discord latency: ${diff}ms. Connection latency: ${ping}ms. Network latency: ${net}ms.)`,
+			COMMAND_PRONOUNS_DESCRIPTION: 'Allows you to set your pronouns in Ravy\'s pronoun DB.',
+			COMMAND_PRONOUNS_UNKNOWN: 'Couldn\'t find these pronouns in our list. If they are uncommon, try using "other".',
+			COMMAND_PRONOUNS_SUCCESS: (value) => `Set your pronouns to **${value}**.`,
 			COMMAND_INVITE: () => [
 				`To add ${this.client.user.username} to your discord guild:`,
 				`<${this.client.invite}>`,
