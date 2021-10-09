@@ -27,6 +27,7 @@ const sharder = new ShardingManager(join(__dirname, 'launch'), {
 	clientOptions: {
 		sentry
 	},
+	clusterCount: 2,
 	ipcSocket,
 	token: process.env.DISCORD_TOKEN
 });
