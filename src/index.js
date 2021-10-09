@@ -8,7 +8,7 @@ require('@aero/require').config(process.cwd(), true);
 const { ShardingManager } = require('kurasuta');
 const Aero = require('~/lib/Aero');
 
-const version = require('../config/aero').stage;
+const { stage: version, ipcSocket } = require('../config/aero');
 
 let sentry;
 
@@ -27,6 +27,7 @@ const sharder = new ShardingManager(join(__dirname, 'launch'), {
 	clientOptions: {
 		sentry
 	},
+	ipcSocket,
 	token: process.env.DISCORD_TOKEN
 });
 
