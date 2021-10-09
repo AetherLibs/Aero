@@ -63,6 +63,7 @@ module.exports = class extends Command {
 				stopwatch.restart();
 				result = await result;
 				asyncTime = stopwatch.toString();
+				type.addValue(result);
 			}
 			success = true;
 		} catch (error) {
