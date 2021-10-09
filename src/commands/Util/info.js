@@ -281,7 +281,6 @@ module.exports = class extends Command {
 
 	async serverinfo(msg) {
 		const { guild } = msg;
-		const toxicity = guild.settings.get('stats.toxicity');
 		await msg.guild.members.fetch(msg.guild.ownerID);
 		const embed = new MessageEmbed()
 			.setAuthor(`${guild.name} [${guild.id}]`, guild.iconURL())
@@ -289,7 +288,6 @@ module.exports = class extends Command {
 			.addField('• Members', `${guild.memberCount} (cached: ${guild.members.cache.size})`, true)
 			.addField('• Voice region', this.regions[msg.guild.region], true)
 			.addField('• Owner', `${guild.owner.user.tag} ${guild.owner.toString()} [${guild.ownerID}]`)
-			.addField('• Statistics', `${guild.settings.get('stats.messages')} messages ${toxicity !== 0 ? `with an average toxicity of ${Math.round(toxicity * 100)}%` : ''} sent`)
 			.addField('• Security', [
 				`Verification level: ${this.verificationLevels[msg.guild.verificationLevel]}`,
 				`Explicit filter: ${this.filterLevels[msg.guild.explicitContentFilter]}`
