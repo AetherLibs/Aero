@@ -19,7 +19,10 @@ module.exports = class extends Event {
 
 		// persistency
 		const botsHighestRole = member.guild.me.roles.highest;
-		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id)).filter(id => botsHighestRole.comparePositionTo(id) > 0);
+		const persistroles = member.settings.get('persistRoles')
+			.filter(id => !autoroles.includes(id))
+			.filter(id => botsHighestRole.comparePositionTo(id) > 0)
+			.filter(id => id !== member.guild.id);
 		const persistnick = member.settings.get('persistNick');
 		if (persistnick) await member.setNickname(persistnick);
 
