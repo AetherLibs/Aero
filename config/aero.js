@@ -31,7 +31,8 @@ module.exports = {
 	shortURL: 'https://ddlc.me',
 	lgbtURL: 'https://api.ravy.lgbt',
 	dailyPoints: 50,
-	ownerAccess: ['234390727113703424']
+	ownerAccess: ['234390727113703424'],
+	roleBulkThreshold: 3
 };
 
 module.exports.cwEnabled = !['true', true].includes(process.env.CHATWATCH_DISABLED);

@@ -36,7 +36,7 @@ module.exports = class extends Event {
 				roles.push(botrole);
 			}
 
-			member.roles.add(roles);
+			member.addRoles(roles);
 		}
 
 		// raid prevention
