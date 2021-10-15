@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 			.query('key', process.env.PERSPECTIVE_TOKEN)
 			.body({
 				comment: {
-					text: msg.content
+					text: msg.content.toLowerCase()
 				},
 				languages: ['en'],
 				requestedAttributes: { SEVERE_TOXICITY: {}, IDENTITY_ATTACK: {}, TOXICITY: {}, SEXUALLY_EXPLICIT: {}, THREAT: {}, INSULT: {}, PROFANITY: {} },
