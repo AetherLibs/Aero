@@ -41,7 +41,10 @@ module.exports = class extends Monitor {
 		const cleanedContent = require('@aero/sanitizer')(msg.content).toLowerCase();
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
-		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
+		const rawLinks = [...msg.content
+			.replace(/\x00/g, '')
+			.matchAll(/\b((?:https?:\/\/)?[\w-]+\.\w+)\b/g)
+		].map(i => i[1]);
 
 		const parsedLinks = [...new Set(
 			rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`)
