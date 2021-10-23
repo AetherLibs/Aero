@@ -43,7 +43,7 @@ module.exports = class extends Monitor {
 
 		const rawLinks = [...msg.content
 			.replace(/\x00/g, '')
-			.matchAll(/\b((?:https?:\/\/)?[\w-]+\.\w+)\b/g)
+			.matchAll(/\b((?:https?:\/\/)?[\w-]+\.[\w-\%\~\#./]+)\b/g)
 		].map(i => i[1]);
 
 		const parsedLinks = [...new Set(
