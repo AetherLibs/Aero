@@ -1,6 +1,7 @@
 const { Monitor } = require('@aero/klasa');
 const req = require('@aero/centra');
 const { PerspectiveAPI } = require('../../lib/util/constants').url;
+const { createHash } = require('crypto')
 
 module.exports = class extends Monitor {
 
@@ -17,6 +18,10 @@ module.exports = class extends Monitor {
 	async run(msg) {
 		if(!msg.guild || (!msg.guild.settings.get('mod.anti.toxicity') && !msg.guild.settings.get('mod.anti.profanity')) || msg.exempt) return;
 
+		const communityId = createHash('sha256')
+			.update(msg.guild.id)
+			.digest('hex');
+
 		const scores = await req(PerspectiveAPI, 'POST')
 			.path('comments:analyze')
 			.query('key', process.env.PERSPECTIVE_TOKEN)
@@ -26,8 +31,7 @@ module.exports = class extends Monitor {
 				},
 				languages: ['en'],
 				requestedAttributes: { SEVERE_TOXICITY: {}, IDENTITY_ATTACK: {}, TOXICITY: {}, SEXUALLY_EXPLICIT: {}, THREAT: {}, INSULT: {}, PROFANITY: {} },
-				communityId: msg.guild.id,
-				sessionId: msg.channel.id
+				communityId
 			}, 'json')
 			.header('user-agent', `${this.client.user.username}/${this.client.config.version}`)
 			.send()
