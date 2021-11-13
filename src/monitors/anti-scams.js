@@ -20,7 +20,7 @@ module.exports = class extends Monitor {
 		this.exemptions = [
 			'discord.com', 'discord.new', 'discord.gg', 'discord.io', 'discord.me', 'discords.com',
 			'cdn.discordapp.com', 'discordapp.com', 'media.discordapp.com', 'discord.bio',
-			'discord.js', 'discord.js.org', 'discord.py', 'discord.id', 'discordgift.site',
+			'discord.js', 'discord.js.org', 'discord.py', 'discord.id', 'discordgift.site', 'discord.net',
 			'tenor.com', 'imgur.com'
 		];
 		this.knownBads = [
@@ -41,7 +41,10 @@ module.exports = class extends Monitor {
 		const cleanedContent = require('@aero/sanitizer')(msg.content).toLowerCase();
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
-		const rawLinks = msg.content.split(/\s+/).filter(possible => /^(https?:\/\/)?[\w-]+\.\w+/.test(possible));
+		const rawLinks = [...msg.content
+			.replace(/\x00/g, '')
+			.matchAll(/\b((?:https?:\/\/)?[\w-]+\.[\w-\%\~\#.\/]+)\b/g)
+		].map(i => i[1]);
 
 		const parsedLinks = [...new Set(
 			rawLinks.map(link => link.startsWith('http') ? link : `https://${link}`)
@@ -58,7 +61,7 @@ module.exports = class extends Monitor {
 		const processedLinks = parsedLinks.map(url => url.hostname.toLowerCase());
 
 		if (this.hasKnownBad(msg)
-			|| this.matchesBadLevenshtein(msg, processedLinks)
+			// || this.matchesBadLevenshtein(msg, processedLinks)
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
 			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)
 			|| this.isFinancialFraud(msg, cleanedContent, alphanumContent)

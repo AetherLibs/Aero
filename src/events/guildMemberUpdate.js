@@ -32,7 +32,7 @@ module.exports = class extends Event {
 		await member.guild.log.memberPassedGate({ member });
 		const autoroles = await member.guild.settings.get('mod.roles.auto');
 		if (autoroles.length && !member.user.bot) {
-			await member.roles.add(autoroles, member.guild.language.get('EVENT_AUTOROLE_REASON')).catch(() => null);
+			await member.addRoles(autoroles, member.guild.language.get('EVENT_AUTOROLE_REASON')).catch(() => null);
 		}
 	}
 

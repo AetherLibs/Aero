@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-RUN apk add git python g++ make pkgconf cairo-dev jpeg-dev pango-dev giflib-dev
+RUN apk add git python2 python3 g++ make pkgconf cairo-dev jpeg-dev pango-dev giflib-dev
 
 RUN ln -sf pkgconf /usr/bin/pkg-config
 
