@@ -42,6 +42,7 @@ module.exports = class extends Command {
 		for (const category in categories) {
 			embed.addField(category, categories[category].sort().map(cmd => code`${cmd}`).join(', '));
 		}
+		embed.setDescription(`[Terms](https://aero.bot/terms) | [Privacy](https://aero.bot/privacy)`)
 		embed.setFooter(msg.language.get('COMMAND_HELP_FOOTER', msg.guild.settings.get('prefix')));
 		return msg.sendEmbed(embed);
 	}
