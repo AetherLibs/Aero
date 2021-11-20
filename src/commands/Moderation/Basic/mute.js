@@ -1,5 +1,6 @@
 const Command = require('../../../../lib/structures/MultiModerationCommand');
 const { Permissions: { FLAGS } } = require('discord.js');
+const { dateDiffDays } = require('~/lib/util/util');
 
 module.exports = class extends Command {
 
@@ -30,9 +31,13 @@ module.exports = class extends Command {
 	}
 
 	async executeMutes(users, reason, guild, moderator, muterole, duration) {
+		const formattedReason = `${moderator.tag} | ${reason || guild.language.get('COMMAND_MUTE_NOREASON')}`;
 		for (const member of users) {
 			guild.modCache.add(member.id);
-			member.mute(`${moderator.tag} | ${reason || guild.language.get('COMMAND_MUTE_NOREASON')}`, muterole);
+			if (duration && dateDiffDays(new Date(), duration) <= 28)
+				member.muteTimed(formattedReason, duration);
+			else
+				member.mute(formattedReason, muterole);
 			if (!duration) this.updateSchedule(member);
 		}
 		if (duration) this.client.schedule.create('endTempmute', duration, { data: { users: users.map(user => user.id), guild: guild.id } });
