@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			enabled: true,
 			runIn: ['text'],
 			requiredPermissions: ['MANAGE_ROLES'],
-			aliases: ['m', 'silence', '403'],
+			aliases: ['m', 'silence', '403', 'timeout'],
 			description: language => language.get('COMMAND_MUTE_DESCRIPTION'),
 			usage: '<user  or  users:members> [duration:time] [reason:...string]',
 			usageDelim: ' '
