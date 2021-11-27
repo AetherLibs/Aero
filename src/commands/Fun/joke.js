@@ -10,7 +10,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const joke = await req('https://jokes.zakariaa.nl/random_joke').json();
+		const joke = await req('https://jokes.zakariao.nl/random_joke').json();
 		return msg.sendMessage(`${joke.setup}\n\n*${joke.punchline}*`);
 	}
 
