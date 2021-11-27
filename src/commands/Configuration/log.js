@@ -19,9 +19,10 @@ module.exports = class extends Command {
 	async run(msg, [type, channel]) {
 		if (!channel) return this.displayLogs(msg, type);
 		await msg.guild.settings.sync();
+		const types = type ? [type] : ['moderation', 'messages', 'members'];
 		return channel === 'disable'
-			? this.disableLogs(msg, type)
-			: this.setLogs(msg, type, channel);
+			? this.disableLogs(msg, types)
+			: this.setLogs(msg, types, channel);
 	}
 
 	async displayLogs(msg, type) {
@@ -42,40 +43,63 @@ module.exports = class extends Command {
 		}
 	}
 
-	setLogs(msg, type, channel) {
-		// create hook
-		return channel.createWebhook(`${this.client.user.username} Log: ${type}`,
+	async setLogs(msg, types, channel) {
+		const currentHooks = await channel.fetchWebhooks();
+
+		const succeeded = [];
+
+		for (const type of types) {
+			// skip existing
+			const _channel = msg.guild.settings.get(`logs.${type}.channel`);
+			const _webhook = msg.guild.settings.get(`logs.${type}.webhook`);
+			if ((_channel === channel.id) && _webhook) {
+				const hook = currentHooks.get(_webhook)
+				if (hook) {
+					continue;
+				}
+			}
+
+			// create hooks
+			await channel.createWebhook(`${this.client.user.username} Log: ${type}`,
 			{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') })
 			.then(async hook => {
 				// set db entries
+				succeeded.push(type);
 				await msg.guild.settings.update(`logs.${type}.channel`, channel);
 				await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
 
 				// populate logger cache
 				msg.guild.log.webhooks[type] = hook;
-
-				return msg.responder.success('COMMAND_LOG_SUCCESS', type, channel);
 			})
 			.catch(() =>
-				msg.responder.error('COMMAND_LOG_NOWEBHOOKPERMS'));
-	}
-
-	async disableLogs(msg, type) {
-		const channelID = msg.guild.settings.get(`logs.${type}.channel`);
-		const webhookID = msg.guild.settings.get(`logs.${type}.webhook`);
-
-		// reset db
-		await msg.guild.settings.reset(`logs.${type}.channel`);
-		await msg.guild.settings.reset(`logs.${type}.webhook`);
-
-		// delete webhook
-		if (msg.guild.channels.cache.has(channelID)) {
-			const hooks = await msg.guild.channels.cache.get(channelID).fetchWebhooks();
-			if (hooks.has(webhookID)) hooks.get(webhookID).delete().catch(() => null);
+				{ throw 'COMMAND_LOG_NOWEBHOOKPERMS' });
 		}
 
-		// clean hook cache
-		msg.guild.log.webhooks[type] = null;
+		if (succeeded.length) {
+			msg.responder.success('COMMAND_LOG_SUCCESS', succeeded.join(', '), channel);
+		} else {
+			msg.responder.success();
+		}
+	}
+
+	async disableLogs(msg, types) {
+		for (const type of types) {
+			const channelID = msg.guild.settings.get(`logs.${type}.channel`);
+			const webhookID = msg.guild.settings.get(`logs.${type}.webhook`);
+
+			// reset db
+			await msg.guild.settings.reset(`logs.${type}.channel`);
+			await msg.guild.settings.reset(`logs.${type}.webhook`);
+
+			// delete webhook
+			if (msg.guild.channels.cache.has(channelID)) {
+				const hooks = await msg.guild.channels.cache.get(channelID).fetchWebhooks();
+				if (hooks.has(webhookID)) hooks.get(webhookID).delete().catch(() => null);
+			}
+
+			// clean hook cache
+			msg.guild.log.webhooks[type] = null;
+		}
 
 		return msg.responder.success();
 	}
