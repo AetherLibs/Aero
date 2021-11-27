@@ -3,6 +3,8 @@ MONGO_USER=
 MONGO_PASS=
 MONGO_HOST=
 MONGO_PORT=
+# OR
+MONGO_URI=
 
 # Discord Bot token
 DISCORD_TOKEN=
@@ -22,3 +24,7 @@ IMGUR_TOKEN=
 
 # Whether to boot a single shard. Only set to false when running kubernetes.
 BOOT_SINGLE="true"
+
+# Probably don't want to alter these
+AERO_ENV="development"
+CHATWATCH_DISABLED="true"
