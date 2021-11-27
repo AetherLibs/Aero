@@ -29,6 +29,7 @@ module.exports = class extends Provider {
 		const connectionString = this.client.options.providers.mongodb.connectionString
 			|| process.env.MONGO_URI
 			|| `mongodb://${connection.user}:${connection.password}@${connection.host}:${connection.port}/${connection.db}`;
+
 		const mongoClient = await Mongo.connect(connectionString,
 			mergeObjects(connection.options, { useNewUrlParser: true, useUnifiedTopology: true }));
 		this.client.console.log('[Mongo] Connected.');
