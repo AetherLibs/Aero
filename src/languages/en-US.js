@@ -834,6 +834,7 @@ module.exports = class extends Language {
 
 			LOG_ACTION_MESSAGEEDITED: 'message edited',
 			LOG_ACTION_MESSAGEDELETED: 'message deleted',
+			LOG_ACTION_INVITEDELETED: 'invite deleted',
 
 			LOG_ACTION_MEMBERJOINED: 'member joined',
 			LOG_ACTION_MEMBERLEFT: 'member left',
@@ -859,6 +860,7 @@ module.exports = class extends Language {
 					? newAttachments.join('\n')
 					: null
 			].filter(item => item !== null).join('\n'),
+			LOG_ARGS_INVITEDELETED: (name, memberCount) => `**invite:** ${name} (${memberCount} members)`,
 
 			LEVEL_MESSAGES
 
@@ -880,7 +882,7 @@ const COMMAND_8BALL_ANSWERS = [
 	'Maybe.',
 	'There is a small chance.',
 	'Possibly.',
-	
+
 	'Never, ever, ever.',
 	'No!',
 	'Certainly not.',
