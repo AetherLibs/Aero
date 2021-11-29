@@ -21,7 +21,7 @@ module.exports = class extends Monitor {
 		const match = this.inviteRegex.exec(msg.content);
 		if (match) {
 			const invite = await msg.client.fetchInvite(match.groups['code']).catch(() => null);
-			msg.invite = invite || 'invalid';
+			msg.invite = invite ?? 'invalid';
 			msg.delete();
 		}
 		else if (this.thirdPartyRegex.test(msg.content) || this.botInviteRegex.test(msg.content)) {
