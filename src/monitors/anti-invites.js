@@ -11,14 +11,23 @@ module.exports = class extends Monitor {
 			ignoreOthers: false
 		});
 
-		this.inviteRegex = /(https?:\/\/)?(.*?@)?(www\.)?((discord|invite)\.(gg|li|me|io)|discord(app)?\.com\/invite)\/(\s)?.+/ui;
+		this.inviteRegex = /(https?:\/\/)?(.*?@)?(www\.)?(discord\.(gg)|discord(app)?\.com\/invite)\/(?<code>\w+)/ui;
+		this.thirdPartyRegex = /(https?:\/\/)?(.*?@)?(www\.)?(discord|invite)\.(gg|li|me|io)\/(?<code>\w+)/ui;
 		this.botInviteRegex = /(https?:\/\/)?discord\.com\/oauth2\/authorize/;
 	}
 
 	async run(msg) {
 		if (!msg.guild || !msg.guild.settings.get('mod.anti.invites') || msg.exempt) return;
-		if (this.inviteRegex.test(msg.content)) msg.delete();
-		if (this.botInviteRegex.test(msg.content)) msg.delete();
+		const match = this.inviteRegex.exec(msg.content);
+		if (match) {
+			const invite = await msg.client.fetchInvite(match.groups['code']).catch(() => null);
+			msg.invite = invite || 'invalid';
+			msg.delete();
+		}
+		else if (this.thirdPartyRegex.test(msg.content) || this.botInviteRegex.test(msg.content)) {
+			msg.invite = 'invalid'
+			msg.delete();
+		}
 	}
 
 };
