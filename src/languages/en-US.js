@@ -129,7 +129,7 @@ module.exports = class extends Language {
 			COMMAND_CARBON_DESCRIPTION: 'Toggle automatically making an image from your code using [carbonara](https://github.com/petersolopov/carbonara)',
 			COMMAND_CARBON_ENABLED: 'Enabled automatic codeblock conversion.',
 			COMMAND_CARBON_DISABLED: 'Disabled automatic codeblock conversion.',
-			COMMAND_CENSOR_DESCRIPTION: 'Adds or removes words for aero to censor.',
+			COMMAND_CENSOR_DESCRIPTION: 'Adds or removes a phrase to a list of automatically censored phrases.',
 			COMMAND_CENSOR_ADD: term => `Added **${term}** to list of censored words.`,
 			COMMAND_CENSOR_REMOVE: term => `No longer censoring **${term}**.`,
 			COMMAND_CENSOR_ALREADY_EXISTS: 'This word is already being censored.',
