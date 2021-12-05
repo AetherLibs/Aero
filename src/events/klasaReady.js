@@ -71,6 +71,10 @@ module.exports = class extends Event {
 				.reduce((acc, cur) => acc.set(cur.id, cur), new Map())
 			)
 			.catch(() => ({}));
+
+		this.client.config.install_params = 
+			await this.client.api.applications(this.client.user.id).rpc.get().then(res => res.install_params)
+			?? { scopes: [ 'applications.commands', 'bot' ], permissions: '8' };
 	}
 
 };

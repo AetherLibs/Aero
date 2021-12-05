@@ -509,9 +509,9 @@ module.exports = class extends Language {
 			COMMAND_PRONOUNS_DESCRIPTION: 'Allows you to set your pronouns in Ravy\'s pronoun DB.',
 			COMMAND_PRONOUNS_UNKNOWN: 'Couldn\'t find these pronouns in our list. If they are uncommon, try using "other".',
 			COMMAND_PRONOUNS_SUCCESS: (value) => `Set your pronouns to **${value}**.`,
-			COMMAND_INVITE: () => [
-				`To add ${this.client.user.username} to your discord guild:`,
-				`<${this.client.invite}>`,
+			COMMAND_INVITE: (name, invite) => [
+				`To add ${name} to your discord server:`,
+				`<${invite}>`,
 				util.codeBlock('', [
 					'The above link is generated requesting the minimum permissions required to use every command currently.',
 					"I know not all permissions are right for every guild, so don't be afraid to uncheck any of the boxes.",
