@@ -22,6 +22,7 @@ module.exports = class extends Event {
 		]));
 
 		const me = guild.me;
+		if (!me) return false;
 		const meChannel = guild.channels.cache.find(c => c.type === 'text' && me.permissionsIn(c).has([
 			'SEND_MESSAGES', 'VIEW_CHANNEL'
 		]));
