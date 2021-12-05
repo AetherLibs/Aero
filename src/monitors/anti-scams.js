@@ -1,6 +1,7 @@
 const { Monitor } = require('@aero/klasa');
 const centra = require('@aero/centra');
 const leven = require('js-levenshtein');
+const sanitize = require('@aero/sanitizer');
 
 module.exports = class extends Monitor {
 
@@ -38,7 +39,7 @@ module.exports = class extends Monitor {
 	async run(msg) {
 		if (!msg.guild || !msg.guild.settings.get('mod.anti.scams') || msg.exempt) return;
 		
-		const cleanedContent = require('@aero/sanitizer')(msg.content).toLowerCase();
+		const cleanedContent = sanitize(msg.content).toLowerCase();
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
 		const rawLinks = [...msg.content
