@@ -13,14 +13,11 @@ module.exports = class extends Command {
 
 	async run(message) {
 		const invite =
-			(this.client.config.install_params &&
-				`https://discord.com/oauth2/authorize?client_id=${
-					this.client.user.id
-				}&scope=${
-					this.client.config.install_params.scopes.join('+')
-				}&permissions=${
-					this.client.config.install_params.permissions
-				}`)
+			req('https://discord.com/oauth2/authorize')
+				.query('client_id', this.client.user.id)
+				.query('scope', this.client.config.install_params.scopes.join(' '))
+				.query('permissions', this.client.config.install_params.permissions)
+				.url.href
 			|| this.client.config.inviteURL
 			|| this.client.invite;
 
