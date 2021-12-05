@@ -39,6 +39,38 @@ module.exports = class extends Event {
 			this.client.console.log(`[Status] Posting stats with initial ping of ${this.client.ws.ping}ms.`);
 			this.client.setInterval(() => updateWsPing(this.client.ws.ping), 60 * 1000);
 		}
+		this.client.experiments = await req('https://rollouts.advaith.workers.dev/')
+			.json()
+			.then(res => res
+				.filter(item => item?.data?.type === 'guild' && item?.data?.title && item?.data?.description && item?.data?.buckets)
+				.map(({ data, rollout }) => {
+					const experiment = {};
+
+					experiment.name === data.title;
+
+					experiment.buckets = new Map();
+					for (const bucket of data.buckets) {
+						experiment.buckets.set(bucket, data.description[bucket]);
+					}
+
+					experiment.hash = data.hash;
+					experiment.id = data.id;
+
+					experiment.overrides = new Map();
+					const [rolloutHash, _, __, rolloutRanges, overrides] = rollout;
+					for (const override of overrides) {
+						const {b: bucket, k: ids} = override;
+						if (experiment.overrides.has(bucket)) {
+							const entry = experiment.overrides.get(bucket);
+							for (const id of ids) entry.add(id);
+						}
+						else experiment.overrides.set(bucket, new Set(ids));
+					}
+					return experiment;
+				})
+				.reduce((acc, cur) => acc.set(cur.id, cur), new Map())
+			)
+			.catch(() => ({}));
 	}
 
 };
