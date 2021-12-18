@@ -34,6 +34,9 @@ module.exports = class extends Command {
 				].join(' | ')
 			].join('\n'));
 
+		const member = await msg?.guild.members.fetch(user.id).catch(() => null);
+		if (member && member.customAvatar) embed.setFooter(msg.language.get('COMMAND_AVATAR_GUILD_AVAILABLE_FOOTER', msg.guild.settings.get('prefix')))
+
 		return msg.send({ embed });
 	}
 

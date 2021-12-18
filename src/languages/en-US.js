@@ -333,6 +333,8 @@ module.exports = class extends Language {
 			COMMAND_REDEEM_SUCCESS: (icon, title) => `Successfully redeemed ${icon} ${title}`,
 			COMMAND_REPORT_SUBMITERR: (err) => `An issue occurred when submitting the ban: ${err}`,
 			COMMAND_AVATAR_DESCRIPTION: 'Get the avatar from a user.',
+			COMMAND_AVATAR_GUILD_AVAILABLE_FOOTER: (prefix) => `This user has a custom server avatar set - if you wanted to see that one, use ${prefix}guildAvatar`,
+			COMMAND_AVATAR_GUILD_FOOTER: (prefix) => `This avatar is only visible on this server - if you want to see the user's global avatar, use ${prefix}avatar`,
 			COMMAND_BADGES_DESCRIPTION: 'Calculates estimates on how many members in a guild have which profile badges.',
 			COMMAND_BADGES_GUILDSIZE: 'Requesting badges from this guild is not possible due to an issue with large guilds in discord.js.',
 			COMMAND_REVERSEAVATAR_DESCRIPTION: "Perform a reverse image search for a user's avatar.",
