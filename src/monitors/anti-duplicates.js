@@ -18,7 +18,7 @@ module.exports = class extends Monitor {
 
 		if (!msg.member.prevMessageContent) return;
 
-		const similarity = JaroWinklerDistance(msg.content, msg.member.prevMessageContent) * 100;
+		const similarity = JaroWinklerDistance(msg.content, msg.member.prevMessageContent, undefined, true) * 100;
 
 		if (similarity >= msg.guild.settings.get('mod.similarityThreshold')) {
 			msg.delete();
