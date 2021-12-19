@@ -50,6 +50,7 @@
 		"js-levenshtein": "^1.1.6",
 		"kurasuta": "^3.0.1",
 		"mongodb": "^3.5.7",
+		"natural": "^5.1.11",
 		"owoify-js": "^1.0.7",
 		"tinycolor2": "^1.4.1",
 		"ws": "^7.2.3"

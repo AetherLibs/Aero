@@ -135,6 +135,8 @@ module.exports = class extends Language {
 			COMMAND_CENSOR_ALREADY_EXISTS: 'This word is already being censored.',
 			COMMAND_CENSOR_DOESNT_EXIST: 'This word can\'t be uncensored, because it isn\'t being censored.',
 			COMMAND_CENSOR_NO_TERM: 'You must specify a word to censor or uncensor.',
+			COMMAND_DUPLICATETHRESHOLD_DESCRIPTION: 'Configures how similar two messages need to be to be filtered by anti-duplicates, in percent.',
+			COMMAND_DUPLICATETHRESHOLD_DISABLED: (prefix) => `Anti-duplicates must be enabled, else nothing will happen. You can enable it using \`${prefix}anti duplicates enable\``,
 			COMMAND_WELCOME_DESCRIPTION: 'Sets a welcome message for new members. How friendly.\nVariables: {mention} {username} {discrim} {tag} {guild}',
 			COMMAND_WELCOME_NOTEXT: 'Please specify a welcome message',
 			COMMAND_WELCOME_SHOW_NONE: 'No welcome message configured',
