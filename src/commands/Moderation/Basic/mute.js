@@ -34,13 +34,13 @@ module.exports = class extends Command {
 		const formattedReason = `${moderator.tag} | ${reason || guild.language.get('COMMAND_MUTE_NOREASON')}`;
 		for (const member of users) {
 			guild.modCache.add(member.id);
-			if (duration && dateDiffDays(new Date(), duration) <= 28 && this.hasExperiment(guild))
+			if (duration && dateDiffDays(new Date(), duration) <= 28)
 				member.muteTimed(formattedReason, duration);
 			else
 				member.mute(formattedReason, muterole);
 			if (!duration) this.updateSchedule(member);
 		}
-		if (duration && !this.hasExperiment(guild)) this.client.schedule.create('endTempmute', duration, { data: { users: users.map(user => user.id), guild: guild.id } });
+		if (duration && dateDiffDays(new Date(), duration) > 28) this.client.schedule.create('endTempmute', duration, { data: { users: users.map(user => user.id), guild: guild.id } });
 	}
 
 	updateSchedule(user) {
@@ -50,11 +50,6 @@ module.exports = class extends Command {
 		this.client.schedule.delete(unmuteTask.id);
 		data.users = data.users.filter(id => id !== user.id);
 		if (data.users.length !== 0) { this.client.schedule.create('endTempmute', time, { data }); }
-	}
-
-	hasExperiment(guild) {
-		return this.client.experiments.has('2021-11_guild_communication_disabled_guilds')
-			&& this.client.experiments.get('2021-11_guild_communication_disabled_guilds').overrides.get(1).has(guild.id); 
 	}
 
 
