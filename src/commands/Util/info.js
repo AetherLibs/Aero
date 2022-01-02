@@ -166,7 +166,7 @@ module.exports = class extends Command {
 			.filter(role => role.id !== msg.guild.id)
 			.reduce((acc, role, idx) => {
 				if (acc.length + role.name.length < 1010) {
-					if (role.name === '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯') {
+					if (role.name.startsWith('⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')) {
 						spacer = true;
 						return `${acc}\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n`;
 					} else {
