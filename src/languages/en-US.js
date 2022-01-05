@@ -9,7 +9,7 @@
  */
 const { Language, util } = require('@aero/klasa');
 const { bold, code } = require('discord-md-tags');
-const { success, infinity, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests } } = require('../../lib/util/constants').emojis;
+const { success, infinity, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests }, sentinel } = require('../../lib/util/constants').emojis;
 
 module.exports = class extends Language {
 
@@ -524,6 +524,18 @@ module.exports = class extends Language {
 			],
 			COMMAND_INVITE_SUCCESS: (name, invite, discord) => `[Invite ${name}](${invite}) | [Support Server](${discord})`,
 			COMMAND_INVITE_DESCRIPTION: 'Displays the invite link of the bot, to invite it to your guild.',
+			COMMAND_LOGIN_DESCRIPTION: 'Allows you to link your account with Aero Sentinel for servers that require increased security.',
+			COMMAND_LOGIN_ALREADY: 'You already successfully linked your account.',
+			COMMAND_LOGIN_PROMPT: (url, prefix) => [
+				`${sentinel} **Aero Sentinel** ${sentinel}`,
+				'*is a service that helps server owners fight more sophisticated bad users.*',
+				'',
+				`**Please head to <${url}> to verify your account.**`,
+				'',
+				'> For this, a lot of data is collected. Before entering your information, you will be able to review the privacy policy.',
+				'> Do note that after verifying your account, this data cannot be deleted again.',
+				`> For any questions regarding the process, please contact us on Discord. You can find the support server using \`${prefix}invite\`.`
+			].join('\n'),
 			COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
 			COMMAND_HELP_SERVERONLY: 'Server only',
 			COMMAND_HELP_FOOTER: prefix => `for more help run ${prefix}help usage`,
