@@ -15,7 +15,7 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild || !msg.guild.settings.get('mod.censor').length || msg.exempt) return;
-		
+
 		const content = sanitize(msg.content).toLowerCase().trim();
 
 		const contains = msg.guild.settings.get('mod.censor').reduce((acc, cur) => acc || content.includes(cur), false);

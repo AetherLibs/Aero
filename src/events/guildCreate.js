@@ -16,14 +16,14 @@ module.exports = class extends Event {
 	}
 
 	getMessageChannel(guild) {
-		const everyone = guild.roles.everyone;
-		const everyoneChannel = guild.channels.cache.find(c => c.type === 'text' && everyone.permissionsIn(c).has([
+		const { everyone } = guild.roles;
+		const everyoneChannel = guild.channels.cache.find(chan => chan.type === 'text' && everyone.permissionsIn(chan).has([
 			'SEND_MESSAGES', 'VIEW_CHANNEL'
 		]));
 
-		const me = guild.me;
+		const { me } = guild;
 		if (!me) return false;
-		const meChannel = guild.channels.cache.find(c => c.type === 'text' && me.permissionsIn(c).has([
+		const meChannel = guild.channels.cache.find(chan => chan.type === 'text' && me.permissionsIn(chan).has([
 			'SEND_MESSAGES', 'VIEW_CHANNEL'
 		]));
 

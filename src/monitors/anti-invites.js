@@ -20,12 +20,11 @@ module.exports = class extends Monitor {
 		if (!msg.guild || !msg.guild.settings.get('mod.anti.invites') || msg.exempt) return;
 		const match = this.inviteRegex.exec(msg.content);
 		if (match) {
-			const invite = await msg.client.fetchInvite(match.groups['code']).catch(() => null);
+			const invite = await msg.client.fetchInvite(match.groups.code).catch(() => null);
 			msg.invite = invite ?? 'invalid';
 			msg.delete();
-		}
-		else if (this.thirdPartyRegex.test(msg.content) || this.botInviteRegex.test(msg.content)) {
-			msg.invite = 'invalid'
+		} else if (this.thirdPartyRegex.test(msg.content) || this.botInviteRegex.test(msg.content)) {
+			msg.invite = 'invalid';
 			msg.delete();
 		}
 	}

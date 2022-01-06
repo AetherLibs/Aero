@@ -34,10 +34,9 @@ module.exports = class extends Command {
 		const formattedReason = `${moderator.tag} | ${reason || guild.language.get('COMMAND_MUTE_NOREASON')}`;
 		for (const member of users) {
 			guild.modCache.add(member.id);
-			if (duration && dateDiffDays(new Date(), duration) <= 28)
-				member.muteTimed(formattedReason, duration);
-			else
-				member.mute(formattedReason, muterole);
+			if (duration && dateDiffDays(new Date(), duration) <= 28) member.muteTimed(formattedReason, duration);
+			else member.mute(formattedReason, muterole);
+
 			if (!duration) this.updateSchedule(member);
 		}
 		if (duration && dateDiffDays(new Date(), duration) > 28) this.client.schedule.create('endTempmute', duration, { data: { users: users.map(user => user.id), guild: guild.id } });

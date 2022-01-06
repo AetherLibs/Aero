@@ -22,13 +22,13 @@ module.exports = class extends Command {
 			.path(`/channels/${channel.id}/invites`)
 			.method('POST')
 			.header('Authorization', `Bot ${this.client.token}`)
-			.body({
+			.body({ /* eslint-disable camelcase */
 				max_age: 0,
 				target_type: DISCORD_EMBEDDED_APPLICATION_TYPE,
 				target_application_id: DISCORD_ACTIVITY_YOUTUBE
-			}, 'json')
+			}, 'json') /* eslint-enable camelcase */
 			.json();
-		
+
 		msg.send(`<https://discord.gg/${res.code}>`);
 	}
 

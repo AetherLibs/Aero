@@ -29,9 +29,9 @@ module.exports = class extends Command {
 
 			await msg.guild.settings.update('mod.censor', term, { arrayAction: action });
 
-			msg.responder.success(`COMMAND_CENSOR_${action.toUpperCase()}`, term);
+			return msg.responder.success(`COMMAND_CENSOR_${action.toUpperCase()}`, term);
 		} catch (error) {
-			msg.responder.error(error);
+			return msg.responder.error(error);
 		}
 	}
 

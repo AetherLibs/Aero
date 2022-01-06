@@ -13,8 +13,8 @@ module.exports = class extends Command {
 	}
 
 	async run(message) {
-		const invite =
-			req('https://discord.com/oauth2/authorize')
+		const invite
+			= req('https://discord.com/oauth2/authorize')
 				.query('client_id', this.client.user.id)
 				.query('scope', this.client.config.install_params.scopes.join(' '))
 				.query('permissions', this.client.config.install_params.permissions)

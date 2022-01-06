@@ -1,5 +1,4 @@
 const { Command } = require('@aero/klasa');
-const { MessageEmbed } = require('discord.js');
 const req = require('@aero/centra');
 
 const BASE_URL = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/';
@@ -23,8 +22,9 @@ module.exports = class extends Command {
 
 		if (!definition || !definition.hwi) throw 'COMMAND_DEFINE_NOTFOUND';
 
+		/* eslint-disable id-length */
 		msg.send([
-			`(${[definition.fl, ...(definition?.lbs || []) ].join(', ')}) **${definition.hwi.hw.replace(/\*/g, '\\*')}** [${definition.hwi.prs[0].mw}]`,
+			`(${[definition.fl, ...definition?.lbs || []].join(', ')}) **${definition.hwi.hw.replace(/\*/g, '\\*')}** [${definition.hwi.prs[0].mw}]`,
 			definition.def
 				.map(def => def.sseq.flat(1)
 					.map(sseq => sseq[1])
@@ -40,7 +40,7 @@ module.exports = class extends Command {
 						}
 
 						const examples = sense.dt.find(t => t[0] === 'vis');
-						if (examples) output.push(examples[1].filter(obj => obj.t).map(obj => obj.t.replace(/{.+?}/g, '')).map(obj => `  *${obj}*`).join('\n'))
+						if (examples) output.push(examples[1].filter(obj => obj.t).map(obj => obj.t.replace(/{.+?}/g, '')).map(obj => `  *${obj}*`).join('\n'));
 
 						return output.join('\n');
 					})

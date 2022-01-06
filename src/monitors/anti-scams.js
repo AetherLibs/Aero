@@ -38,13 +38,13 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild || !msg.guild.settings.get('mod.anti.scams') || msg.exempt) return;
-		
+
 		const cleanedContent = sanitize(msg.content).toLowerCase();
 		const alphanumContent = cleanedContent.replace(/[\W]+/g, '');
 
 		const rawLinks = [...msg.content
-			.replace(/\x00/g, '')
-			.matchAll(/\b((?:https?:\/\/)?[\w-]+\.[\w-\%\~\#.\/]+)\b/g)
+			.replace(/\x00/g, '') /* eslint-disable-line no-control-regex */
+			.matchAll(/\b((?:https?:\/\/)?[\w-]+\.[\w-%~#./]+)\b/g)
 		].map(i => i[1]);
 
 		const parsedLinks = [...new Set(
@@ -81,7 +81,7 @@ module.exports = class extends Monitor {
 			|| /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content)
 			|| /https?:\/\/bit.ly\/\w/.test(msg.content)
 			|| /(https?:)?store-stea?mpo?we?re?(d|b)/.test(msg.content)
-			) fraudFlags++;
+		) fraudFlags++;
 
 		if (/https?:\/\//.test(msg.content) && /\w+\.ru/.test(msg.content)) fraudFlags++;
 
@@ -96,8 +96,8 @@ module.exports = class extends Monitor {
 		if (/(https?:\/\/)?bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
 
 		if (processedLinks.reduce((accumulator, link) => {
-				if (accumulator) return accumulator;
-				return this.nitroBads.reduce((acc, cur) => acc || link.includes(cur), false) || accumulator;
+			if (accumulator) return accumulator;
+			return this.nitroBads.reduce((acc, cur) => acc || link.includes(cur), false) || accumulator;
 		}, false)) fraudFlags++;
 
 		if (/(https?:\/\/)?disc(or|ro)d-?nitro/.test(msg.content)) fraudFlags++;
@@ -110,10 +110,11 @@ module.exports = class extends Monitor {
 
 	isFinancialFraud(msg, cleanedContent, alphanumContent) {
 		if (this.financeBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) >= 5) return true;
+		return false;
 	}
 
 	hasKnownBad(msg) {
-		this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false)
+		this.knownBads.reduce((acc, cur) => acc || msg.content.includes(cur), false);
 	}
 
 	matchesBadLevenshtein(msg, processedLinks) {

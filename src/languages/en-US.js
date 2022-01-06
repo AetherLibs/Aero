@@ -307,9 +307,12 @@ module.exports = class extends Language {
 			COMMAND_INFO_USER_CWBAD: profile => `${banned} **Likely to spam** (according to [ChatWatch](${profile}))`,
 			COMMAND_INFO_USER_CWBANNED: (profile, reason) => `${banned} ${bold`Blacklisted`} on [ChatWatch](${profile}) for ${code`${reason}`}`,
 			COMMAND_INFO_USER_RIVERSIDEWHITELISTED: (profile) => `${trusted} Very unlikely to be dangerous (according to Riverside's [Dangerous Discord User Database](${profile}))`,
-			COMMAND_INFO_USER_RIVERSIDEGOOD: (reportCount, profile) => `${trusted} Unlikely to be dangerous (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
-			COMMAND_INFO_USER_RIVERSIDESUSPICIOUS: (reportCount, profile) => `${nodata} Possibly dangerous (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
-			COMMAND_INFO_USER_RIVERSIDEBAD: (reportCount, profile) => `${banned} **Likely to be dangerous** (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
+			COMMAND_INFO_USER_RIVERSIDEGOOD: (reportCount, profile) =>
+				`${trusted} Unlikely to be dangerous (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
+			COMMAND_INFO_USER_RIVERSIDESUSPICIOUS: (reportCount, profile) =>
+				`${nodata} Possibly dangerous (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
+			COMMAND_INFO_USER_RIVERSIDEBAD: (reportCount, profile) =>
+				`${banned} **Likely to be dangerous** (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
 			COMMAND_INFO_TRUST_VERYLOW: 'very low',
 			COMMAND_INFO_TRUST_LOW: 'low',
 			COMMAND_INFO_TRUST_HIGH: 'high',

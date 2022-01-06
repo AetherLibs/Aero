@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		if (channel instanceof VoiceChannel) {
 			override = {
 				CONNECT: null
-			}
+			};
 		}
 
 		await channel.updateOverwrite(
@@ -33,7 +33,7 @@ module.exports = class extends Command {
 			override,
 			msg.guild.language.get('COMMAND_UNLOCK_REASON')
 		);
-		
+
 
 		return msg.responder.unlock();
 	}

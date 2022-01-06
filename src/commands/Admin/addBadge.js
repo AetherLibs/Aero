@@ -19,11 +19,11 @@ module.exports = class extends Command {
 
 		for (const user of users) {
 			await user.settings.sync();
-			await user.settings.update('badges', user.settings.get('badges') | (1 << id))
+			await user.settings.update('badges', user.settings.get('badges') | (1 << id)); /* eslint-disable-line no-bitwise */
 		}
 		const out = [
 			`Added the ${badges[id].icon} **${badges[id].title}** badge to: `,
-			users.map(u => u.tag).join(', ')
+			users.map(user => user.tag).join(', ')
 		].join('\n');
 		return msg.send(out);
 	}

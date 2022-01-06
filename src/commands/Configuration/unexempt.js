@@ -23,8 +23,7 @@ module.exports = class extends Command {
 				? 'roles'
 				: 'channels';
 		await msg.guild.settings.sync();
-		if (msg.guild.settings.get(`mod.ignored.${type}`).includes(target.id))
-			await msg.guild.settings.update(`mod.ignored.${type}`, target, { arrayAction: 'remove' });
+		if (msg.guild.settings.get(`mod.ignored.${type}`).includes(target.id)) { await msg.guild.settings.update(`mod.ignored.${type}`, target, { arrayAction: 'remove' }); }
 		return msg.responder.success();
 	}
 

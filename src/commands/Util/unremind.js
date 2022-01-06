@@ -12,14 +12,14 @@ module.exports = class extends Command {
 
 	async run(msg, [id]) {
 		const task = this.client.schedule.tasks
-			.find(task => task.id === id && task.taskName === 'reminder');
+			.find(taskData => taskData.id === id && taskData.taskName === 'reminder');
 
 		if (!task) return msg.responder.error('COMMAND_UNREMIND_NOEXIST');
 		if (task.data.user !== msg.author.id) return msg.responder.error('COMMAND_UNREMIND_NOOWNER');
 
 		await this.client.schedule.delete(id);
 
-		return msg.responder.success();	
+		return msg.responder.success();
 	}
 
 };

@@ -17,8 +17,8 @@ module.exports = class extends Command {
 
 	async run(msg, [percentage]) {
 		const enabled = msg.guild.settings.get('mod.anti.duplicates');
-		if (!enabled) return msg.responder.error('COMMAND_DUPLICATETHRESHOLD_DISABLED', msg.guild.settings.get('prefix'))
-		
+		if (!enabled) return msg.responder.error('COMMAND_DUPLICATETHRESHOLD_DISABLED', msg.guild.settings.get('prefix'));
+
 		await msg.guild.settings.update('mod.similarityThreshold', percentage);
 		return msg.responder.success();
 	}

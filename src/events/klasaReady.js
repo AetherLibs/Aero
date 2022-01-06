@@ -57,14 +57,13 @@ module.exports = class extends Event {
 					experiment.id = data.id;
 
 					experiment.overrides = new Map();
-					const [rolloutHash, _, __, rolloutRanges, overrides] = rollout;
+					const [rolloutHash, _, __, rolloutRanges, overrides] = rollout; /* eslint-disable-line no-unused-vars */
 					for (const override of overrides) {
-						const {b: bucket, k: ids} = override;
+						const { b: bucket, k: ids } = override;
 						if (experiment.overrides.has(bucket)) {
 							const entry = experiment.overrides.get(bucket);
 							for (const id of ids) entry.add(id);
-						}
-						else experiment.overrides.set(bucket, new Set(ids));
+						} else { experiment.overrides.set(bucket, new Set(ids)); }
 					}
 					return experiment;
 				})
@@ -72,9 +71,9 @@ module.exports = class extends Event {
 			)
 			.catch(() => ({}));
 
-		this.client.config.install_params = 
-			await this.client.api.applications(this.client.user.id).rpc.get().then(res => res.install_params)
-			?? { scopes: [ 'applications.commands', 'bot' ], permissions: '8' };
+		this.client.config.install_params /* eslint-disable-line camelcase */
+			= await this.client.api.applications(this.client.user.id).rpc.get().then(res => res.install_params)
+			?? { scopes: ['applications.commands', 'bot'], permissions: '8' };
 	}
 
 };

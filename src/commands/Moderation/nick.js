@@ -18,7 +18,7 @@ module.exports = class extends Command {
 
 	async run(msg, [member, name]) {
 		if (!this.comparePermissions(msg.member, member)) return msg.responder.error('COMMAND_NICK_NOPERMS');
-		member.setNickname(name || null)
+		return member.setNickname(name || null)
 			.then(() => msg.responder.success())
 			.catch((err) => msg.responder.error('COMMAND_NICK_ERROR', err));
 	}

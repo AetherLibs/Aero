@@ -16,7 +16,7 @@ module.exports = class extends Event {
 		await lemonMessage.react('🍋');
 
 		const filter = lemonedMessage => lemonedMessage.id === msg.id && lemonedMessage.channel === msg.channel.id;
-		console.log('aaa')
+		console.log('aaa');
 		const lemonedMessages = await msg.guild.settings.get('lemonboard.messages');
 		const lemonedMessage = lemonedMessages.find(filter);
 		lemonedMessage.starMessage = lemonMessage.id;

@@ -16,7 +16,7 @@ module.exports = class extends Command {
 			.path('/admin/user')
 			.query({ id: msg.author.id })
 			.json();
-		
+
 		if (found) return msg.responder.success('COMMAND_LOGIN_ALREADY');
 
 		return msg.send(msg.language.get('COMMAND_LOGIN_PROMPT', this.client.config.sentinelURL, msg.guild.settings.get('prefix')));

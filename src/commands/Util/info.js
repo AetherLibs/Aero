@@ -1,6 +1,6 @@
 const { Command, Duration, Timestamp } = require('@aero/klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
-const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans }, pronounDB } = require('../../../lib/util/constants');
+const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans } } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
 const { Ban, Warn } = require('@aero/drep');
 module.exports = class extends Command {
@@ -225,7 +225,7 @@ module.exports = class extends Command {
 				: 'COMMAND_INFO_USER_RIVERSIDEBAD';
 
 		const KSoftBansProfile = `${KSoftBans}?user=${user.id}`;
-		const RiversideLink = `https://discord.riverside.rocks/check?id=${user.id}&ref=aero`
+		const RiversideLink = `https://discord.riverside.rocks/check?id=${user.id}&ref=aero`;
 
 		embed.addField(`• Trust (${msg.language.get(rating)})`, [
 			KSoftBan?.active

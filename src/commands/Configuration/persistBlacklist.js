@@ -23,11 +23,9 @@ module.exports = class extends Command {
 		const currentBlacklistArr = await msg.guild.settings.get('persistBlacklist');
 		const currentBlacklist = new Set(currentBlacklistArr);
 
-		if (added)
-			currentBlacklist.add(role.id);
-		else
-			currentBlacklist.delete(role.id);
-		
+		if (added) currentBlacklist.add(role.id);
+		else currentBlacklist.delete(role.id);
+
 
 		await msg.guild.settings.update('persistBlacklist', [...currentBlacklist], { arrayAction: 'overwrite' });
 

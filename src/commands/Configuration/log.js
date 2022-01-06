@@ -53,7 +53,7 @@ module.exports = class extends Command {
 			const _channel = msg.guild.settings.get(`logs.${type}.channel`);
 			const _webhook = msg.guild.settings.get(`logs.${type}.webhook`);
 			if ((_channel === channel.id) && _webhook) {
-				const hook = currentHooks.get(_webhook)
+				const hook = currentHooks.get(_webhook);
 				if (hook) {
 					continue;
 				}
@@ -61,18 +61,17 @@ module.exports = class extends Command {
 
 			// create hooks
 			await channel.createWebhook(`${this.client.user.username} Log: ${type}`,
-			{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') })
-			.then(async hook => {
+				{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') })
+				.then(async hook => {
 				// set db entries
-				succeeded.push(type);
-				await msg.guild.settings.update(`logs.${type}.channel`, channel);
-				await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
+					succeeded.push(type);
+					await msg.guild.settings.update(`logs.${type}.channel`, channel);
+					await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
 
-				// populate logger cache
-				msg.guild.log.webhooks[type] = hook;
-			})
-			.catch(() =>
-				{ throw 'COMMAND_LOG_NOWEBHOOKPERMS' });
+					// populate logger cache
+					msg.guild.log.webhooks[type] = hook;
+				})
+				.catch(() => { throw 'COMMAND_LOG_NOWEBHOOKPERMS'; });
 		}
 
 		if (succeeded.length) {

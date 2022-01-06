@@ -1,5 +1,5 @@
 const { Monitor } = require('@aero/klasa');
-const { JaroWinklerDistance } = require('natural');
+const { JaroWinklerDistance: jaroWinklerDistance } = require('natural');
 
 module.exports = class extends Monitor {
 
@@ -18,7 +18,7 @@ module.exports = class extends Monitor {
 
 		if (!msg.member.prevMessageContent) return;
 
-		const similarity = JaroWinklerDistance(msg.content, msg.member.prevMessageContent, undefined, true) * 100;
+		const similarity = jaroWinklerDistance(msg.content, msg.member.prevMessageContent, undefined, true) * 100;
 
 		if (similarity >= msg.guild.settings.get('mod.similarityThreshold')) {
 			msg.delete();
@@ -27,11 +27,10 @@ module.exports = class extends Monitor {
 				this.client.emit('raid', msg.guild, [msg.member.id]);
 			}
 			msg.member.duplicateCount++;
-		} 
-		else if (msg.member.duplicateCount > 0) {
+		} else if (msg.member.duplicateCount > 0) {
 			if (msg.member.nonduplicateCount < 50) msg.member.nonduplicateCount++;
 			else msg.member.duplicateCount = 0;
-		} 
+		}
 	}
 
 };
