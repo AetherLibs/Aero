@@ -298,7 +298,7 @@ module.exports = class extends Language {
 			COMMAND_INFO_USER_NEUTRAL: `${nodata} No information found on this user`,
 			COMMAND_INFO_USER_REP_POSITIVE: (provider) => `${trusted} Positive reputation on ${provider}`,
 			COMMAND_INFO_USER_REP_NEGATIVE: (provider) => `${banned} Negative reputation on ${provider}`,
-			COMMAND_INFO_USER_REP_NEUTRAL: (neutral) => `${nodata} No reputation on ${provider}`,
+			COMMAND_INFO_USER_REP_NEUTRAL: (provider) => `${nodata} No reputation on ${provider}`,
 			COMMAND_HASTEBIN_DESCRIPTION: 'Upload code or text to hastebin.',
 			COMMAND_REMIND_DESCRIPTION: 'Create a reminder.',
 			COMMAND_REMIND_REPLY: (when, id) => `I will remind you in ${when}. (id: ${id})`,
