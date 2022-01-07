@@ -7,6 +7,7 @@ const {
 	userInfo: { providers: providerMap, reasons: reasonMap }
 } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
+
 module.exports = class extends Command {
 
 	constructor(...args) {

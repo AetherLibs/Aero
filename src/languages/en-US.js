@@ -848,6 +848,7 @@ module.exports = class extends Language {
 			LOG_ARGS_CHANNEL: (name, mention, id) => `**channel:** ${name} ${mention} [${id}]`,
 			LOG_ARGS_USERS: users => `**users:** ${users}`,
 			LOG_ARGS_MODERATOR: (tag, id) => `moderator: ${tag} [${id}]`,
+			LOG_ARGS_MODERATORS: (ids) => `moderators: ${ids}`,
 			LOG_ARGS_REASON: reason => `**reason:** ${reason}`,
 			LOG_ARGS_DURATION: duration => `**duration:** ${duration}`,
 			LOG_ARGS_MESSAGE: (content, attachments) => `**message:** ${content}${attachments.length ? `\n${attachments.join('\n')}` : ''}`,
