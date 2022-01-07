@@ -107,7 +107,7 @@ module.exports = class extends Command {
 	async userinfo(msg, user) {
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 		let embed = new MessageEmbed();
-		const { pronouns, bans, trust, whitelists } = await req('https://ravy.org/api/v1/')
+		const { pronouns, bans, trust, whitelists, sentinel } = await req('https://ravy.org/api/v1/')
 			.path('/users')
 			.path(user.id)
 			.header('Authorization', process.env.RAVY_TOKEN)
@@ -115,7 +115,7 @@ module.exports = class extends Command {
 		embed = await this._addBaseData(user, embed, pronouns);
 		embed = await this._addBadges(user, embed);
 		embed = await this._addMemberData(msg, user, embed);
-		embed = await this._addSecurity(msg, user, embed, bans, trust, whitelists);
+		embed = await this._addSecurity(msg, user, embed, bans, trust, whitelists, sentinel);
 		await msg.sendEmbed(embed);
 		return loading.delete();
 	}
@@ -208,7 +208,7 @@ module.exports = class extends Command {
 		return embed;
 	}
 
-	async _addSecurity(msg, user, embed, bans, trust, whitelists) {
+	async _addSecurity(msg, user, embed, bans, trust, whitelists, sentinel) {
 		const content = [
 			...bans.map(ban =>
 				msg.language.get('COMMAND_INFO_USER_BANNED',
@@ -219,11 +219,13 @@ module.exports = class extends Command {
 			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider))
 		];
 
+		if (sentinel.verified) content.push(msg.language.get('COMMAND_INFO_USER_SENTINEL'));
+
 		embed.addField(`• Trust (${trust.label})`, content.length ? content.join('\n') : msg.language.get('COMMAND_INFO_USER_NEUTRAL'));
 
-		embed.setColor(INFORMATION);
-		if (bans.length) embed.setColor(VERY_NEGATIVE);
-		if (whitelists.length) embed.setColor(POSITIVE);
+		if (trust.level === 3) embed.setColor(INFORMATION);
+		else if (trust.level < 3) embed.setColor(VERY_NEGATIVE);
+		else if (trust.level > 3) embed.setColor(POSITIVE);
 
 		return embed;
 	}

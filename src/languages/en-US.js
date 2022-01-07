@@ -294,6 +294,7 @@ module.exports = class extends Language {
 			COMMAND_INFO_USER_STATISTICS: 'Statistics',
 			COMMAND_INFO_USER_BANNED: (provider, reason) => `${banned} ${bold`Banned`} on ${provider} for \`${reason}\``,
 			COMMAND_INFO_USER_WHITELISTED: (provider) => `${trusted} ${bold`Whitelisted`} on ${provider}`,
+			COMMAND_INFO_USER_SENTINEL: `${trusted} ${bold`Verified`} on the Aero Sentinel security platform`,
 			COMMAND_INFO_USER_NEUTRAL: `${nodata} No information found on this user`,
 			COMMAND_HASTEBIN_DESCRIPTION: 'Upload code or text to hastebin.',
 			COMMAND_REMIND_DESCRIPTION: 'Create a reminder.',
