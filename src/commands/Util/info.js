@@ -107,7 +107,7 @@ module.exports = class extends Command {
 	async userinfo(msg, user) {
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 		let embed = new MessageEmbed();
-		const { pronouns, bans, trust, whitelists, sentinel } = await req('https://ravy.org/api/v1/')
+		const { pronouns, bans, trust, whitelists, sentinel, rep } = await req('https://ravy.org/api/v1/')
 			.path('/users')
 			.path(user.id)
 			.header('Authorization', process.env.RAVY_TOKEN)
@@ -115,7 +115,7 @@ module.exports = class extends Command {
 		embed = await this._addBaseData(user, embed, pronouns);
 		embed = await this._addBadges(user, embed);
 		embed = await this._addMemberData(msg, user, embed);
-		embed = await this._addSecurity(msg, user, embed, bans, trust, whitelists, sentinel);
+		embed = await this._addSecurity(msg, user, embed, bans, trust, whitelists, sentinel, rep);
 		await msg.sendEmbed(embed);
 		return loading.delete();
 	}
@@ -208,18 +208,28 @@ module.exports = class extends Command {
 		return embed;
 	}
 
-	async _addSecurity(msg, user, embed, bans, trust, whitelists, sentinel) {
-		const content = [
+	async _addSecurity(msg, user, embed, bans, trust, whitelists, sentinel, rep) {
+		let content = [
 			...bans.map(ban =>
 				msg.language.get('COMMAND_INFO_USER_BANNED',
 					providerMap[ban.provider] || ban.provider,
 					reasonMap[ban.reason] || ban.reason || 'unknown reason'
 				)
 			),
-			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider))
+			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider)),
 		];
 
-		if (sentinel.verified) content.push(msg.language.get('COMMAND_INFO_USER_SENTINEL'));
+		if (!content.length) content = rep
+				.map(entry => {
+					if (entry.score === 0.5) entry.orientation = 'neutral';
+					else if (entry.score > 0.5) entry.orientation = 'positive';
+					else if (entry.score < 0.5) entry.orientation = 'negative';
+
+					return entry;
+				})
+				.map(entry => msg.language.get(`COMMAND_INFO_USER_REP_${entry.orientation.toUpperCase()}`, providerMap[entry.provider] || entry.provider));
+
+		if (sentinel.verified) content = [msg.language.get('COMMAND_INFO_USER_SENTINEL')].concat(content);
 
 		embed.addField(`• Trust (${trust.label})`, content.length ? content.join('\n') : msg.language.get('COMMAND_INFO_USER_NEUTRAL'));
 
