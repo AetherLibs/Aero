@@ -1,5 +1,6 @@
 const { Command } = require('@aero/klasa');
 const { PerspectiveAPI: url } = require('~/lib/util/constants').url;
+const { ansi } = require('~/lib/util/util');
 const req = require('@aero/centra');
 
 module.exports = class extends Command {
@@ -11,9 +12,6 @@ module.exports = class extends Command {
 			description: language => language.get('COMMAND_PERSPECTIVETEST_DESCRIPTION'),
 			usage: '<string:string>'
 		});
-
-		this.RED = `[0;31m`;
-		this.GREEN = `[0;32m`;
 	}
 
 	async run(msg, [text]) {
@@ -32,7 +30,10 @@ module.exports = class extends Command {
 			.header('user-agent', `${this.client.user.username}/${this.client.config.version}`)
 			.json();
 
-		const content = Object.entries(res.attributeScores).map(([k, s]) => `${s.summaryScore.value > 0.9 ? this.RED : this.GREEN} ${k.padEnd(17)} = ${s.summaryScore.value}`).join('\n')
+		const content = Object.entries(res.attributeScores).map(([k, s]) => `${ansi}${s.summaryScore.value > 0.9
+			? ansi.bold().color('red')
+			: ansi.color('green')
+		} ${k.padEnd(17)} = ${s.summaryScore.value}`).join('\n')
 
 		msg.send(`>>> \`\`\`ansi\n${content}\n\`\`\``);
 	}
