@@ -9,7 +9,7 @@
  */
 const { Language, util } = require('@aero/klasa');
 const { bold, code } = require('discord-md-tags');
-const { success, infinity, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests }, sentinel } = require('../../lib/util/constants').emojis;
+const { success, infinity, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests }, sentinel, sentinelOff } = require('../../lib/util/constants').emojis;
 
 module.exports = class extends Language {
 
@@ -568,6 +568,9 @@ module.exports = class extends Language {
 			COMMAND_REACTIONROLE_INVALID_EMOJI: 'The emoji you used is from an unknown server, or not supported by Discord.',
 			COMMAND_REACTIONROLE_NOMSG: (messageid) => `Could not find message with id: \`${messageid}\``,
 			COMMAND_REACTIONROLE_ROLEUPDATE_REASON: 'Reaction Roles - User added or removed their reaction.',
+			COMMAND_SHIELD_DESCRIPTION: 'Toggle the status of Aero Shield, an automatic service protecting your server from known bad users.',
+			COMMAND_SHIELD_ENABLED: `${sentinel} **Enabled** Aero Shield. Known bad users will be automatically banned.`,
+			COMMAND_SHIELD_DISABLED: `${sentinelOff} **Disabled** Aero Shield. Known bad users will no longer be banned.`,
 			COMMAND_REPORT_DESCRIPTION: [
 				'Reports a user to the global ban list at KSoft.Si.',
 				'Use only for serious issues; false reports or reporting personal issues may get you blacklisted.',

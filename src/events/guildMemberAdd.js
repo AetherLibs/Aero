@@ -58,14 +58,15 @@ module.exports = class extends Event {
 		await member.guild.log.memberJoined({ member });
 
 		// global ban check
-		const { trust, bans } = await req('https://ravy.org/api/v1/')
-			.path('/users')
-			.path(member.id)
-			.path('/bans')
-			.header('Authorization', process.env.RAVY_TOKEN)
-			.json();
-		if (trust.level <= 2) this.client.emit('globalBan', member, bans);
-
+		if (member.guild.settings.get('mod.shield')) {
+			const { trust, bans } = await req('https://ravy.org/api/v1/')
+				.path('/users')
+				.path(member.id)
+				.path('/bans')
+				.header('Authorization', process.env.RAVY_TOKEN)
+				.json();
+			if (trust.level <= 2) this.client.emit('globalBan', member, bans);
+		}
 		return member;
 	}
 
