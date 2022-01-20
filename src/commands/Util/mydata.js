@@ -11,8 +11,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		if (Date.now() - msg.author.settings.get('lastDataTimestamp') < TIME.DAY * 30) {
-			return msg.responder.error('COMMAND_MYDATA_COOLDOWN', `<t:${Math.ceil((msg.author.settings.get('lastDataTimestamp') + TIME.DAY * 30) / 1000)}:R>`);
+		if (Date.now() - msg.author.settings.get('lastDataTimestamp') < TIME.DAY * 7) {
+			return msg.responder.error('COMMAND_MYDATA_COOLDOWN', `<t:${Math.ceil((msg.author.settings.get('lastDataTimestamp') + TIME.DAY * 7) / 1000)}:R>`);
 		}
 
 		const { found, data: sentinelData } = await req(this.client.config.sentinelApiURL)
