@@ -7,6 +7,8 @@ module.exports = class extends Command {
 		super(...args, {
 			description: language => language.get('COMMAND_JOKE_DESCRIPTION')
 		});
+
+		this.deprecated = 'The underlying API for this command is no longer maintained';
 	}
 
 	async run(msg) {
