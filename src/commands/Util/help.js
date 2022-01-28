@@ -48,7 +48,7 @@ module.exports = class extends Command {
 				.addField(`• Usage${restrictions.length ? ` (${restrictions.join(', ')})` : ''}`, this.buildUsage(command, msg.guild.settings.get('prefix')))
 				.addField('• Permission Node', code`${command.category.toLowerCase()}.${command.name}`);
 
-			if (command.examples?.length) embed.addField('• Examples', examples.map(example => `\`${example}\``).join('\n'));
+			if (command.examples?.length) embed.addField('• Examples', this.buildExamples(command, msg.guild.settings.get('prefix'), command.examples));
 
 			return msg.sendEmbed(embed);
 		}
@@ -82,6 +82,10 @@ module.exports = class extends Command {
 			const options = tag.possibles.map(possible => possible.name).join(' | ');
 			return `  ${brackets[0]} ${options} ${brackets[1]}`;
 		}).join('')}`;
+	}
+
+	buildExamples(command, prefix, examples) {
+		return examples.map(example => `${prefix}${command.name} ${example}`).join('\n');
 	}
 
 };
