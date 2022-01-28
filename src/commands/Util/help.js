@@ -29,13 +29,28 @@ module.exports = class extends Command {
 					.setDescription(msg.language.get('COMMAND_HELP_USAGE', msg.guild.settings.get('prefix')).join('\n'))
 				);
 			}
-			return msg.sendEmbed(embed
+
+			const restrictions = [];
+
+			if (command.permissionLevel >= 9)
+				restrictions.push(msg.language.get('COMMAND_HELP_OWNERONLY'));
+			else if (command.permissionLevel >= 7)
+				restrictions.push(msg.language.get('COMMAND_HELP_OWNERGUILDONLY'));
+
+			if (!command.runIn.includes('dm'))
+				restrictions.push(msg.language.get('COMMAND_HELP_SERVERONLY'));
+
+			embed
 				.addField(`${command.name} ${command.aliases.length ? `(${command.aliases.join(', ')})` : ''}`,
 					isFunction(command.description)
 						? command.description(msg.language)
 						: command.description)
-				.addField(`• Usage${command.runIn.includes('dm') ? '' : ` (${msg.language.get('COMMAND_HELP_SERVERONLY')})`}`, this.buildUsage(command, msg.guild.settings.get('prefix')))
-				.addField('• Permission Node', code`${command.category.toLowerCase()}.${command.name}`));
+				.addField(`• Usage${restrictions.length ? ` (${restrictions.join(', ')})` : ''}`, this.buildUsage(command, msg.guild.settings.get('prefix')))
+				.addField('• Permission Node', code`${command.category.toLowerCase()}.${command.name}`);
+
+			if (command.examples?.length) embed.addField('• Examples', examples.map(example => `\`${example}\``).join('\n'));
+
+			return msg.sendEmbed(embed);
 		}
 
 		const categories = this.buildHelp();

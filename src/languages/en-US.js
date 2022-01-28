@@ -526,6 +526,8 @@ module.exports = class extends Language {
 			].join('\n'),
 			COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
 			COMMAND_HELP_SERVERONLY: 'Server only',
+			COMMAND_HELP_OWNERONLY: 'Owner only',
+			COMMAND_HELP_OWNERGUILDONLY: 'Limited availability',
 			COMMAND_HELP_FOOTER: prefix => `for more help run ${prefix}help usage`,
 			COMMAND_HELP_USAGE: prefix => [
 				'Information about every command can be gathered directly in discord, without needing to open a command page.',
