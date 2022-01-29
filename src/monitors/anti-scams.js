@@ -75,7 +75,7 @@ module.exports = class extends Monitor {
 	isSteamFraud(msg, cleanedContent, alphanumContent) {
 		let fraudFlags = 0;
 
-		if (this.steamBads.reduce((acc, cur) => acc || alphanumContent.includes(cur), false)) fraudFlags++;
+		if (this.steamBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) > 1) fraudFlags++;
 
 		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content)
 			|| /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content)
@@ -95,15 +95,10 @@ module.exports = class extends Monitor {
 
 		if (/(https?:\/\/)?bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
 
-		if (processedLinks.reduce((accumulator, link) => {
-			if (accumulator) return accumulator;
-			return this.nitroBads.reduce((acc, cur) => acc || (link.includes(cur) && !alphanumContent.replace(link, '').includes(cur)), false) || accumulator;
-		}, false)) fraudFlags++;
-
 		if (/(https?:\/\/)?disc(or|ro)d-?nitro/.test(msg.content)) fraudFlags++;
 		if (/(https?:\/\/)?nitro-?disc(or|ro)d/.test(msg.content)) fraudFlags++;
 
-		if (this.nitroBads.reduce((acc, cur) => acc || alphanumContent.includes(cur), false)) fraudFlags++;
+		if (this.nitroBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) > 1) fraudFlags++;
 
 		return fraudFlags > 1;
 	}
