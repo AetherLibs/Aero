@@ -66,7 +66,7 @@ module.exports = class extends Monitor {
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
 			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)
 			|| this.isFinancialFraud(msg, cleanedContent, alphanumContent)
-			|| await this.isFraudulentByAPI(parsedLinks)
+			|| await this.isFraudulentByAPI(parsedLinks, msg.author.id)
 		) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
 		}
@@ -125,10 +125,11 @@ module.exports = class extends Monitor {
 		}, false);
 	}
 
-	async isFraudulentByAPI(links) {
+	async isFraudulentByAPI(links, authorId) {
 		const statuses = await Promise.all(links.map(async link => {
 			const res = await centra('https://ravy.org/api/v1')
 				.header('Authorization', process.env.RAVY_TOKEN)
+				.query('author', authorId)
 				.path('/urls')
 				.path(encodeURIComponent(link.href))
 				.json();
