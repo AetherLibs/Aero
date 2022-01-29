@@ -97,7 +97,7 @@ module.exports = class extends Monitor {
 
 		if (processedLinks.reduce((accumulator, link) => {
 			if (accumulator) return accumulator;
-			return this.nitroBads.reduce((acc, cur) => acc || (link.includes(cur) && !alphanumContent.includes(cur)), false) || accumulator;
+			return this.nitroBads.reduce((acc, cur) => acc || (link.includes(cur) && !alphanumContent.replace(link, '').includes(cur)), false) || accumulator;
 		}, false)) fraudFlags++;
 
 		if (/(https?:\/\/)?disc(or|ro)d-?nitro/.test(msg.content)) fraudFlags++;
