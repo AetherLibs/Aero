@@ -75,7 +75,7 @@ module.exports = class extends Monitor {
 	isSteamFraud(msg, cleanedContent, alphanumContent) {
 		let fraudFlags = 0;
 
-		if (this.steamBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) > 1) fraudFlags++;
+		fraudFlags += this.steamBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0);
 
 		if (/https?:\/\/str?(ea|ae)(m|n|rn)c/.test(msg.content)
 			|| /str?(ea|ae)(m|n|rn)comm?(unt?(i|y)t?(y|u))|(inuty)\.\w/.test(msg.content)
@@ -87,7 +87,7 @@ module.exports = class extends Monitor {
 
 		if (alphanumContent.includes('password')) fraudFlags++;
 
-		return fraudFlags > 1;
+		return fraudFlags > 2;
 	}
 
 	isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks) {
@@ -98,9 +98,9 @@ module.exports = class extends Monitor {
 		if (/(https?:\/\/)?disc(or|ro)d-?nitro/.test(msg.content)) fraudFlags++;
 		if (/(https?:\/\/)?nitro-?disc(or|ro)d/.test(msg.content)) fraudFlags++;
 
-		if (this.nitroBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0) > 1) fraudFlags++;
+		fraudFlags += this.nitroBads.reduce((acc, cur) => acc + alphanumContent.includes(cur), 0);
 
-		return fraudFlags > 1;
+		return fraudFlags > 2;
 	}
 
 	isFinancialFraud(msg, cleanedContent, alphanumContent) {
