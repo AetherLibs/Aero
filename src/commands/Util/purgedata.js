@@ -21,21 +21,25 @@ module.exports = class extends Command {
 		// purge user Data
 		const userData = await this.client.providers.default.db.collection('users').findOne({ id: msg.author.id });
 		let unset = {};
+		let fields = 0;
 		for (const key in userData) {
 			if (this.userFieldsToKeep.has(key)) continue;
 			unset[key] = 1;
+			fields++;
 		}
-		await this.client.providers.default.db.collection('users').updateOne({ id: msg.author.id }, { $unset: unset });
+		if (fields) await this.client.providers.default.db.collection('users').updateOne({ id: msg.author.id }, { $unset: unset });
 
 		// purge member Data
 		const memberData = await this.client.providers.default.db.collection('members').find({ id: new RegExp(`\\d+\\.${msg.author.id}`) }).toArray();
 		for (const data of memberData) {
+			fields = 0;
 			unset = {};
 			for (const key in data) {
 				if (this.memberFieldsToKeep.has(key)) continue;
 				unset[key] = 1;
+				fields++;
 			}
-			await this.client.providers.default.db.collection('members').updateOne({ id: data.id }, { $unset: unset });
+			if (fields) await this.client.providers.default.db.collection('members').updateOne({ id: data.id }, { $unset: unset });
 		}
 
 		await msg.author.settings.update('lastDataPurgeTimestamp', new Date().getTime());
