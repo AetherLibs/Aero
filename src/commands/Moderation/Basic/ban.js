@@ -11,7 +11,13 @@ module.exports = class extends Command {
 			aliases: ['b', 'bean', '410', 'yeet', 'banish', 'begone', 'perish'],
 			description: language => language.get('COMMAND_BAN_DESCRIPTION').join('\n'),
 			usage: '<user  or  users:users|username:membername> [duration:time] [purge|p|soft|s] [reason:...string]',
-			usageDelim: ' '
+			usageDelim: ' ',
+			examples: [
+				'@user purge Spammed a lot of messages.',
+				'@user1 @user2 @user3 14d Violating several server rules',
+				'@user soft Unacceptable messages, initial offense',
+				'643945264868098049 Known to cause trouble'
+			]
 		});
 
 		this.defaultPermissions = FLAGS.BAN_MEMBERS;

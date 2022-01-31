@@ -1,4 +1,3 @@
-const { hostname } = require('os');
 const { version } = require('../package');
 const stage = process.env.AERO_ENV;
 const [commitHash, ...commitMessage] = require('child_process').execSync('git log -1 --date-order --format=format:"%h - %s"').toString().split(' - ');
@@ -30,6 +29,8 @@ module.exports = {
 	carbonURL: 'https://carbonara.aero.bot',
 	shortURL: 'https://ddlc.me',
 	lgbtURL: 'https://api.ravy.lgbt',
+	sentinelURL: 'https://sentinel.aero.bot',
+	sentinelApiURL: 'https://sentinel-api.aero.bot',
 	dailyPoints: 50,
 	ownerAccess: ['234390727113703424'],
 	roleBulkThreshold: 3

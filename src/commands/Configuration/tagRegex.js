@@ -29,7 +29,7 @@ module.exports = class extends Command {
 		if (msg.guild.settings.get('regexTags').find(tuple => tuple[0].toString().toLowerCase() === tag.toLowerCase())) throw msg.language.get('COMMAND_TAG_EXISTS');
 		content = content.join(this.usageDelim);
 		try {
-			tag = new RegExp(tag);
+			tag = new RegExp(tag, 'i');
 		} catch (err) {
 			throw msg.language.get('COMMAND_TAGREGEX_BADREGEX', err.message);
 		}

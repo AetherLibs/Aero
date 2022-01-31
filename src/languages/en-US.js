@@ -9,7 +9,7 @@
  */
 const { Language, util } = require('@aero/klasa');
 const { bold, code } = require('discord-md-tags');
-const { success, infinity, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests } } = require('../../lib/util/constants').emojis;
+const { success, infinity, trusted, banned, nodata, perms: { granted, unspecified }, covid: { cases, recoveries, deaths, tests }, sentinel, sentinelOff } = require('../../lib/util/constants').emojis;
 
 module.exports = class extends Language {
 
@@ -129,6 +129,14 @@ module.exports = class extends Language {
 			COMMAND_CARBON_DESCRIPTION: 'Toggle automatically making an image from your code using [carbonara](https://github.com/petersolopov/carbonara)',
 			COMMAND_CARBON_ENABLED: 'Enabled automatic codeblock conversion.',
 			COMMAND_CARBON_DISABLED: 'Disabled automatic codeblock conversion.',
+			COMMAND_CENSOR_DESCRIPTION: 'Adds or removes a phrase to a list of automatically censored phrases.',
+			COMMAND_CENSOR_ADD: term => `Added **${term}** to list of censored words.`,
+			COMMAND_CENSOR_REMOVE: term => `No longer censoring **${term}**.`,
+			COMMAND_CENSOR_ALREADY_EXISTS: 'This word is already being censored.',
+			COMMAND_CENSOR_DOESNT_EXIST: 'This word can\'t be uncensored, because it isn\'t being censored.',
+			COMMAND_CENSOR_NO_TERM: 'You must specify a word to censor or uncensor.',
+			COMMAND_DUPLICATETHRESHOLD_DESCRIPTION: 'Configures how similar two messages need to be to be filtered by anti-duplicates, in percent.',
+			COMMAND_DUPLICATETHRESHOLD_DISABLED: (prefix) => `Anti-duplicates must be enabled, else nothing will happen. You can enable it using \`${prefix}anti duplicates enable\``,
 			COMMAND_WELCOME_DESCRIPTION: 'Sets a welcome message for new members. How friendly.\nVariables: {mention} {username} {discrim} {tag} {guild}',
 			COMMAND_WELCOME_NOTEXT: 'Please specify a welcome message',
 			COMMAND_WELCOME_SHOW_NONE: 'No welcome message configured',
@@ -284,28 +292,13 @@ module.exports = class extends Language {
 			COMMAND_INFO_USER_WARNINGS: 'Warnings',
 			COMMAND_INFO_USER_NOTES: 'Notes',
 			COMMAND_INFO_USER_STATISTICS: 'Statistics',
-			COMMAND_INFO_USER_KSOFTBANNED: (reason, proof, profile) => `${banned} ${bold`Banned`} on [KSoft.Si Bans](${profile}) for ${code`${reason}`} ⎾[proof](${proof})⏌`,
-			COMMAND_INFO_USER_KSOFTCLEAN: profile => `${trusted} Unlikely to bother (according to [KSoft.Si Bans](${profile}))`,
-			COMMAND_INFO_USER_KSOFTSTAFF: profile => `${trusted} Very unlikely to bother (according to [KSoft.Si Bans](${profile}))`,
-			COMMAND_INFO_USER_DREPWARNED: (reason) => `${banned} ${bold`Warned`} on DiscordRep for ${code`${reason}`}`,
-			COMMAND_INFO_USER_DREPBANNED: (reason) => `${banned} ${bold`Banned`} on DiscordRep for ${code`${reason}`}`,
-			COMMAND_INFO_USER_DREPNEUTRAL: profile => `${nodata} No reputation yet (on [DiscordRep](${profile}))`,
-			COMMAND_INFO_USER_DREPPOSITIVE: profile => `${trusted} Unlikely to scam (according to [DiscordRep](${profile}))`,
-			COMMAND_INFO_USER_DREPSTAFF: profile => `${trusted} Very unlikely to scam (according to [DiscordRep](${profile}))`,
-			COMMAND_INFO_USER_DREPNEGATIVE: profile => `${banned} **Likely to scam** (according to [DiscordRep](${profile}))`,
-			COMMAND_INFO_USER_CWWHITELISTED: profile => `${trusted} Very unlikely to spam (according to [ChatWatch](${profile}))`,
-			COMMAND_INFO_USER_CWGOOD: profile => `${trusted} Unlikely to spam (according to [ChatWatch](${profile}))`,
-			COMMAND_INFO_USER_CWNEUTRAL: profile => `${nodata} No data from [ChatWatch](${profile}) yet`,
-			COMMAND_INFO_USER_CWBAD: profile => `${banned} **Likely to spam** (according to [ChatWatch](${profile}))`,
-			COMMAND_INFO_USER_CWBANNED: (profile, reason) => `${banned} ${bold`Blacklisted`} on [ChatWatch](${profile}) for ${code`${reason}`}`,
-			COMMAND_INFO_USER_RIVERSIDEWHITELISTED: (profile) => `${trusted} Very unlikely to be dangerous (according to Riverside's [Dangerous Discord User Database](${profile}))`,
-			COMMAND_INFO_USER_RIVERSIDEGOOD: (reportCount, profile) => `${trusted} Unlikely to be dangerous (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
-			COMMAND_INFO_USER_RIVERSIDESUSPICIOUS: (reportCount, profile) => `${nodata} Possibly dangerous (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
-			COMMAND_INFO_USER_RIVERSIDEBAD: (reportCount, profile) => `${banned} **Likely to be dangerous** (according to Riverside Rocks' [Dangerous Discord User Database](${profile})) (${reportCount} reports)`,
-			COMMAND_INFO_TRUST_VERYLOW: 'very low',
-			COMMAND_INFO_TRUST_LOW: 'low',
-			COMMAND_INFO_TRUST_HIGH: 'high',
-			COMMAND_INFO_TRUST_VERYHIGH: 'very high',
+			COMMAND_INFO_USER_BANNED: (provider, reason) => `${banned} ${bold`Banned`} on ${provider} for \`${reason}\``,
+			COMMAND_INFO_USER_WHITELISTED: (provider) => `${trusted} ${bold`Whitelisted`} on ${provider}`,
+			COMMAND_INFO_USER_SENTINEL: `${trusted} ${bold`Verified`} on the Aero Sentinel security platform`,
+			COMMAND_INFO_USER_NEUTRAL: `${nodata} No information found on this user`,
+			COMMAND_INFO_USER_REP_POSITIVE: (provider) => `${trusted} Positive reputation on ${provider}`,
+			COMMAND_INFO_USER_REP_NEGATIVE: (provider) => `${banned} Negative reputation on ${provider}`,
+			COMMAND_INFO_USER_REP_NEUTRAL: (provider) => `${nodata} No reputation on ${provider}`,
 			COMMAND_HASTEBIN_DESCRIPTION: 'Upload code or text to hastebin.',
 			COMMAND_REMIND_DESCRIPTION: 'Create a reminder.',
 			COMMAND_REMIND_REPLY: (when, id) => `I will remind you in ${when}. (id: ${id})`,
@@ -320,6 +313,12 @@ module.exports = class extends Language {
 			COMMAND_LYRICS_FAILED: url => `Too many characters to display, check out the lyrics on KSoft: ${url}`,
 			COMMAND_LYRICS_DESCRIPTION: 'Fetches lyrics for a song from api.ksoft.si',
 			COMMAND_MEASURE_DESCRIPTION: 'Get a website\'s performance using lighthouse analytics',
+			COMMAND_MYDATA_DESCRIPTION: 'Request your stored data.',
+			COMMAND_MYDATA_SUCCESS: 'Sent you the data we store in DMs. Make sure you enabled them for this server.',
+			COMMAND_MYDATA_COOLDOWN: (date) => `You already recently requested your data package. You can request it again ${date}.`,
+			COMMAND_PURGEDATA_DESCRIPTION: 'Deletes your stored data. Note that this will **delete all your levels on all servers and any badges**.',
+			COMMAND_PURGEDATA_COOLDOWN: (date) => `You already recently requested a data deletion. You can request it again ${date}.`,
+			COMMAND_PURGEDATA_SUCCESS: 'Scrubbed all of your stored data from the bot.',
 			COMMAND_POLL_DESCRIPTION: 'Creates a poll that people can vote on. Seperate options using commas.',
 			COMMAND_POLL_TOO_MANY_OPTIONS: 'The maximum amount of options is **10**',
 			COMMAND_POLL_TOO_FEW_OPTIONS: 'The minimum amount of options required is **2**',
@@ -327,6 +326,8 @@ module.exports = class extends Language {
 			COMMAND_REDEEM_SUCCESS: (icon, title) => `Successfully redeemed ${icon} ${title}`,
 			COMMAND_REPORT_SUBMITERR: (err) => `An issue occurred when submitting the ban: ${err}`,
 			COMMAND_AVATAR_DESCRIPTION: 'Get the avatar from a user.',
+			COMMAND_AVATAR_GUILD_AVAILABLE_FOOTER: (prefix) => `This user has a custom server avatar set - if you wanted to see that one, use ${prefix}guildAvatar`,
+			COMMAND_AVATAR_GUILD_FOOTER: (prefix) => `This avatar is only visible on this server - if you want to see the user's global avatar, use ${prefix}avatar`,
 			COMMAND_BADGES_DESCRIPTION: 'Calculates estimates on how many members in a guild have which profile badges.',
 			COMMAND_BADGES_GUILDSIZE: 'Requesting badges from this guild is not possible due to an issue with large guilds in discord.js.',
 			COMMAND_REVERSEAVATAR_DESCRIPTION: "Perform a reverse image search for a user's avatar.",
@@ -503,9 +504,9 @@ module.exports = class extends Language {
 			COMMAND_PRONOUNS_DESCRIPTION: 'Allows you to set your pronouns in Ravy\'s pronoun DB.',
 			COMMAND_PRONOUNS_UNKNOWN: 'Couldn\'t find these pronouns in our list. If they are uncommon, try using "other".',
 			COMMAND_PRONOUNS_SUCCESS: (value) => `Set your pronouns to **${value}**.`,
-			COMMAND_INVITE: () => [
-				`To add ${this.client.user.username} to your discord guild:`,
-				`<${this.client.invite}>`,
+			COMMAND_INVITE: (name, invite) => [
+				`To add ${name} to your discord server:`,
+				`<${invite}>`,
 				util.codeBlock('', [
 					'The above link is generated requesting the minimum permissions required to use every command currently.',
 					"I know not all permissions are right for every guild, so don't be afraid to uncheck any of the boxes.",
@@ -514,8 +515,22 @@ module.exports = class extends Language {
 			],
 			COMMAND_INVITE_SUCCESS: (name, invite, discord) => `[Invite ${name}](${invite}) | [Support Server](${discord})`,
 			COMMAND_INVITE_DESCRIPTION: 'Displays the invite link of the bot, to invite it to your guild.',
+			COMMAND_LOGIN_DESCRIPTION: 'Allows you to link your account with Aero Sentinel for servers that require increased security.',
+			COMMAND_LOGIN_ALREADY: 'You already successfully linked your account.',
+			COMMAND_LOGIN_PROMPT: (url, prefix) => [
+				`${sentinel} **Aero Sentinel** ${sentinel}`,
+				'*is a service that helps server owners fight more sophisticated bad users.*',
+				'',
+				`**Please head to <${url}> to verify your account.**`,
+				'',
+				'> For this, a lot of data is collected. Before entering your information, you will be able to review the privacy policy.',
+				'> Do note that after verifying your account, this data cannot be deleted again.',
+				`> For any questions regarding the process, please contact us on Discord. You can find the support server using \`${prefix}invite\`.`
+			].join('\n'),
 			COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
 			COMMAND_HELP_SERVERONLY: 'Server only',
+			COMMAND_HELP_OWNERONLY: 'Owner only',
+			COMMAND_HELP_OWNERGUILDONLY: 'Limited availability',
 			COMMAND_HELP_FOOTER: prefix => `for more help run ${prefix}help usage`,
 			COMMAND_HELP_USAGE: prefix => [
 				'Information about every command can be gathered directly in discord, without needing to open a command page.',
@@ -561,6 +576,9 @@ module.exports = class extends Language {
 			COMMAND_REACTIONROLE_INVALID_EMOJI: 'The emoji you used is from an unknown server, or not supported by Discord.',
 			COMMAND_REACTIONROLE_NOMSG: (messageid) => `Could not find message with id: \`${messageid}\``,
 			COMMAND_REACTIONROLE_ROLEUPDATE_REASON: 'Reaction Roles - User added or removed their reaction.',
+			COMMAND_SHIELD_DESCRIPTION: 'Toggle the status of Aero Shield, an automatic service protecting your server from known bad users.',
+			COMMAND_SHIELD_ENABLED: `${sentinel} **Enabled** Aero Shield. Known bad users will be automatically banned.`,
+			COMMAND_SHIELD_DISABLED: `${sentinelOff} **Disabled** Aero Shield. Known bad users will no longer be banned.`,
 			COMMAND_REPORT_DESCRIPTION: [
 				'Reports a user to the global ban list at KSoft.Si.',
 				'Use only for serious issues; false reports or reporting personal issues may get you blacklisted.',
@@ -834,6 +852,7 @@ module.exports = class extends Language {
 
 			LOG_ACTION_MESSAGEEDITED: 'message edited',
 			LOG_ACTION_MESSAGEDELETED: 'message deleted',
+			LOG_ACTION_INVITEDELETED: 'invite deleted',
 
 			LOG_ACTION_MEMBERJOINED: 'member joined',
 			LOG_ACTION_MEMBERLEFT: 'member left',
@@ -844,6 +863,7 @@ module.exports = class extends Language {
 			LOG_ARGS_CHANNEL: (name, mention, id) => `**channel:** ${name} ${mention} [${id}]`,
 			LOG_ARGS_USERS: users => `**users:** ${users}`,
 			LOG_ARGS_MODERATOR: (tag, id) => `moderator: ${tag} [${id}]`,
+			LOG_ARGS_MODERATORS: (ids) => `moderators: ${ids}`,
 			LOG_ARGS_REASON: reason => `**reason:** ${reason}`,
 			LOG_ARGS_DURATION: duration => `**duration:** ${duration}`,
 			LOG_ARGS_MESSAGE: (content, attachments) => `**message:** ${content}${attachments.length ? `\n${attachments.join('\n')}` : ''}`,
@@ -859,6 +879,7 @@ module.exports = class extends Language {
 					? newAttachments.join('\n')
 					: null
 			].filter(item => item !== null).join('\n'),
+			LOG_ARGS_INVITEDELETED: (name, memberCount) => `**invite:** ${name} (${memberCount} members)`,
 
 			LEVEL_MESSAGES
 
@@ -880,7 +901,7 @@ const COMMAND_8BALL_ANSWERS = [
 	'Maybe.',
 	'There is a small chance.',
 	'Possibly.',
-	
+
 	'Never, ever, ever.',
 	'No!',
 	'Certainly not.',

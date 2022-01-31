@@ -1,7 +1,7 @@
 const { Monitor } = require('@aero/klasa');
 const req = require('@aero/centra');
 const { PerspectiveAPI } = require('../../lib/util/constants').url;
-const { createHash } = require('crypto')
+const { createHash } = require('crypto');
 
 module.exports = class extends Monitor {
 
@@ -16,7 +16,7 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if(!msg.guild || (!msg.guild.settings.get('mod.anti.toxicity') && !msg.guild.settings.get('mod.anti.profanity')) || msg.exempt) return;
+		if (!msg.guild || (!msg.guild.settings.get('mod.anti.toxicity') && !msg.guild.settings.get('mod.anti.profanity')) || msg.exempt) return;
 
 		const communityId = createHash('sha256')
 			.update(msg.guild.id)
@@ -45,8 +45,8 @@ module.exports = class extends Monitor {
 		const PROFANITY = scores.PROFANITY.summaryScore.value;
 
 		if (
-			(msg.guild.settings.get('mod.anti.toxicity') && (IDENTITY_ATTACK > 0.9 || SEVERE_TOXICITY > 0.9)) ||
-			(msg.guild.settings.get('mod.anti.profanity') && (SEXUALLY_EXPLICIT > 0.9 || THREAT > 0.9 || INSULT > 0.9 || PROFANITY > 0.9))
+			(msg.guild.settings.get('mod.anti.toxicity') && (IDENTITY_ATTACK > 0.9 || SEVERE_TOXICITY > 0.9))
+			|| (msg.guild.settings.get('mod.anti.profanity') && (SEXUALLY_EXPLICIT > 0.9 || THREAT > 0.9 || INSULT > 0.9 || PROFANITY > 0.9))
 		) {
 			msg.delete({ reason: msg.language.get('EVENT_PERSPECTIVE_DELETEREASON') });
 		}

@@ -1,8 +1,13 @@
 const { Command, Duration, Timestamp } = require('@aero/klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
-const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans }, pronounDB } = require('../../../lib/util/constants');
+const {
+	color: { VERY_NEGATIVE, POSITIVE, INFORMATION },
+	emojis: { perms: { granted, unspecified }, infinity },
+	badges,
+	userInfo: { providers: providerMap, reasons: reasonMap }
+} = require('../../../lib/util/constants');
 const req = require('@aero/centra');
-const { Ban, Warn } = require('@aero/drep');
+
 module.exports = class extends Command {
 
 	constructor(...args) {
@@ -102,23 +107,22 @@ module.exports = class extends Command {
 	async userinfo(msg, user) {
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 		let embed = new MessageEmbed();
-		embed = await this._addBaseData(user, embed);
+		const { pronouns, bans, trust, whitelists, sentinel, rep } = await req('https://ravy.org/api/v1/')
+			.path('/users')
+			.path(user.id)
+			.header('Authorization', process.env.RAVY_TOKEN)
+			.json();
+		embed = await this._addBaseData(user, embed, pronouns);
 		embed = await this._addBadges(user, embed);
 		embed = await this._addMemberData(msg, user, embed);
-		embed = await this._addSecurity(msg, user, embed);
+		embed = await this._addSecurity(msg, user, embed, bans, trust, whitelists, sentinel, rep);
 		await msg.sendEmbed(embed);
 		return loading.delete();
 	}
 
-	async _addBaseData(user, embed) {
+	async _addBaseData(user, embed, pronouns) {
 		let authorString = `${user.tag} [${user.id}]`;
-		const { pronouns } = await req('https://ravy.org/api/v1/')
-			.path('/users')
-			.path(user.id)
-			.path('pronouns')
-			.header('Authorization', process.env.RAVY_TOKEN)
-			.json();
-		authorString += ` (${pronouns})`;
+		if (pronouns !== 'unknown pronouns') authorString += ` (${pronouns})`;
 		return embed
 			.setAuthor(authorString
 				, user.displayAvatarURL({ dynamic: true }))
@@ -166,7 +170,7 @@ module.exports = class extends Command {
 			.filter(role => role.id !== msg.guild.id)
 			.reduce((acc, role, idx) => {
 				if (acc.length + role.name.length < 1010) {
-					if (role.name === '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯') {
+					if (role.name.startsWith('⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')) {
 						spacer = true;
 						return `${acc}\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n`;
 					} else {
@@ -204,52 +208,34 @@ module.exports = class extends Command {
 		return embed;
 	}
 
-	async _addSecurity(msg, user, embed) {
-		const KSoftBan = await this.client.ksoft.bans?.info(user.id).catch(() => null);
-		const DRepInfraction = await this.client.drep?.infractions(user.id).catch(() => null);
-		const DRepReputation = await this.client.drep?.rep(user.id).catch(() => ({ reputation: 0, staff: false })) ?? { reputation: 0, staff: false };
-		const DRepProfile = `https://discordrep.com/u/${user.id}`;
-		const RiversideWhitelisted = await this.client.riverside.whitelist().then(whitelist => whitelist.includes(user.id));
-		const RiversideProfile = await this.client.riverside.check(user.id);
-		const rating = KSoftBan?.active
-			? 'COMMAND_INFO_TRUST_VERYLOW'
-			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0
-				? 'COMMAND_INFO_TRUST_LOW'
-				: this.client.owners.has(user)
-					? 'COMMAND_INFO_TRUST_VERYHIGH'
-					: 'COMMAND_INFO_TRUST_HIGH';
-		const riversideRating = RiversideProfile.score === 0
-			? 'COMMAND_INFO_USER_RIVERSIDEGOOD'
-			: RiversideProfile.score < 50
-				? 'COMMAND_INFO_USER_RIVERSIDESUSPICIOUS'
-				: 'COMMAND_INFO_USER_RIVERSIDEBAD';
+	async _addSecurity(msg, user, embed, bans, trust, whitelists, sentinel, rep) {
+		let content = [
+			...bans.map(ban =>
+				msg.language.get('COMMAND_INFO_USER_BANNED',
+					providerMap[ban.provider] || ban.provider,
+					reasonMap[ban.reason] || ban.reason || 'unknown reason'
+				)
+			),
+			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider)),
+		];
 
-		const KSoftBansProfile = `${KSoftBans}?user=${user.id}`;
-		const RiversideLink = `https://discord.riverside.rocks/check?id=${user.id}&ref=aero`
+		if (!content.length) content = rep
+				.map(entry => {
+					if (entry.score === 0.5) entry.orientation = 'neutral';
+					else if (entry.score > 0.5) entry.orientation = 'positive';
+					else if (entry.score < 0.5) entry.orientation = 'negative';
 
-		embed.addField(`• Trust (${msg.language.get(rating)})`, [
-			KSoftBan?.active
-				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof, KSoftBansProfile)
-				: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
-			DRepInfraction instanceof Ban
-				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepInfraction.reason)
-				: DRepInfraction instanceof Warn
-					? msg.language.get('COMMAND_INFO_USER_DREPWARNED', DRepInfraction.reason)
-					: DRepReputation.reputation === 0
-						? msg.language.get('COMMAND_INFO_USER_DREPNEUTRAL', DRepProfile)
-						: DRepReputation.reputation > 0
-							? DRepReputation.staff
-								? msg.language.get('COMMAND_INFO_USER_DREPSTAFF', DRepProfile)
-								: msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
-							: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile),
-			RiversideWhitelisted
-				? msg.language.get('COMMAND_INFO_USER_RIVERSIDEWHITELISTED', RiversideLink)
-				: msg.language.get(riversideRating, RiversideProfile.reportCount, RiversideLink)
-		].join('\n'));
+					return entry;
+				})
+				.map(entry => msg.language.get(`COMMAND_INFO_USER_REP_${entry.orientation.toUpperCase()}`, providerMap[entry.provider] || entry.provider));
 
-		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan?.active
-			? embed.setColor(VERY_NEGATIVE)
-			: embed.setColor(POSITIVE);
+		if (sentinel.verified) content = [msg.language.get('COMMAND_INFO_USER_SENTINEL')].concat(content);
+
+		embed.addField(`• Trust (${trust.label})`, content.length ? content.join('\n') : msg.language.get('COMMAND_INFO_USER_NEUTRAL'));
+
+		if (trust.level === 3) embed.setColor(INFORMATION);
+		else if (trust.level < 3) embed.setColor(VERY_NEGATIVE);
+		else if (trust.level > 3) embed.setColor(POSITIVE);
 
 		return embed;
 	}

@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		if (channel instanceof VoiceChannel) {
 			override = {
 				CONNECT: false
-			}
+			};
 		}
 
 		await channel.updateOverwrite(
@@ -33,7 +33,7 @@ module.exports = class extends Command {
 			override,
 			msg.guild.language.get('COMMAND_LOCK_REASON')
 		);
-		
+
 
 		return msg.responder.lock();
 	}

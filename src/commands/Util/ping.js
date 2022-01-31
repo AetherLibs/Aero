@@ -1,5 +1,4 @@
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
 
 module.exports = class extends Command {
 

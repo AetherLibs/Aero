@@ -1,6 +1,7 @@
 const { Event } = require('@aero/klasa');
-
 const { FLAGS } = require('discord.js').Permissions;
+
+const req = require('@aero/centra');
 
 module.exports = class extends Event {
 
@@ -57,9 +58,15 @@ module.exports = class extends Event {
 		await member.guild.log.memberJoined({ member });
 
 		// global ban check
-		const globalBanned = await this.client.ksoft.bans.check(member.id);
-		if (globalBanned) this.client.emit('globalBan', member);
-
+		if (member.guild.settings.get('mod.shield')) {
+			const { trust, bans } = await req('https://ravy.org/api/v1/')
+				.path('/users')
+				.path(member.id)
+				.path('/bans')
+				.header('Authorization', process.env.RAVY_TOKEN)
+				.json();
+			if (trust.level <= 2) this.client.emit('globalBan', member, bans);
+		}
 		return member;
 	}
 
