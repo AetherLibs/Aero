@@ -4,7 +4,7 @@ const {
 	color: { VERY_NEGATIVE, POSITIVE, INFORMATION },
 	emojis: { perms: { granted, unspecified }, infinity },
 	badges,
-	userInfo: { providers: providerMap, reasons: reasonMap }
+	userInfo: { providers: providerMap }
 } = require('../../../lib/util/constants');
 const req = require('@aero/centra');
 
@@ -213,7 +213,7 @@ module.exports = class extends Command {
 			...bans.map(ban =>
 				msg.language.get('COMMAND_INFO_USER_BANNED',
 					providerMap[ban.provider] || ban.provider,
-					reasonMap[ban.reason] || ban.reason || 'unknown reason'
+					ban.reason || 'unknown reason'
 				)
 			),
 			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider)),
