@@ -66,7 +66,7 @@ module.exports = class extends Monitor {
 			|| this.isSteamFraud(msg, cleanedContent, alphanumContent)
 			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)
 			|| this.isFinancialFraud(msg, cleanedContent, alphanumContent)
-			|| await this.isFraudulentByAPI(parsedLinks, msg.author.id)
+			|| await this.isFraudulentByAPI(parsedLinks, msg.author.id, msg)
 		) {
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
 		}
@@ -125,14 +125,23 @@ module.exports = class extends Monitor {
 		}, false);
 	}
 
-	async isFraudulentByAPI(links, authorId) {
+	async isFraudulentByAPI(links, authorId, msg) {
 		const statuses = await Promise.all(links.map(async link => {
-			const res = await centra('https://ravy.org/api/v1')
+			const req = centra('https://ravy.org/api/v1')
 				.header('Authorization', process.env.RAVY_TOKEN)
 				.query('author', authorId)
 				.path('/urls')
-				.path(encodeURIComponent(link.href))
-				.json();
+				.path(encodeURIComponent(link.href));
+
+			if (process.env.PHISHERMAN_TOKEN && msg.guild) {
+				const member = await msg.guild.members.fetch(process.env.PHISHERMAN_USER).catch(() => null);
+
+				if (member && member.hasPermission('ADMINISTRATOR')) {
+					req.query('phisherman_token', process.env.PHISHERMAN_TOKEN)
+				}
+			}
+
+			const res = await req.json();
 
 			return res;
 		}));

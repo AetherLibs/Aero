@@ -28,3 +28,7 @@ BOOT_SINGLE="true"
 # Probably don't want to alter these
 AERO_ENV="development"
 CHATWATCH_DISABLED="true"
+
+# Optional: Phisherman API key from phisherman.gg. User is the user ID of the one who registered the token.
+PHISHERMAN_TOKEN=
+PHISHERMAN_USER=
