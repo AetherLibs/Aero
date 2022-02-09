@@ -138,6 +138,7 @@ module.exports = class extends Monitor {
 
 				if (member && member.hasPermission('ADMINISTRATOR')) {
 					req.query('phisherman_token', process.env.PHISHERMAN_TOKEN)
+					req.query('phisherman_user', process.env.PHISHERMAN_USER)
 				}
 			}
 
