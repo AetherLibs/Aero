@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			enabled: true,
 			runIn: ['text'],
 			requiredPermissions: ['MANAGE_ROLES'],
-			aliases: ['um', 'release', 'untimeout'],
+			aliases: ['um', 'release', 'untimeout', 'cleartimeout', 'removetimeout'],
 			description: language => language.get('COMMAND_UNMUTE_DESCRIPTION'),
 			usage: '<user  or  users:members> [reason:...string]',
 			usageDelim: ' '
