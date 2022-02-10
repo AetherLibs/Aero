@@ -133,7 +133,7 @@ module.exports = class extends Monitor {
 				.path('/urls')
 				.path(encodeURIComponent(link.href));
 
-			if (false && process.env.PHISHERMAN_TOKEN && msg.guild) {
+			if (process.env.PHISHERMAN_TOKEN && msg.guild) {
 				const member = await msg.guild.members.fetch(process.env.PHISHERMAN_USER).catch(() => null);
 
 				if (member && member.hasPermission('ADMINISTRATOR')) {
