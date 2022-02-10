@@ -10,6 +10,13 @@ module.exports = class extends Event {
 			enabled: true,
 			once: false
 		});
+
+		this.bannedMemberNames = [
+			/mod(erator)?\s+academy/i,
+			/discord\s+hypesquad/i,
+			/hypesquad\s+events/i,
+			/discord\s+developers?/i
+		]
 	}
 
 	async run(member) {
@@ -66,6 +73,8 @@ module.exports = class extends Event {
 				.header('Authorization', process.env.RAVY_TOKEN)
 				.json();
 			if (trust.level <= 2) this.client.emit('globalBan', member, bans);
+
+			if ()
 		}
 		return member;
 	}
