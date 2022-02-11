@@ -1,5 +1,7 @@
 const { Event } = require('@aero/klasa');
 const { FLAGS } = require('discord.js').Permissions;
+const { join } = require('path');
+const { readFile, readdir } = require('fs/promises');
 
 const req = require('@aero/centra');
 
@@ -15,8 +17,12 @@ module.exports = class extends Event {
 			/mod(erator)?\s+academy/i,
 			/discord\s+hypesquad/i,
 			/hypesquad\s+events/i,
-			/discord\s+developers?/i
+			/discord\s+developers?/i,
+			/discord\s+api/i
 		]
+
+		this.bannedAvatars = new Map();
+		this.avatarThreshold = 0.95;
 	}
 
 	async run(member) {
@@ -64,8 +70,8 @@ module.exports = class extends Event {
 		// logging
 		await member.guild.log.memberJoined({ member });
 
-		// global ban check
 		if (member.guild.settings.get('mod.shield')) {
+			// global ban check
 			const { trust, bans } = await req('https://ravy.org/api/v1/')
 				.path('/users')
 				.path(member.id)
@@ -74,7 +80,17 @@ module.exports = class extends Event {
 				.json();
 			if (trust.level <= 2) this.client.emit('globalBan', member, bans);
 
-			if ()
+			// username check
+			if (this.bannedMemberNames.reduce((acc, cur) => acc || cur.test(member.user.username), false)) {
+				member.guild.members.ban(member.id, { reason: 'Probable spambot, matched suspicious username' });
+			}
+
+			// avatar check
+			const matchedAvatar = this.matchesBannedAvatar(member.user);
+			if (matchedAvatar) {
+				member.guild.members.ban(member.id, { reason: `Probable spambot, matched suspicious avatar [${matchedAvatar}]` });
+			}
+
 		}
 		return member;
 	}
@@ -115,6 +131,32 @@ module.exports = class extends Event {
 			.replace(/{tag}/gi, member.user.tag)
 			.replace(/{(discrim|discriminator)}/gi, member.user.discriminator)
 			.replace(/{(guild|server)}/gi, member.guild.name);
+	}
+
+	async matchesBannedAvatar(user) {
+		if (!user.avatar) return false;
+		const avatar = await req(user.avatarURL({ format: 'png', size: 256 })).raw();
+		for (const [key, bannedAvatar] of this.bannedAvatars.entries()) {
+			const similarity = await this.ssim(avatar, bannedAvatar);
+			if (similarity > this.avatarThreshold) return key;
+		}
+		return false;
+	}
+
+	async init() {
+		const base = join(process.cwd(), 'config/avatars');
+		const ssim = await import('@aero/ssim');
+
+		this.ssim = ssim.default;
+
+		const files = await readdir(base);
+
+		for (const filename of files) {
+			const file = await readFile(join(base, filename));
+			const key = filename.replace('.png', '');
+
+			this.bannedAvatars.set(key, file);
+		}
 	}
 
 };
