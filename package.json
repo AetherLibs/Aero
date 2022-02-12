@@ -34,7 +34,6 @@
 		"@aero/require": "^1.0.3",
 		"@aero/riverside": "^1.3.1",
 		"@aero/sanitizer": "^1.2.0",
-		"@aero/ssim": "^1.0.0",
 		"@aero/statuspage": "^1.0.1",
 		"@aero/tags": "^3.0.11",
 		"@aero/xkcd": "^1.0.0",
@@ -52,7 +51,6 @@
 		"mongodb": "^3.5.7",
 		"natural": "^5.1.11",
 		"owoify-js": "^1.0.7",
-		"sharp": "^0.30.1",
 		"tinycolor2": "^1.4.1",
 		"ws": "^7.2.3"
 	},

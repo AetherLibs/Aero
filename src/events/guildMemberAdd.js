@@ -1,8 +1,5 @@
 const { Event } = require('@aero/klasa');
 const { FLAGS } = require('discord.js').Permissions;
-const { join } = require('path');
-const { readFile, readdir } = require('fs/promises');
-const sharp = require('sharp');
 
 const req = require('@aero/centra');
 
@@ -21,9 +18,6 @@ module.exports = class extends Event {
 			/discord\s+(developers|api|bots|message)?/i,
 			/^discord\s+moderator$/i
 		]
-
-		this.bannedAvatars = new Map();
-		this.avatarThreshold = 0.99;
 	}
 
 	async run(member) {
@@ -87,9 +81,15 @@ module.exports = class extends Event {
 			}
 
 			// avatar check
-			const matchedAvatar = await this.matchesBannedAvatar(member.user);
-			if (matchedAvatar) {
-				member.guild.members.ban(member.id, { reason: `Probable spambot, matched suspicious avatar [${matchedAvatar}]` });
+			if (member.user.avatar) {
+				const { matched, key } = await req('https://ravy.org/api/v1/')
+					.path('/avatars')
+					.query('avatar', member.user.avatarURL())
+					.header('Authorization', process.env.RAVY_TOKEN)
+					.json();
+				if (matched) {
+					member.guild.members.ban(member.id, { reason: `Probable spambot, matched suspicious avatar [${key}]` });
+				}
 			}
 
 		}
@@ -132,33 +132,6 @@ module.exports = class extends Event {
 			.replace(/{tag}/gi, member.user.tag)
 			.replace(/{(discrim|discriminator)}/gi, member.user.discriminator)
 			.replace(/{(guild|server)}/gi, member.guild.name);
-	}
-
-	async matchesBannedAvatar(user) {
-		if (!user.avatar) return false;
-		const _avatar = await req(user.avatarURL({ format: 'png', size: 256 })).raw();
-		const avatar = await sharp(_avatar).resize(256, 256).toBuffer();
-		for (const [key, bannedAvatar] of this.bannedAvatars.entries()) {
-			const similarity = await this.ssim(avatar, bannedAvatar);
-			if (similarity > this.avatarThreshold) return key;
-		}
-		return false;
-	}
-
-	async init() {
-		const base = join(process.cwd(), 'config/avatars');
-		const ssim = await import('@aero/ssim');
-
-		this.ssim = ssim.default;
-
-		const files = await readdir(base);
-
-		for (const filename of files) {
-			const file = await readFile(join(base, filename));
-			const key = filename.replace('.png', '');
-
-			this.bannedAvatars.set(key, file);
-		}
 	}
 
 };
