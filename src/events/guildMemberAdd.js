@@ -23,7 +23,7 @@ module.exports = class extends Event {
 		]
 
 		this.bannedAvatars = new Map();
-		this.avatarThreshold = 0.95;
+		this.avatarThreshold = 0.99;
 	}
 
 	async run(member) {
@@ -87,7 +87,7 @@ module.exports = class extends Event {
 			}
 
 			// avatar check
-			const matchedAvatar = this.matchesBannedAvatar(member.user);
+			const matchedAvatar = await this.matchesBannedAvatar(member.user);
 			if (matchedAvatar) {
 				member.guild.members.ban(member.id, { reason: `Probable spambot, matched suspicious avatar [${matchedAvatar}]` });
 			}
