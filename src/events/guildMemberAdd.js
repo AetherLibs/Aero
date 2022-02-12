@@ -2,6 +2,7 @@ const { Event } = require('@aero/klasa');
 const { FLAGS } = require('discord.js').Permissions;
 const { join } = require('path');
 const { readFile, readdir } = require('fs/promises');
+const sharp = require('sharp');
 
 const req = require('@aero/centra');
 
@@ -14,11 +15,11 @@ module.exports = class extends Event {
 		});
 
 		this.bannedMemberNames = [
-			/mod(erator)?\s+academy/i,
+			/(mod(erator)?|hypesquad|developer)\s+academy/i,
 			/discord\s+hypesquad/i,
-			/hypesquad\s+events/i,
-			/discord\s+developers?/i,
-			/discord\s+api/i
+			/(hypesquad|discord)\s+events/i,
+			/discord\s+(developers|api|bots|message)?/i,
+			/^discord\s+moderator$/i
 		]
 
 		this.bannedAvatars = new Map();
@@ -135,7 +136,8 @@ module.exports = class extends Event {
 
 	async matchesBannedAvatar(user) {
 		if (!user.avatar) return false;
-		const avatar = await req(user.avatarURL({ format: 'png', size: 256 })).raw();
+		const _avatar = await req(user.avatarURL({ format: 'png', size: 256 })).raw();
+		const avatar = await sharp(_avatar).resize(256, 256).toBuffer();
 		for (const [key, bannedAvatar] of this.bannedAvatars.entries()) {
 			const similarity = await this.ssim(avatar, bannedAvatar);
 			if (similarity > this.avatarThreshold) return key;
