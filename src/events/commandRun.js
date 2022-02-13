@@ -3,9 +3,8 @@ const { Event } = require('@aero/klasa');
 module.exports = class extends Event {
 
 	run(message, command, args) {
-		if (!this.client.commandCounter) return;
-
-		this.client.commandCounter.inc({ name: command.name, guildId: message?.guild?.id ?? 'dms', userId: message.author.id });
+		if (this.client.aggregator.metricsEnabled)
+			this.client.aggregator.registerCommand(command.name, message?.guild?.id ?? 'dms', message.author.id);
 	}
 
 };

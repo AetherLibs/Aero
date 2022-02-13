@@ -3,32 +3,123 @@ require('dotenv').config({
 	path: process.env.NODE_ENV === 'production' ? '.env' : 'dev.env'
 });
 require('@aero/require').config(process.cwd(), true);
-
-// const Manager = require('../lib/Manager');
 const { ShardingManager } = require('kurasuta');
 const Aero = require('~/lib/Aero');
+const { KlasaConsole } = require('@aero/klasa');
+const logger = new KlasaConsole();
+const { stage: version, ipcSocket, metricsEnabled, accessPort, stageShorthand, ngrokRegion, ngrokPrefix } = require('../config/aero');
+const Aggregator = require('~/lib/Aggregator');
+const AggregatorClient = require('~/lib/AggregatorClient');
+const ngrok = require('ngrok');
+const express = require('express');
 
-const { stage: version, ipcSocket } = require('../config/aero');
+const cluster = require('cluster');
 
-let sentry;
+async function main() {
+	// prometheus & remote
+	const app = express();
+	const aggregator = new Aggregator(stageShorthand, metricsEnabled);
 
-if (version !== 'development') {
-	sentry = require('@sentry/node');
+	logger.log(`[express] ${process.env.REMOTE_TOKEN ? 'Using' : 'Not using'} token authentication`);
+	app.use('/', (req, res, next) => {
+		if (!process.env.REMOTE_TOKEN) return next();
 
-	sentry.init({
-		dsn: process.env.SENTRY_TOKEN,
-		release: `aero@${version}`
+		const header = req.get('Authorization');
+
+		if (!header) return res.status(401).json({
+			error: 'token_missing',
+		});
+
+		const [type, token] = header.split(' ').map(str => str?.toLowerCase());
+
+		if (type !== 'bearer') return res.status(401).json({
+			error: 'token_invalid_type',
+		});
+
+		if (token !== process.env.REMOTE_TOKEN) return res.status(401).json({
+			error: 'token_invalid',
+		});
+
+		return next();
 	});
+
+	app.get('/', (req, res) => {
+		return res.status(200).json({ ping: aggregator.averagePing() })
+	});
+
+	if (metricsEnabled) {
+		app.get('/metrics', async (req, res) => {
+			try {
+				res.set('Content-Type', aggregator.register.contentType);
+				res.end(await aggregator.register.metrics());
+			} catch (ex) {
+				logger.error(ex);
+				res.status(500).end(ex.toString());
+			}
+		});
+		logger.log('[express] Registered metrics endpoint');
+	}
+
+	app.listen(accessPort);
+	logger.log(`[express] Listening on :${accessPort}`);
+
+	const opts = {};
+	if (process.env.NGROK_TOKEN) {
+		opts.authtoken = process.env.NGROK_TOKEN;
+		opts.region = ngrokRegion;
+		opts.addr = accessPort;
+		opts.subdomain = `${ngrokPrefix}-${stageShorthand}`;
+	}
+	const url = await ngrok.connect(opts);
+	logger.log(`[ngrok] proxying :${accessPort} <- ${url}`);
+
+	cluster.on('message', (worker, msg, handle) => {
+		if (msg?.type !== 'LOGIN') return;
+		logger.log('[Aggregator] Connecting succeeded.');
+
+		aggregator.login(worker);
+	});
+
+	const sharder = new ShardingManager(join(__dirname, 'launch'), {
+		client: Aero,
+		ipcSocket,
+		token: process.env.DISCORD_TOKEN
+	});
+
+	sharder.spawn();
+	logger.log('[Aggregator] Launching primary.');
 }
 
-// new Manager(sentry).init();
-const sharder = new ShardingManager(join(__dirname, 'launch'), {
-	client: Aero,
-	clientOptions: {
-		sentry
-	},
-	ipcSocket,
-	token: process.env.DISCORD_TOKEN
-});
+function secondary() {
+	logger.log('[Aggregator] Connecting to primary.');
+	process.send({ type: 'LOGIN'});
 
-sharder.spawn();
+	// sentry
+	let sentry;
+	if (version !== 'development') {
+		sentry = require('@sentry/node');
+
+		sentry.init({
+			dsn: process.env.SENTRY_TOKEN,
+			release: `aero@${version}`
+		});
+	}
+
+	const aggregator = new AggregatorClient(metricsEnabled);
+
+	const sharder = new ShardingManager(join(__dirname, 'launch'), {
+		client: Aero,
+		clientOptions: {
+			sentry,
+			aggregator
+		},
+		ipcSocket,
+		token: process.env.DISCORD_TOKEN
+	});
+
+	sharder.spawn();
+}
+
+if (cluster.isPrimary) main();
+else secondary();
+
