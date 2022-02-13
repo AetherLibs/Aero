@@ -14,6 +14,11 @@ module.exports = {
 		development: 9999
 	}[stage],
 	stage,
+	stageShorthand: {
+		production: 'prod',
+		staging: 'beta',
+		development: 'dev'
+	}[stage],
 	commitHash,
 	commitMessage: commitMessage.join(' - '),
 	version,
@@ -33,7 +38,15 @@ module.exports = {
 	sentinelApiURL: 'https://sentinel-api.aero.bot',
 	dailyPoints: 50,
 	ownerAccess: ['234390727113703424'],
-	roleBulkThreshold: 3
+	roleBulkThreshold: 3,
+	ngrokPrefix: 'aero',
+	ngrokRegion: 'eu',
+	accessPort: {
+		production: 32201,
+		staging: 32202,
+		development: 32203
+	}[stage],
 };
 
 module.exports.cwEnabled = !['true', true].includes(process.env.CHATWATCH_DISABLED);
+module.exports.metricsEnabled = !['true', true].includes(process.env.METRICS_DISABLED);
