@@ -15,15 +15,15 @@ variables:
   GIT_DEPTH: 10000
 
 
-build:
-  stage: build
-  image: docker:latest
-  services:
-  - docker:dind
-  script:
-    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - docker build --pull -t ${IMAGE} .
-    - docker push ${IMAGE}
+# build:
+#   stage: build
+#   image: docker:latest
+#   services:
+#   - docker:dind
+#   script:
+#     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
+#     - docker build --pull -t ${IMAGE} .
+#     - docker push ${IMAGE}
 
 # stage:
 #   stage: deploy
@@ -61,18 +61,18 @@ build:
 #     kubernetes:
 #       namespace: aero
 
-sentry-commit:
-  stage: build
-  image: getsentry/sentry-cli
-  script:
-    - sentry-cli releases new ${CI_COMMIT_SHA}
-    - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA}
-    - sentry-cli releases finalize ${CI_COMMIT_SHA}
-  allow_failure: true
+# sentry-commit:
+#   stage: build
+#   image: getsentry/sentry-cli
+#   script:
+#     - sentry-cli releases new ${CI_COMMIT_SHA}
+#     - sentry-cli releases set-commits --auto ${CI_COMMIT_SHA}
+#     - sentry-cli releases finalize ${CI_COMMIT_SHA}
+#   allow_failure: true
 
-sentry-deploy:
-  stage: deploy
-  image: getsentry/sentry-cli
-  script:
-    - sentry-cli releases deploys ${CI_COMMIT_SHA} new -e ${CI_COMMIT_REF_SLUG}
-  allow_failure: true
+# sentry-deploy:
+#   stage: deploy
+#   image: getsentry/sentry-cli
+#   script:
+#     - sentry-cli releases deploys ${CI_COMMIT_SHA} new -e ${CI_COMMIT_REF_SLUG}
+#   allow_failure: true
