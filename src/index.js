@@ -43,8 +43,8 @@ async function main() {
 		return next();
 	});
 
-	app.get('/', (req, res) => {
-		return res.status(200).json({ ping: aggregator.averagePing() })
+	app.get('/', async (req, res) => {
+		return res.status(200).json({ ping: await aggregator.averagePing() })
 	});
 
 	if (metricsEnabled) {
