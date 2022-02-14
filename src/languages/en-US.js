@@ -601,6 +601,7 @@ module.exports = class extends Language {
 			COMMAND_MEME_DESCRIPTION: 'Fetches a random meme from reddit.',
 			COMMAND_OWOIFY_DESCRIPTION: 'Transforms your text into the owo language.',
 			COMMAND_VOICEKICK_DESCRIPTION: 'Voice kicks the mentioned member.',
+			COMMAND_AVATAR_GUILD_WARNING: 'This user does not have a custom server avatar set - falling back to the user\'s global avatar',
 
 			// events
 			EVENT_JOIN_PERSISTREASON: 'Role persistency - member had those roles before leaving.',
