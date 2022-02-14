@@ -13,28 +13,24 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [member = msg.member]) {
-		if (!member.customAvatar) {
-			member.customAvatarURL = member.displayAvatarURL;
-		}
-
 		const embed = new MessageEmbed()
-			.setAuthor(member.user.tag, member.customAvatarURL())
-			.setImage(member.customAvatarURL({ size: 2048, dynamic: true }))
+			.setAuthor(member.user.tag, member.displayAvatarURL())
+			.setImage(member.displayAvatarURL({ size: 2048, dynamic: true }))
 			.setDescription([
 				[
-					`[png](${member.customAvatarURL({ size: 2048, format: 'png' })})`,
-					`[jpg](${member.customAvatarURL({ size: 2048, format: 'jpg' })})`,
-					`[webp](${member.customAvatarURL({ size: 2048, format: 'webp' })})`
+					`[png](${member.displayAvatarURL({ size: 2048, format: 'png' })})`,
+					`[jpg](${member.displayAvatarURL({ size: 2048, format: 'jpg' })})`,
+					`[webp](${member.displayAvatarURL({ size: 2048, format: 'webp' })})`
 				].join(' | '),
 				[
-					`[16](${member.customAvatarURL({ size: 16, dynamic: true })})`,
-					`[32](${member.customAvatarURL({ size: 32, dynamic: true })})`,
-					`[64](${member.customAvatarURL({ size: 64, dynamic: true })})`,
-					`[128](${member.customAvatarURL({ size: 128, dynamic: true })})`,
-					`[256](${member.customAvatarURL({ size: 256, dynamic: true })})`,
-					`[512](${member.customAvatarURL({ size: 512, dynamic: true })})`,
-					`[1024](${member.customAvatarURL({ size: 1024, dynamic: true })})`,
-					`[2048](${member.customAvatarURL({ size: 2048, dynamic: true })})`
+					`[16](${member.displayAvatarURL({ size: 16, dynamic: true })})`,
+					`[32](${member.displayAvatarURL({ size: 32, dynamic: true })})`,
+					`[64](${member.displayAvatarURL({ size: 64, dynamic: true })})`,
+					`[128](${member.displayAvatarURL({ size: 128, dynamic: true })})`,
+					`[256](${member.displayAvatarURL({ size: 256, dynamic: true })})`,
+					`[512](${member.displayAvatarURL({ size: 512, dynamic: true })})`,
+					`[1024](${member.displayAvatarURL({ size: 1024, dynamic: true })})`,
+					`[2048](${member.displayAvatarURL({ size: 2048, dynamic: true })})`
 				].join(' | ')
 			].join('\n'))
 			.setFooter(
