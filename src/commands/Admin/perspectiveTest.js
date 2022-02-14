@@ -30,10 +30,10 @@ module.exports = class extends Command {
 			.header('user-agent', `${this.client.user.username}/${this.client.config.version}`)
 			.json();
 
-		const content = Object.entries(res.attributeScores).map(([k, s]) => `${ansi}${s.summaryScore.value > 0.9
+		const content = Object.entries(res.attributeScores).map(([key, score]) => `${ansi}${score.summaryScore.value > 0.9
 			? ansi.bold().color('red')
 			: ansi.color('green')
-		} ${k.padEnd(17)} = ${s.summaryScore.value}`).join('\n')
+		} ${key.padEnd(17)} = ${score.summaryScore.value}`).join('\n');
 
 		msg.send(`>>> \`\`\`ansi\n${content}\n\`\`\``);
 	}

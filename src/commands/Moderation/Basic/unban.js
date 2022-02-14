@@ -23,8 +23,8 @@ module.exports = class extends Command {
 
 		const moderator = msg.author;
 
-		await this.executeUnbans(bannable, reason, msg.guild, moderator);
-		await this.logActions(msg.guild, 'unban', bannable, { reason, moderator, msg });
+		this.executeUnbans(bannable, reason, msg.guild, moderator);
+		this.logActions(msg.guild, 'unban', bannable, { reason, moderator, msg });
 
 		return msg.responder.success();
 	}
@@ -32,7 +32,7 @@ module.exports = class extends Command {
 	async executeUnbans(users, reason, guild, moderator) {
 		for (const user of users) {
 			guild.modCache.add(user.id);
-			await guild.members.unban(user.id, `${moderator.tag} | ${reason || guild.language.get('COMMAND_UNBAN_NOREASON')}`).catch(() => null);
+			guild.members.unban(user.id, `${moderator.tag} | ${reason || guild.language.get('COMMAND_UNBAN_NOREASON')}`).catch(() => null);
 			this.updateSchedule(user);
 		}
 	}
@@ -43,7 +43,7 @@ module.exports = class extends Command {
 		const { time, data } = unbanTask;
 		this.client.schedule.delete(unbanTask.id);
 		data.users = data.users.filter(id => id !== user.id);
-		if (data.users.length !== 0) { this.client.schedule.create('endTempban', time, { data }); }
+		if (data.users.length !== 0) this.client.schedule.create('endTempban', time, { data });
 	}
 
 

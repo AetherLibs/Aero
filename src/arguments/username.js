@@ -32,18 +32,18 @@ module.exports = class extends Argument {
 
 		const results = [];
 		const reg = new RegExp(regExpEsc(arg), 'i');
-		for (const member of msg.guild.members.cache.values()) {
+		for (const member of msg.guild.members.cache.values())
 			if (reg.test(member.user.username)) results.push(member.user);
-		}
+
 
 		let querySearch;
 		if (results.length > 0) {
 			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');
 			const filtered = results.filter(user => regWord.test(user.username));
 			querySearch = filtered.length > 0 ? filtered : results;
-		} else {
+		} else
 			querySearch = results;
-		}
+
 
 		if (querySearch.length) return querySearch[0];
 		throw `\`${possible.name}\` must be a valid name, id or user mention`;

@@ -37,8 +37,7 @@ module.exports = class extends Command {
 			else if (command.permissionLevel >= 7)
 				restrictions.push(msg.language.get('COMMAND_HELP_OWNERGUILDONLY'));
 
-			if (!command.runIn.includes('dm'))
-				restrictions.push(msg.language.get('COMMAND_HELP_SERVERONLY'));
+			if (!command.runIn.includes('dm')) restrictions.push(msg.language.get('COMMAND_HELP_SERVERONLY'));
 
 			embed
 				.addField(`${command.name} ${command.aliases.length ? `(${command.aliases.join(', ')})` : ''}`,
@@ -54,9 +53,9 @@ module.exports = class extends Command {
 		}
 
 		const categories = this.buildHelp();
-		for (const category in categories) {
+		for (const category in categories)
 			embed.addField(category, categories[category].sort().map(cmd => code`${cmd}`).join(', '));
-		}
+
 		embed.setDescription(`[Terms](https://aero.bot/terms) | [Privacy](https://aero.bot/privacy)`);
 		embed.setFooter(msg.language.get('COMMAND_HELP_FOOTER', msg.guild.settings.get('prefix')));
 		return msg.sendEmbed(embed);

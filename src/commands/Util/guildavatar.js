@@ -34,9 +34,9 @@ module.exports = class extends Command {
 				].join(' | ')
 			].join('\n'))
 			.setFooter(
-				member.customAvatar ? 
-				msg.language.get('COMMAND_AVATAR_GUILD_FOOTER', msg.guild.settings.get('prefix')) : 
-				msg.language.get("COMMAND_AVATAR_GUILD_WARNING")
+				member.customAvatar
+					? msg.language.get('COMMAND_AVATAR_GUILD_FOOTER', msg.guild.settings.get('prefix'))
+					: msg.language.get('COMMAND_AVATAR_GUILD_WARNING')
 			);
 
 		return msg.send({ embed });

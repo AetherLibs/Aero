@@ -57,9 +57,8 @@ module.exports = class extends Command {
 					return null;
 				});
 				if (!proof) return false;
-			} else {
+			} else
 				proof = this.parseProof(msg);
-			}
 		} else {
 			if (!this.validateProof(msg)) throw msg.language.get('COMMAND_REPORT_ARG_PROOF_INVALID');
 			proof = this.parseProof(msg);
@@ -93,13 +92,12 @@ module.exports = class extends Command {
 				else msg.responder.newError(invalid);
 			});
 			collector.on('end', (collected, reason) => {
-				if (reason === 'success') {
+				if (reason === 'success')
 					resolve(parser(collected.first()));
-				} else if (reason === 'cancelled') {
+				else if (reason === 'cancelled')
 					reject('COMMAND_REPORT_CANCELLED');
-				} else {
+				else
 					reject(timeout);
-				}
 			});
 		});
 	}

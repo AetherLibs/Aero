@@ -67,9 +67,8 @@ module.exports = class extends Monitor {
 			|| this.isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks)
 			|| this.isFinancialFraud(msg, cleanedContent, alphanumContent)
 			|| await this.isFraudulentByAPI(parsedLinks, msg.author.id, msg)
-		) {
+		)
 			msg.guild.members.ban(msg.author.id, { reason: msg.language.get('MONITOR_ANTI_SCAMS', msg.content), days: 1 });
-		}
 	}
 
 	isSteamFraud(msg, cleanedContent, alphanumContent) {
@@ -90,7 +89,7 @@ module.exports = class extends Monitor {
 		return fraudFlags > 2;
 	}
 
-	isNitroFraud(msg, cleanedContent, alphanumContent, processedLinks) {
+	isNitroFraud(msg, cleanedContent, alphanumContent) {
 		let fraudFlags = 0;
 
 		if (/(https?:\/\/)?bit.ly\/\w/.test(msg.content) && alphanumContent.includes('download')) fraudFlags++;
@@ -137,8 +136,8 @@ module.exports = class extends Monitor {
 				const member = await msg.guild.members.fetch(process.env.PHISHERMAN_USER).catch(() => null);
 
 				if (member && member.hasPermission('ADMINISTRATOR')) {
-					req.query('phisherman_token', process.env.PHISHERMAN_TOKEN)
-					req.query('phisherman_user', process.env.PHISHERMAN_USER)
+					req.query('phisherman_token', process.env.PHISHERMAN_TOKEN);
+					req.query('phisherman_user', process.env.PHISHERMAN_USER);
 				}
 			}
 

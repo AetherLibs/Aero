@@ -33,9 +33,9 @@ module.exports = class extends Command {
 		if (!notes.length) return [];
 		const range = /^(?<start>\d)-(?<end>\d)$/;
 		const multiple = /^(\d,)+\d$/;
-		if (ids === 'all') {
+		if (ids === 'all')
 			return [];
-		}
+
 		if (range.test(ids)) {
 			const { start, end } = range.exec(ids).groups;
 			notes.splice(start - 1, end - start + 1);
@@ -45,9 +45,9 @@ module.exports = class extends Command {
 			ids = ids.split(',').map(id => parseInt(id));
 			return notes.filter((_, idx) => !ids.includes(idx + 1));
 		}
-		if (!Number.isNaN(parseInt(ids)) && notes[ids - 1]) {
+		if (!Number.isNaN(parseInt(ids)) && notes[ids - 1])
 			return notes.filter((_, idx) => idx !== (ids - 1));
-		}
+
 		throw 'Invalid id or ids';
 	}
 

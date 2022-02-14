@@ -26,26 +26,30 @@ async function main() {
 
 		const header = req.get('Authorization');
 
-		if (!header) return res.status(401).json({
-			error: 'token_missing',
-		});
+		if (!header) {
+			return res.status(401).json({
+				error: 'token_missing'
+			});
+		}
 
 		const [type, token] = header.split(' ').map(str => str?.toLowerCase());
 
-		if (type !== 'bearer') return res.status(401).json({
-			error: 'token_invalid_type',
-		});
+		if (type !== 'bearer') {
+			return res.status(401).json({
+				error: 'token_invalid_type'
+			});
+		}
 
-		if (token !== process.env.REMOTE_TOKEN) return res.status(401).json({
-			error: 'token_invalid',
-		});
+		if (token !== process.env.REMOTE_TOKEN) {
+			return res.status(401).json({
+				error: 'token_invalid'
+			});
+		}
 
 		return next();
 	});
 
-	app.get('/', async (req, res) => {
-		return res.status(200).json({ ping: await aggregator.averagePing() })
-	});
+	app.get('/', async (req, res) => res.status(200).json({ ping: await aggregator.averagePing() }));
 
 	if (metricsEnabled) {
 		app.get('/metrics', async (req, res) => {
@@ -73,7 +77,7 @@ async function main() {
 	const url = await ngrok.connect(opts);
 	logger.log(`[ngrok] proxying :${accessPort} <- ${url}`);
 
-	cluster.on('message', (worker, msg, handle) => {
+	cluster.on('message', (worker, msg) => {
 		if (msg?.type !== 'LOGIN') return;
 		logger.log('[Aggregator] Connecting succeeded.');
 
@@ -92,7 +96,7 @@ async function main() {
 
 function secondary() {
 	logger.log('[Aggregator] Connecting to primary.');
-	process.send({ type: 'LOGIN'});
+	process.send({ type: 'LOGIN' });
 
 	// sentry
 	let sentry;

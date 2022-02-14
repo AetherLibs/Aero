@@ -45,7 +45,7 @@ module.exports = {
 		production: 32201,
 		staging: 32202,
 		development: 32203
-	}[stage],
+	}[stage]
 };
 
 module.exports.cwEnabled = !['true', true].includes(process.env.CHATWATCH_DISABLED);

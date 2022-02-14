@@ -49,9 +49,9 @@ module.exports = class extends Event {
 					experiment.name === data.title;
 
 					experiment.buckets = new Map();
-					for (const bucket of data.buckets) {
+					for (const bucket of data.buckets)
 						experiment.buckets.set(bucket, data.description[bucket]);
-					}
+
 
 					experiment.hash = data.hash;
 					experiment.id = data.id;
@@ -63,7 +63,7 @@ module.exports = class extends Event {
 						if (experiment.overrides.has(bucket)) {
 							const entry = experiment.overrides.get(bucket);
 							for (const id of ids) entry.add(id);
-						} else { experiment.overrides.set(bucket, new Set(ids)); }
+						} else experiment.overrides.set(bucket, new Set(ids));
 					}
 					return experiment;
 				})

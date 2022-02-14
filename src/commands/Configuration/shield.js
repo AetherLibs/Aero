@@ -16,7 +16,7 @@ module.exports = class extends Command {
 
 	async run(msg, [state]) {
 		let newState;
-		switch(state) {
+		switch (state) {
 			case 'enable':
 				newState = true;
 				break;

@@ -25,9 +25,9 @@ module.exports = class extends Command {
 			.setColor(this.colors[overview.status.indicator] || INFORMATION);
 
 		const description = [];
-		for (const component of overview.components) {
+		for (const component of overview.components)
 			description.push(`${component.status === 'operational' ? success : error} **${component.name}:** ${component.status.replace(/_/g, ' ')}`);
-		}
+
 
 		embed.setDescription(description.join('\n'));
 
