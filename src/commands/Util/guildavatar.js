@@ -13,6 +13,10 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [member = msg.member]) {
+		if (!member.customAvatar) {
+			member.customAvatarURL = member.displayAvatarURL;
+		}
+
 		const embed = new MessageEmbed()
 			.setAuthor(member.user.tag, member.customAvatarURL())
 			.setImage(member.customAvatarURL({ size: 2048, dynamic: true }))
@@ -33,7 +37,11 @@ module.exports = class extends Command {
 					`[2048](${member.customAvatarURL({ size: 2048, dynamic: true })})`
 				].join(' | ')
 			].join('\n'))
-			.setFooter(msg.language.get('COMMAND_AVATAR_GUILD_FOOTER', msg.guild.settings.get('prefix')));
+			.setFooter(
+				member.customAvatar ? 
+				msg.language.get('COMMAND_AVATAR_GUILD_FOOTER', msg.guild.settings.get('prefix')) : 
+				msg.language.get("COMMAND_AVATAR_GUILD_WARNING")
+			);
 
 		return msg.send({ embed });
 	}
