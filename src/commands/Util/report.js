@@ -14,6 +14,8 @@ module.exports = class extends Command {
 		});
 
 		this.channels = new Set();
+
+		this.deprecated = 'The platform this goes to is no longer active. Please report users using /report in Aero\'s Community: <https://aero.bot/community>';
 	}
 
 	async run(msg, [user, reason, proof]) {
