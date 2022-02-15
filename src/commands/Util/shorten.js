@@ -30,11 +30,10 @@ module.exports = class extends Command {
 			.body(body, 'json')
 			.send();
 
-		if (statusCode !== 200) {
+		if (statusCode !== 200)
 			return msg.responder.error('ERROR_SHORT', json.detail);
-		} else {
+		else
 			return msg.responder.success('COMMAND_SHORTEN_SUCCESS', json.longUrl, json.shortUrl);
-		}
 	}
 
 };

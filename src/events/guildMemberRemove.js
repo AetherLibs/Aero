@@ -18,9 +18,9 @@ module.exports = class extends Event {
 				.keyArray()
 				.filter(roleID => roleID !== member.guild.id), { arrayAction: 'overwrite' });
 			if (member.nickname) member.settings.update('persistNick', member.nickname);
-		} else if (member.muted) {
+		} else if (member.muted)
 			member.settings.update('persistRoles', [member.guild.settings.get('mod.roles.mute')], { arrayAction: 'overwrite' });
-		}
+
 		const { guild, user } = member;
 		if (guild.modCache.has(member.id)) return guild.modCache.delete(member.id);
 		const kick = await guild

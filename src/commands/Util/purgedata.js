@@ -1,5 +1,4 @@
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
 const { constants: { TIME } } = require('@aero/klasa');
 
 module.exports = class extends Command {
@@ -14,9 +13,9 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		if (Date.now() - msg.author.settings.get('lastDataPurgeTimestamp') < TIME.DAY * 7) {
+		if (Date.now() - msg.author.settings.get('lastDataPurgeTimestamp') < TIME.DAY * 7)
 			return msg.responder.error('COMMAND_PURGEDATA_COOLDOWN', `<t:${Math.ceil((msg.author.settings.get('lastDataPurgeTimestamp') + TIME.DAY * 7) / 1000)}:R>`);
-		}
+
 
 		// purge user Data
 		const userData = await this.client.providers.default.db.collection('users').findOne({ id: msg.author.id });
@@ -31,6 +30,7 @@ module.exports = class extends Command {
 
 		// purge member Data
 		const memberData = await this.client.providers.default.db.collection('members').find({ id: new RegExp(`\\d+\\.${msg.author.id}`) }).toArray();
+		const promises = [];
 		for (const data of memberData) {
 			fields = 0;
 			unset = {};
@@ -39,8 +39,10 @@ module.exports = class extends Command {
 				unset[key] = 1;
 				fields++;
 			}
-			if (fields) await this.client.providers.default.db.collection('members').updateOne({ id: data.id }, { $unset: unset });
+			if (fields) promises.push(this.client.providers.default.db.collection('members').updateOne({ id: data.id }, { $unset: unset }));
 		}
+
+		await Promise.all(promises);
 
 		await msg.author.settings.update('lastDataPurgeTimestamp', new Date().getTime());
 

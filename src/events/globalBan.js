@@ -16,7 +16,7 @@ module.exports = class extends Event {
 		const reason = bans.map(ban => `[${ban.provider}] ${ban.reason}`).join(', ');
 		await member.guild.log.globalBan({ user: member.user, moderators, reason });
 		if (member.guild.modCache.has(member.id)) member.guild.modCache.delete(member.id);
-		if (this.client.aggregator.metricsEnabled) this.client.aggregator.registerGlobalBan(ban.provider); 
+		if (this.client.aggregator.metricsEnabled) this.client.aggregator.registerGlobalBan(bans[0].provider);
 		return member;
 	}
 

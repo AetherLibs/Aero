@@ -18,7 +18,7 @@ module.exports = class extends Event {
 			/discord\s+(developers|api|bots|message)?/i,
 			/^discord\s+moderator$/i,
 			/^academy\s+staff/i
-		]
+		];
 	}
 
 	async run(member) {
@@ -40,11 +40,11 @@ module.exports = class extends Event {
 		if (member.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
 			let roles = persistroles;
 
-			if (autoroles.length && !member.user.bot && !member.pending) {
+			if (autoroles.length && !member.user.bot && !member.pending)
 				roles = roles.concat(autoroles);
-			} else if (member.user.bot && botrole) {
+			else if (member.user.bot && botrole)
 				roles.push(botrole);
-			}
+
 
 			member.addRoles(roles);
 		}
@@ -77,9 +77,9 @@ module.exports = class extends Event {
 			if (trust.level <= 2) this.client.emit('globalBan', member, bans);
 
 			// username check
-			if (this.bannedMemberNames.reduce((acc, cur) => acc || cur.test(member.user.username), false)) {
+			if (this.bannedMemberNames.reduce((acc, cur) => acc || cur.test(member.user.username), false))
 				member.guild.members.ban(member.id, { reason: 'Probable spambot, matched suspicious username' });
-			}
+
 
 			// avatar check
 			if (member.user.avatar) {
@@ -88,11 +88,9 @@ module.exports = class extends Event {
 					.query('avatar', member.user.avatarURL())
 					.header('Authorization', process.env.RAVY_TOKEN)
 					.json();
-				if (matched) {
+				if (matched)
 					member.guild.members.ban(member.id, { reason: `Probable spambot, matched suspicious avatar [${key}]` });
-				}
 			}
-
 		}
 		return member;
 	}

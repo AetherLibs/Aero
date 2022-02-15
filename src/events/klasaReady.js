@@ -49,9 +49,9 @@ module.exports = class extends Event {
 					experiment.name === data.title;
 
 					experiment.buckets = new Map();
-					for (const bucket of data.buckets) {
+					for (const bucket of data.buckets)
 						experiment.buckets.set(bucket, data.description[bucket]);
-					}
+
 
 					experiment.hash = data.hash;
 					experiment.id = data.id;
@@ -63,7 +63,7 @@ module.exports = class extends Event {
 						if (experiment.overrides.has(bucket)) {
 							const entry = experiment.overrides.get(bucket);
 							for (const id of ids) entry.add(id);
-						} else { experiment.overrides.set(bucket, new Set(ids)); }
+						} else experiment.overrides.set(bucket, new Set(ids));
 					}
 					return experiment;
 				})
@@ -74,6 +74,9 @@ module.exports = class extends Event {
 		this.client.config.install_params /* eslint-disable-line camelcase */
 			= await this.client.api.applications(this.client.user.id).rpc.get().then(res => res.install_params)
 			?? { scopes: ['applications.commands', 'bot'], permissions: '8' };
+
+		this.client.console.log(`[Aggregator] Shard ${this.client.shard.id} sending ready.`);
+		this.client.aggregator.ready();
 	}
 
 };

@@ -48,19 +48,20 @@ module.exports = class extends Command {
 
 		const succeeded = [];
 
+		const promises = [];
+
 		for (const type of types) {
 			// skip existing
 			const _channel = msg.guild.settings.get(`logs.${type}.channel`);
 			const _webhook = msg.guild.settings.get(`logs.${type}.webhook`);
 			if ((_channel === channel.id) && _webhook) {
 				const hook = currentHooks.get(_webhook);
-				if (hook) {
+				if (hook)
 					continue;
-				}
 			}
 
 			// create hooks
-			await channel.createWebhook(`${this.client.user.username} Log: ${type}`,
+			promises.push(channel.createWebhook(`${this.client.user.username} Log: ${type}`,
 				{ avatar: this.client.user.displayAvatarURL(), reason: msg.language.get('COMMAND_LOG_REASON') })
 				.then(async hook => {
 				// set db entries
@@ -69,16 +70,17 @@ module.exports = class extends Command {
 					await msg.guild.settings.update(`logs.${type}.webhook`, hook.id);
 
 					// populate logger cache
-					msg.guild.log.webhooks[type] = hook;
+					msg.guild.log.webhooks[type] = hook; /* eslint-disable-line require-atomic-updates */
 				})
-				.catch(() => { throw 'COMMAND_LOG_NOWEBHOOKPERMS'; });
+				.catch(() => { throw 'COMMAND_LOG_NOWEBHOOKPERMS'; }));
 		}
 
-		if (succeeded.length) {
+		await Promise.all(promises);
+
+		if (succeeded.length)
 			msg.responder.success('COMMAND_LOG_SUCCESS', succeeded.join(', '), channel);
-		} else {
+		else
 			msg.responder.success();
-		}
 	}
 
 	async disableLogs(msg, types) {
@@ -87,17 +89,19 @@ module.exports = class extends Command {
 			const webhookID = msg.guild.settings.get(`logs.${type}.webhook`);
 
 			// reset db
-			await msg.guild.settings.reset(`logs.${type}.channel`);
-			await msg.guild.settings.reset(`logs.${type}.webhook`);
+			msg.guild.settings.reset(`logs.${type}.channel`);
+			msg.guild.settings.reset(`logs.${type}.webhook`);
 
 			// delete webhook
 			if (msg.guild.channels.cache.has(channelID)) {
-				const hooks = await msg.guild.channels.cache.get(channelID).fetchWebhooks();
-				if (hooks.has(webhookID)) hooks.get(webhookID).delete().catch(() => null);
+				msg.guild.channels.cache.get(channelID).fetchWebhooks()
+					.then(hooks => {
+						if (hooks.has(webhookID)) hooks.get(webhookID).delete().catch(() => null);
+					});
 			}
 
 			// clean hook cache
-			msg.guild.log.webhooks[type] = null;
+			msg.guild.log.webhooks[type] = null; /* eslint-disable-line require-atomic-updates */
 		}
 
 		return msg.responder.success();

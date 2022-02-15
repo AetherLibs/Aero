@@ -17,7 +17,7 @@ module.exports = class extends Command {
 		});
 
 		this.dbl = true;
-		this.delayer = time => new Promise(res => setTimeout(() => res(), time));
+		this.delayer = time => new Promise((resolve) => { setTimeout(() => resolve(), time); });
 
 		this.yesNo = ['✔', '✖'];
 		this.numbers = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣', '⏹'];

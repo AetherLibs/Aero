@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			description: language => language.get('COMMAND_YOINK_DESCRIPTION')
 		});
 
-		this.emojiRegex = /<(?<animated>a)?:(?<name>[\w\-]+):(?<id>\d{17,19})>/g;
+		this.emojiRegex = /<(?<animated>a)?:(?<name>[\w-]+):(?<id>\d{17,19})>/g;
 	}
 
 	async run(message) {
@@ -19,16 +19,16 @@ module.exports = class extends Command {
 
 		const emoji = [...msg.content.matchAll(this.emojiRegex)]
 			.map(match => match.groups)
-			.map(({id, name, animated}) => 
-				({ 
+			.map(({ id, name, animated }) =>
+				({
 					name,
 					url: `https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'png'}?size=256&quality=lossless`
 				})
 			);
 
-		for (const { name, url } of emoji) {
+		for (const { name, url } of emoji)
 			message.guild.emojis.create(url, name);
-		}
+
 
 		return message.responder.success();
 	}

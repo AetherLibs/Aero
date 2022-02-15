@@ -15,6 +15,8 @@ module.exports = class extends Command {
 		});
 
 		this.defaultPermissions = FLAGS.CREATE_INSTANT_INVITE;
+
+		this.deprecated = 'Currently rolling out to servers without the need for a bot. You can use Activities (<https://get.activities.rocks/>) in the meantime.';
 	}
 
 	async run(msg, [channel]) {

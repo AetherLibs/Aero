@@ -47,9 +47,8 @@ module.exports = class extends Monitor {
 		if (
 			(msg.guild.settings.get('mod.anti.toxicity') && (IDENTITY_ATTACK > 0.9 || SEVERE_TOXICITY > 0.9))
 			|| (msg.guild.settings.get('mod.anti.profanity') && (SEXUALLY_EXPLICIT > 0.9 || THREAT > 0.9 || INSULT > 0.9 || PROFANITY > 0.9))
-		) {
+		)
 			msg.delete({ reason: msg.language.get('EVENT_PERSPECTIVE_DELETEREASON') });
-		}
 
 
 		/*

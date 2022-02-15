@@ -178,7 +178,7 @@ module.exports = class extends Command {
 						spacer = false;
 						return acc + comma + role.name;
 					}
-				} else { return acc; }
+				} else return acc;
 			}, '');
 
 		if (roles.size) {
@@ -190,7 +190,10 @@ module.exports = class extends Command {
 
 		const warnings = member.settings.get('warnings');
 		if (warnings.length) {
-			for (const { moderator } of warnings) await this.client.users.fetch(moderator);
+			await Promise.all(warnings
+				.map(warning => warning.moderator)
+				.map(moderator => this.client.users.fetch(moderator))
+			);
 			embed.addField(
 				`• ${msg.language.get('COMMAND_INFO_USER_WARNINGS')} (${warnings.filter(warn => warn.active).length})`,
 				warnings.map((warn, idx) => `${idx + 1}. ${!warn.active ? '~~' : ''}**${warn.reason}** | ${this.client.users.cache.get(warn.moderator).tag}${!warn.active ? '~~' : ''}`)
@@ -198,7 +201,10 @@ module.exports = class extends Command {
 		}
 		const notes = member.settings.get('notes');
 		if (notes.length) {
-			for (const { moderator } of notes) await this.client.users.fetch(moderator);
+			await Promise.all(notes
+				.map(note => note.moderator)
+				.map(moderator => this.client.users.fetch(moderator))
+			);
 			embed.addField(
 				`• ${msg.language.get('COMMAND_INFO_USER_NOTES')} (${notes.length})`,
 				notes.map((note, idx) => `${idx + 1}. **${note.reason}** | ${this.client.users.cache.get(note.moderator).tag}`)
@@ -216,10 +222,11 @@ module.exports = class extends Command {
 					ban.reason || 'unknown reason'
 				)
 			),
-			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider)),
+			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider))
 		];
 
-		if (!content.length) content = rep
+		if (!content.length) {
+			content = rep
 				.map(entry => {
 					if (entry.score === 0.5) entry.orientation = 'neutral';
 					else if (entry.score > 0.5) entry.orientation = 'positive';
@@ -228,6 +235,7 @@ module.exports = class extends Command {
 					return entry;
 				})
 				.map(entry => msg.language.get(`COMMAND_INFO_USER_REP_${entry.orientation.toUpperCase()}`, providerMap[entry.provider] || entry.provider));
+		}
 
 		if (sentinel.verified) content = [msg.language.get('COMMAND_INFO_USER_SENTINEL')].concat(content);
 

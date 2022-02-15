@@ -32,9 +32,9 @@ module.exports = class extends Command {
 				.addField('Metrics', lhrToMetrics(lhr).map(audit => `${scoreToEmoji(audit.score)} ${audit.title}: ${audit.displayValue}`).join('\n'));
 
 			await msg.send({ embed });
-		} else {
+		} else
 			await msg.responder.error('ERROR_SHORT', errors);
-		}
+
 
 		return loading.delete();
 	}

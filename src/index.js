@@ -26,35 +26,40 @@ async function main() {
 
 		const header = req.get('Authorization');
 
-		if (!header) return res.status(401).json({
-			error: 'token_missing',
-		});
+		if (!header) {
+			return res.status(401).json({
+				error: 'token_missing'
+			});
+		}
 
 		const [type, token] = header.split(' ').map(str => str?.toLowerCase());
 
-		if (type !== 'bearer') return res.status(401).json({
-			error: 'token_invalid_type',
-		});
+		if (type !== 'bearer') {
+			return res.status(401).json({
+				error: 'token_invalid_type'
+			});
+		}
 
-		if (token !== process.env.REMOTE_TOKEN) return res.status(401).json({
-			error: 'token_invalid',
-		});
+		if (token !== process.env.REMOTE_TOKEN) {
+			return res.status(401).json({
+				error: 'token_invalid'
+			});
+		}
 
 		return next();
 	});
 
-	app.get('/', async (req, res) => {
-		return res.status(200).json({ ping: await aggregator.averagePing() })
-	});
+	app.get('/', async (req, res) => res.status(200).json({ ping: await aggregator.averagePing(), ready: aggregator.ready }));
 
 	if (metricsEnabled) {
 		app.get('/metrics', async (req, res) => {
+			if (!aggregator.ready) return res.status(500).end('not-ready');
 			try {
 				res.set('Content-Type', aggregator.register.contentType);
-				res.end(await aggregator.register.metrics());
+				return res.end(await aggregator.register.metrics());
 			} catch (ex) {
 				logger.error(ex);
-				res.status(500).end(ex.toString());
+				return res.status(500).end(ex.toString());
 			}
 		});
 		logger.log('[express] Registered metrics endpoint');
@@ -63,17 +68,18 @@ async function main() {
 	app.listen(accessPort);
 	logger.log(`[express] Listening on :${accessPort}`);
 
-	const opts = {};
+	const opts = {
+		addr: accessPort
+	};
 	if (process.env.NGROK_TOKEN) {
 		opts.authtoken = process.env.NGROK_TOKEN;
 		opts.region = ngrokRegion;
-		opts.addr = accessPort;
 		opts.subdomain = `${ngrokPrefix}-${stageShorthand}`;
 	}
 	const url = await ngrok.connect(opts);
 	logger.log(`[ngrok] proxying :${accessPort} <- ${url}`);
 
-	cluster.on('message', (worker, msg, handle) => {
+	cluster.on('message', (worker, msg) => {
 		if (msg?.type !== 'LOGIN') return;
 		logger.log('[Aggregator] Connecting succeeded.');
 
@@ -92,7 +98,7 @@ async function main() {
 
 function secondary() {
 	logger.log('[Aggregator] Connecting to primary.');
-	process.send({ type: 'LOGIN'});
+	process.send({ type: 'LOGIN' });
 
 	// sentry
 	let sentry;

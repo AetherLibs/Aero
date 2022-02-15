@@ -18,18 +18,17 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild || !msg.guild.settings.get('mod.anti.copypastas') || msg.exempt) return;
-		for (const copypasta of this.copypastas) {
+		for (const copypasta of this.copypastas)
 			if (msg.content.includes(copypasta)) msg.delete();
-		}
 	}
 
 	readCopypastas() {
 		const copypastas = [];
 		const dir = join(process.cwd(), 'config', 'copypastas');
 		const names = readdirSync(dir);
-		for (const name of names) {
+		for (const name of names)
 			copypastas.push(readFileSync(join(dir, name)).toString().replace(/\r/g, ''));
-		}
+
 		this.client.console.log(`[AntiSpam] Loaded ${copypastas.length} copypastas.`);
 		return copypastas;
 	}

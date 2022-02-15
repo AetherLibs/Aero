@@ -19,8 +19,8 @@ module.exports = class extends Monitor {
 		if (!tags?.length) return;
 
 		const matchedTags = tags.filter(([tag]) => tag.test(msg.content));
-		for (const tag of matchedTags) {
-			const parsedTag = await this.parser.parse(tag[1], {
+		const parsedTags = await Promise.all(
+			matchedTags.map(tag => this.parser.parse(tag[1], {
 				args: msg.content.slice(msg.prefixLength).trim().split(/\s+/).slice(1),
 				user: msg.author,
 				guild: msg.guild,
@@ -28,11 +28,12 @@ module.exports = class extends Monitor {
 				member: msg.member,
 				trigger: msg,
 				logger: this.client.console
-			}).then(result => result?.trim());
+			}))
+		);
+		const results = parsedTags.map(result => result?.trim()).filter(result => result?.length);
 
-			if (!parsedTag.length) continue;
-			msg.send(parsedTag);
-		}
+		for (const result of results)
+			msg.send(result);
 
 		return;
 	}

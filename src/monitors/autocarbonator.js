@@ -45,12 +45,10 @@ module.exports = class extends Monitor {
 			if (!img.toString().startsWith('An error occurred')) {
 				await msg.delete();
 				return msg.channel.sendFile(img, 'code.png');
-			} else {
+			} else
 				return msg.responder.error();
-			}
-		} else {
+		} else
 			return false;
-		}
 	}
 
 };

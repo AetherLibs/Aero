@@ -58,9 +58,9 @@ module.exports = class extends Command {
 		if (!msg.guild.settings.get('regexTags').length) throw msg.language.get('COMMAND_TAGREGEX_NOTAGS', msg.guild.settings.get('prefix'));
 		const tags = msg.guild.settings.get('regexTags');
 		const output = [msg.language.get('COMMAND_TAG_LIST', msg.guild.name, tags.length), '```asciidoc'];
-		for (const [index, [tag, value]] of tags.entries()) {
+		for (const [index, [tag, value]] of tags.entries())
 			output.push(`${index + 1}. ${tag} :: ${trimString(value, 30)}`);
-		}
+
 		output.push('```');
 		return msg.send(output.join('\n'));
 	}
