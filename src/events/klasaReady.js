@@ -74,6 +74,9 @@ module.exports = class extends Event {
 		this.client.config.install_params /* eslint-disable-line camelcase */
 			= await this.client.api.applications(this.client.user.id).rpc.get().then(res => res.install_params)
 			?? { scopes: ['applications.commands', 'bot'], permissions: '8' };
+
+		this.client.console.log(`[Aggregator] Shard ${this.client.shard.id} sending ready.`);
+		this.client.aggregator.ready();
 	}
 
 };

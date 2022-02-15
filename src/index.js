@@ -49,16 +49,17 @@ async function main() {
 		return next();
 	});
 
-	app.get('/', async (req, res) => res.status(200).json({ ping: await aggregator.averagePing() }));
+	app.get('/', async (req, res) => res.status(200).json({ ping: await aggregator.averagePing(), ready: aggregator.ready }));
 
 	if (metricsEnabled) {
 		app.get('/metrics', async (req, res) => {
+			if (!aggregator.ready) return res.status(500).end('not-ready');
 			try {
 				res.set('Content-Type', aggregator.register.contentType);
-				res.end(await aggregator.register.metrics());
+				return res.end(await aggregator.register.metrics());
 			} catch (ex) {
 				logger.error(ex);
-				res.status(500).end(ex.toString());
+				return res.status(500).end(ex.toString());
 			}
 		});
 		logger.log('[express] Registered metrics endpoint');
@@ -67,11 +68,12 @@ async function main() {
 	app.listen(accessPort);
 	logger.log(`[express] Listening on :${accessPort}`);
 
-	const opts = {};
+	const opts = {
+		addr: accessPort
+	};
 	if (process.env.NGROK_TOKEN) {
 		opts.authtoken = process.env.NGROK_TOKEN;
 		opts.region = ngrokRegion;
-		opts.addr = accessPort;
 		opts.subdomain = `${ngrokPrefix}-${stageShorthand}`;
 	}
 	const url = await ngrok.connect(opts);
