@@ -20,8 +20,9 @@ module.exports = class extends Command {
 	async run(msg, [role, color]) {
 		const colorData = tc(color);
 		if (colorData._format === false) return msg.responder.error('COMMAND_SETCOLOR_INVALIDCOLOR');
-		role.setColor(colorData.toHex()).catch(() => msg.responder.error('COMMAND_SETCOLOR_NOPERMS'));
-		return msg.responder.success();
+		return role.setColor(colorData.toHex())
+			.catch(() => msg.responder.error('COMMAND_SETCOLOR_NOPERMS'))
+			.then(() => msg.responder.success());
 	}
 
 };
