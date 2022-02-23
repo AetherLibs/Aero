@@ -2,8 +2,6 @@ const { Command } = require('@aero/klasa');
 const req = require('@aero/centra');
 const tc2 = require('tinycolor2');
 
-const toTitleCase = str => str.charAt(0).toUpperCase() + str.slice(1);
-
 module.exports = class extends Command {
 
 
@@ -29,7 +27,7 @@ module.exports = class extends Command {
 		if (colorData._format === false) return msg.responder.error('COMMAND_COLOR_INVALIDCOLOR');
 		const img = await this.draw(colorData.toHex());
 		return msg.channel.sendFile(img, 'color.png', [
-			`**${colorData.toName() ? toTitleCase(colorData.toName()) : 'Unnamed'}**`,
+			`**${await this.getName(colorData.toHex())}**`,
 			`Hex: ${colorData.toHexString()}`,
 			`RGB: ${colorData.toRgbString()}`,
 			`HSV: ${colorData.toHsvString()}`,
@@ -48,6 +46,13 @@ module.exports = class extends Command {
 			.query({ color })
 			.send();
 		return body;
+	}
+
+	async getName(color) {
+		const { name } = await req('https://colornames.org/search/json/')
+			.query('hex', color)
+			.json();
+		return name || 'Unnamed';
 	}
 
 };
