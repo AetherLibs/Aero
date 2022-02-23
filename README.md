@@ -17,6 +17,7 @@ If you're currently using a bot like Dyno, Carl, Mee6, or any of the major multi
 
 You can find Aero's community documentation at https://aero.bot/docs
 
+
 ## Legal
 
 By inviting, using, selfhosting, or distributing Aero or the source code or binary form of Aero or its parts, or our website you agree to Aero's [Terms of Service](https://aero.bot/terms).
@@ -36,7 +37,7 @@ We make use of several amazing services which support us with open-source licens
 - [GitLab](https://about.gitlab.com/) is what we use to host all of the source code, as well as run automated CI actions
 
 On its own, Aero is pretty cool. But there are some tools we use to extend this even further. Those are:
-- [The ravy.org API](https://ravy.org/api) - A swiss-army-knife for images, a huge yet transparent global ban list, and a lot of utilities
+- [The ravy.org API](https://ravy.org/api) - A swiss-army-knife for anything security-related
 - [Perspective](https://www.perspectiveapi.com/) - An API using machine learning to reduce toxicity online
 - [DiscordRep](https://discordrep.com) - An online fraud prevention project
 - [Dank Memer Imgen](https://dankmemer.services/) - An image generation API for generating memes and more
