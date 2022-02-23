@@ -23,8 +23,8 @@
 		"node": ">=14.0.0"
 	},
 	"dependencies": {
-		"@aero/corona": "^1.4.0",
-		"@aero/corona-graphs": "^1.1.0",
+		"@aero/corona": "^1.6.0",
+		"@aero/corona-graphs": "^1.2.0",
 		"@aero/drep": "^2.1.0",
 		"@aero/http": "^1.0.2",
 		"@aero/klasa": "^0.6.0-rc14",
