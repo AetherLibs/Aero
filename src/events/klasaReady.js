@@ -25,11 +25,6 @@ function updateWsPing(ping) {
 module.exports = class extends Event {
 
 	async run() {
-		if (this.client.config.cwEnabled) {
-			await this.client.chatwatch.login()
-				.then(() => this.client.console.log('[ChatWatch] Connected to Websocket.'))
-				.catch(err => this.client.console.error('[ChatWatch] failed to log in', err));
-		}
 		this.client.user.setActivity(`${this.client.options.prefix}help`, { type: 'LISTENING' });
 		if (process.env.BOOT_SINGLE === 'false') {
 			this.client.console.log('[Aether] Sending ready event.');

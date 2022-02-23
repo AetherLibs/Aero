@@ -48,5 +48,4 @@ module.exports = {
 	}[stage]
 };
 
-module.exports.cwEnabled = !['true', true].includes(process.env.CHATWATCH_DISABLED);
 module.exports.metricsEnabled = !['true', true].includes(process.env.METRICS_DISABLED);

@@ -63,7 +63,6 @@ SENTRY_TOKEN=
 # ---------------------------------------- #
 
 AERO_ENV="development"
-CHATWATCH_DISABLED="true"
 
 # Whether to boot a single shard. Only set to false when running kubernetes.
 BOOT_SINGLE="true"
