@@ -2,7 +2,7 @@ const { Event } = require('@aero/klasa');
 const { encode } = require('../../lib/ws/util/MessageUtil');
 const Message = require('../../lib/ws/Message');
 const { READY_CLIENT } = require('../../lib/ws/util/constants').types;
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 function updateWsPing(ping) {
 	const epochInSeconds = Math.floor(new Date() / 1000);
@@ -16,7 +16,7 @@ function updateWsPing(ping) {
 		.path('/metrics')
 		.path(process.env.STATUS_METRIC_WSPING)
 		.path('data.json')
-		.method('POST')
+		.post()
 		.header('Authorization', `OAuth ${process.env.STATUS_TOKEN}`)
 		.body({ data }, 'json')
 		.send();

@@ -1,6 +1,6 @@
 const { Command } = require('@aero/klasa');
 const { pronounMapping, pronounDB } = require('~/lib/util/constants');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Command {
 
@@ -19,7 +19,7 @@ module.exports = class extends Command {
 		else if (!pronounDB[pronouns]) throw 'COMMAND_PRONOUNS_UNKNOWN';
 
 		await req('https://ravy.org/api/v1/')
-			.method('POST')
+			.post()
 			.path('/users')
 			.path(msg.author.id)
 			.path('pronouns')

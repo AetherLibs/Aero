@@ -1,5 +1,5 @@
 const { Monitor } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const { PerspectiveAPI } = require('../../lib/util/constants').url;
 const { createHash } = require('crypto');
 
@@ -22,7 +22,8 @@ module.exports = class extends Monitor {
 			.update(msg.guild.id)
 			.digest('hex');
 
-		const scores = await req(PerspectiveAPI, 'POST')
+		const scores = await req(PerspectiveAPI)
+			.post()
 			.path('comments:analyze')
 			.query('key', process.env.PERSPECTIVE_TOKEN)
 			.body({

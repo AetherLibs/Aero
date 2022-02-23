@@ -1,5 +1,5 @@
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const { MessageEmbed } = require('discord.js');
 const BASE_URL = 'https://lighthouse-dot-webdotdevsite.appspot.com//lh/newaudit';
 const { infinity, success, error, minus } = require('~/lib/util/constants').emojis;
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 
 		const res = await req(BASE_URL)
-			.method('POST')
+			.post()
 			.body({ url, replace: true, save: false }, 'json')
 			.json();
 

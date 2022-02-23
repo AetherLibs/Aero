@@ -6,7 +6,7 @@ const {
 	badges,
 	userInfo: { providers: providerMap }
 } = require('../../../lib/util/constants');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Command {
 

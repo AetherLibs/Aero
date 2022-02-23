@@ -1,7 +1,7 @@
 const { Event } = require('@aero/klasa');
 const { FLAGS } = require('discord.js').Permissions;
 
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Event {
 

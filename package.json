@@ -23,11 +23,10 @@
 		"node": ">=14.0.0"
 	},
 	"dependencies": {
-		"@aero/centra": "^1.0.7",
 		"@aero/chatwatch": "^1.5.22",
 		"@aero/corona": "^1.4.0",
 		"@aero/corona-graphs": "^1.1.0",
-		"@aero/drep": "^2.0.2",
+		"@aero/drep": "^2.1.0",
 		"@aero/klasa": "^0.6.0-rc14",
 		"@aero/member-gateway": "^1.0.4-rc1",
 		"@aero/require": "^1.0.3",

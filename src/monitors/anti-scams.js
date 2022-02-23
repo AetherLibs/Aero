@@ -1,5 +1,5 @@
 const { Monitor } = require('@aero/klasa');
-const centra = require('@aero/centra');
+const http = require('@aero/http');
 const leven = require('js-levenshtein');
 const sanitize = require('@aero/sanitizer');
 
@@ -126,7 +126,7 @@ module.exports = class extends Monitor {
 
 	async isFraudulentByAPI(links, authorId, msg) {
 		const statuses = await Promise.all(links.map(async link => {
-			const req = centra('https://ravy.org/api/v1')
+			const req = http('https://ravy.org/api/v1')
 				.header('Authorization', process.env.RAVY_TOKEN)
 				.query('author', authorId)
 				.path('/urls')
