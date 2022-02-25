@@ -25,8 +25,8 @@
 	"dependencies": {
 		"@aero/corona": "^1.6.0",
 		"@aero/corona-graphs": "^1.2.0",
-		"@aero/drep": "^2.1.0",
-		"@aero/http": "^1.0.2",
+		"@aero/drep": "^2.1.2",
+		"@aero/http": "^1.0.5",
 		"@aero/klasa": "^0.6.0-rc14",
 		"@aero/member-gateway": "^1.0.4-rc1",
 		"@aero/require": "^1.0.3",
