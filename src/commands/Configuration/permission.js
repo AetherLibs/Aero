@@ -8,7 +8,7 @@ module.exports = class extends Command {
 		super(...args, {
 			aliases: ['perms', 'permissions'],
 			runIn: ['text'],
-			usage: '[allow|deny|show|remove|clear|reset] [everyone|member:membername|roleid:role|rolename:rolename] [permission:string]',
+			usage: '[allow|deny|show|clear] [everyone|member:membername|roleid:role|rolename:rolename] [permission:string]',
 			usageDelim: ' ',
 			description: language => language.get('COMMAND_PERMS_DESCRIPTION')
 		});
@@ -25,8 +25,13 @@ module.exports = class extends Command {
 			return message.send(this.buildOverview(tree, target, message.language));
 		}
 
-		if (['allow', 'deny', 'remove'].includes(action) && (!target || !permission)) throw message.language.get('COMMAND_PERMS_MISSING');
-		if (action === 'clear' && !target) throw message.language.get('COMMAND_PERMS_MISSING_TARGET');
+		if (['allow', 'deny'].includes(action) && (!target || !permission)) throw message.language.get('COMMAND_PERMS_MISSING');
+
+		if (action === 'clear') {
+			if (target && permission) action = 'remove';
+			else if (target) action = 'clear';
+			else action = 'reset';
+		}
 		await this.client.permissions.handle({
 			action,
 			message,
