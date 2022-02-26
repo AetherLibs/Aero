@@ -35,8 +35,8 @@ module.exports = class extends Monitor {
 				communityId
 			}, 'json')
 			.header('user-agent', `${this.client.user.username}/${this.client.config.version}`)
-			.send()
-			.then(res => res.json.attributeScores);
+			.json()
+			.then(res => res.attributeScores);
 		if (!scores) return;
 		const IDENTITY_ATTACK = scores.IDENTITY_ATTACK.summaryScore.value;
 		const SEVERE_TOXICITY = scores.SEVERE_TOXICITY.summaryScore.value;
