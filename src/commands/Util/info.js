@@ -291,11 +291,16 @@ module.exports = class extends Command {
 		return msg.sendEmbed(embed);
 	}
 
-	botinfo(msg) {
+	async botinfo(msg) {
 		if (msg.guild && !msg.guild.me.permissions.has(FLAGS.EMBED_LINKS)) return msg.sendLocale('COMMAND_INFO_BOT');
+		const dominant = await req(this.client.config.colorgenURL)
+			.path('dominant')
+			.query('image', this.client.user.displayAvatarURL({ dynamic: false, format: 'png' }))
+			.text();
 		return msg.sendEmbed(new MessageEmbed()
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL({ dynamic: true }))
 			.setDescription(msg.language.get('COMMAND_INFO_BOT'))
+			.setColor(dominant)
 		);
 	}
 
