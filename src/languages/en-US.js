@@ -47,15 +47,19 @@ module.exports = class extends Language {
 				'',
 				bold`Examples`,
 				`Allow ravy to use the ban command: ${code`${prefix}perms allow @ravy moderation.ban`}`,
-				`Disallow dragonblitz10 from using all configuration commands: ${code`${prefix}perms remove @dragonblitz10 configuration.*`}`,
-				`Allow admins to use all commands: ${code`${prefix}perms allow @Admins *`}`
+				`Disallow dragonblitz10 from using all configuration commands: ${code`${prefix}perms deny @dragonblitz10 configuration.*`}`,
+				`Allow admins to use all commands: ${code`${prefix}perms allow @Admins *`}`,
+				`Reset all permission entries: ${code`${prefix}perms reset`}`,
+				`Clear all permission overrides from ravy ${code`${prefix}perms clear @ravy`}`
 			],
 			COMMAND_PERMS_MISSING: 'Invalid usage: expecting a target and a permission.',
+			COMMAND_PERMS_MISSING_TARGET: 'Invalid usage: expecting a target.',
 			COMMAND_PERMS_SHOW: name => `Permissions for **${name}**:`,
 			COMMAND_PERMS_SUCCESS_ALLOW: (permission, target) => `Granted ${code`${permission}`} to **${target}**`,
 			COMMAND_PERMS_SUCCESS_DENY: (permission, target) => `Denied ${code`${permission}`} from **${target}**`,
 			COMMAND_PERMS_SUCCESS_REMOVE: (permission, target) => `Unset ${code`${permission}`} for **${target}**`,
-			COMMAND_PERMS_SUCCESS_CLEAR: 'Cleared permission entries.',
+			COMMAND_PERMS_SUCCESS_CLEAR: (_, target) => `Cleared all permission entries for **${target}**`,
+			COMMAND_PERMS_SUCCESS_RESET: 'Removed all permission overrides',
 
 			COMMAND_PERMS_ERR_TARGET: "You can't modify permissions for that target.",
 			COMMAND_PERMS_ERR_CONFIG: 'There are no permission nodes configured in this server.',
