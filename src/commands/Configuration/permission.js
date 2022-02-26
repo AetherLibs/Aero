@@ -8,7 +8,7 @@ module.exports = class extends Command {
 		super(...args, {
 			aliases: ['perms', 'permissions'],
 			runIn: ['text'],
-			usage: '[allow|deny|show|remove|clear] [member:membername|roleid:role|rolename:rolename|everyone] [permission:string]',
+			usage: '[allow|deny|show|remove|clear] [everyone|member:membername|roleid:role|rolename:rolename] [permission:string]',
 			usageDelim: ' ',
 			description: language => language.get('COMMAND_PERMS_DESCRIPTION')
 		});
@@ -42,26 +42,31 @@ module.exports = class extends Command {
 			: target.name || target.displayName;
 
 		out.push(lang.get('COMMAND_PERMS_SHOW', name));
-		for (const category in tree) {
-			if (category === 'admin') continue;
-			out.push(`${typeof tree[category]['*'] === 'boolean'
-				? tree[category]['*']
-					? granted
-					: denied
-				: unspecified
-			} ${category}`);
-			let i = 0;
-			const keys = Object.keys(tree[category]).length;
-			for (const key in tree[category]) {
-				i++;
-				if (tree[category]['*'] === tree[category][key]) continue;
-				out.push(`  ${i === keys ? '└──' : '├──'}${tree[category][key]
-					? granted
-					: denied
-				} ${key}`);
+		out.push('');
+
+		if (typeof tree['*']?.value === 'boolean')
+			out.push(`${tree['*'].value ? granted : denied} all commands (*) ${tree['*'].cause}`);
+		else {
+			for (const category in tree) {
+				if (category === 'admin') continue;
+				out.push(this.buildField(tree[category]['*'], category));
+				let i = 0;
+				const keys = Object.keys(tree[category]).length;
+				for (const key in tree[category]) {
+					i++;
+					if (tree[category]['*']?.value === tree[category][key]?.value) continue;
+					out.push(`  ${i === keys ? '└──' : '├──'}${this.buildField(tree[category][key], key)}`);
+				}
 			}
 		}
 		return out.join('\n');
+	}
+
+	buildField(entry, key) {
+		if (typeof entry?.value === 'boolean')
+			return `${entry.value ? granted : denied} **${key}** (${entry.value ? 'granted' : 'denied'} by ${entry.cause})`;
+		else
+			return `${unspecified} ${key}`;
 	}
 
 };
