@@ -143,10 +143,13 @@ module.exports = class extends Monitor {
 
 			const res = await req.json();
 
-			return res;
+			return { ...res, domain: link.hostname };
 		}));
 
-		return statuses.reduce((acc, cur) => acc || cur.isFraudulent, false);
+		return statuses.reduce((acc, cur) => {
+			if (cur.isFraudulent && this.client.aggregator.metricsEnabled) this.client.aggregator.registerScamDomain(cur.domain);
+			return acc || cur.isFraudulent;
+		}, false);
 	}
 
 };
