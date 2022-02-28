@@ -46,6 +46,7 @@ module.exports = class extends Monitor {
 				this.client.console.log(`[PluralKit] not converting ${msg.author.id} [${msg.guild.id}]: ${res.message}`);
 				return;
 			}
+			sender = res.sender;
 		}
 
 		if (sender === false) return;
