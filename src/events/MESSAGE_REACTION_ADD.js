@@ -119,7 +119,7 @@ module.exports = class extends Event {
 		const isLemonChannel = channelID === lemonChannelID;
 		if (userID === this.client.user.id) return false;
 
-		if ('🍋' !== emoji?.name) return false;
+		if (emoji?.name !== '🍋') return false;
 
 		const threshold = guild.settings.get('lemonboard.trigger');
 

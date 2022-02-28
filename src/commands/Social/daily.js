@@ -19,9 +19,9 @@ module.exports = class extends Command {
 	async run(msg) {
 		const member = await msg.guild.members.fetch(msg.author);
 		await msg.member.settings.sync();
-		if (Date.now() - member.settings.get('lastDailyTimestamp') < TIME.HOUR * 12) {
+		if (Date.now() - member.settings.get('lastDailyTimestamp') < TIME.HOUR * 12)
 			return msg.send(msg.language.get('COMMAND_DAILY_COOLDOWN', Duration.toNow(member.settings.get('lastDailyTimestamp') + (TIME.HOUR * 12))));
-		}
+
 		const balance = this.client.config.dailyPoints;
 		await msg.member.settings.sync();
 		await msg.member.settings.update([['balance', msg.member.settings.get('balance') + balance], ['lastDailyTimestamp', Date.now()]]);

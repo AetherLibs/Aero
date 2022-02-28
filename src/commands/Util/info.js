@@ -1,8 +1,13 @@
 const { Command, Duration, Timestamp } = require('@aero/klasa');
 const { MessageEmbed, GuildMember, User, Role, Permissions: { FLAGS } } = require('discord.js');
-const { color: { VERY_NEGATIVE, POSITIVE }, emojis: { perms: { granted, unspecified }, infinity }, badges, url: { KSoftBans }, pronounDB } = require('../../../lib/util/constants');
-const req = require('@aero/centra');
-const { Ban, Warn } = require('@aero/drep');
+const {
+	color: { VERY_NEGATIVE, POSITIVE, INFORMATION },
+	emojis: { perms: { granted, unspecified }, infinity },
+	badges,
+	userInfo: { providers: providerMap }
+} = require('../../../lib/util/constants');
+const req = require('@aero/http');
+
 module.exports = class extends Command {
 
 	constructor(...args) {
@@ -102,28 +107,33 @@ module.exports = class extends Command {
 	async userinfo(msg, user) {
 		const loading = await msg.channel.send(`${infinity} this might take a few seconds`);
 		let embed = new MessageEmbed();
-		embed = await this._addBaseData(user, embed);
+		const { pronouns, bans, trust, whitelists, sentinel, rep } = await req('https://ravy.org/api/v1/')
+			.path('/users')
+			.path(user.id)
+			.header('Authorization', process.env.RAVY_TOKEN)
+			.json();
+
+		let system;
+
+		if (msg.author.id === user.id && msg.originalAuthor)
+			system = msg.originalAuthor;
+
+		embed = await this._addBaseData(user, embed, pronouns, system);
 		embed = await this._addBadges(user, embed);
 		embed = await this._addMemberData(msg, user, embed);
-		embed = await this._addSecurity(msg, user, embed);
+		embed = await this._addSecurity(msg, user, embed, bans, trust, whitelists, sentinel, rep);
 		await msg.sendEmbed(embed);
 		return loading.delete();
 	}
 
-	async _addBaseData(user, embed) {
-		let authorString = `${user.tag} [${user.id}]`;
-		const pdbRes = await req('https://pronoundb.org/api/v1')
-			.path('/lookup')
-			.query({
-				platform: 'discord',
-				id: user.id
-			})
-			.json();
-		if (pdbRes.pronouns && pronounDB[pdbRes.pronouns]) authorString += ` (${pronounDB[pdbRes.pronouns]})`;
+	async _addBaseData(user, embed, pronouns, system) {
+		const effectiveUser = system || user;
+		let authorString = `${system?.username || user.tag} [${user.id}] ${system ? `(system of ${user.tag})` : ''}`;
+		if (pronouns !== 'unknown pronouns') authorString += ` (${pronouns})`;
 		return embed
 			.setAuthor(authorString
-				, user.displayAvatarURL({ dynamic: true }))
-			.setThumbnail(user.displayAvatarURL({ dynamic: true }));
+				, effectiveUser.displayAvatarURL({ dynamic: true }))
+			.setThumbnail(effectiveUser.displayAvatarURL({ dynamic: true }));
 	}
 
 	async _addBadges(user, embed) {
@@ -149,7 +159,6 @@ module.exports = class extends Command {
 				msg.guild.name,
 				this.timestamp.display(member.joinedAt),
 				Duration.toNow(member.joinedAt)));
-			statistics.push(`${member.settings.get('stats.messages')} messages sent`);
 		}
 
 		const totalRep = user.settings.get('stats.reputation.total');
@@ -168,7 +177,7 @@ module.exports = class extends Command {
 			.filter(role => role.id !== msg.guild.id)
 			.reduce((acc, role, idx) => {
 				if (acc.length + role.name.length < 1010) {
-					if (role.name === '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯') {
+					if (role.name.startsWith('⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯')) {
 						spacer = true;
 						return `${acc}\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n`;
 					} else {
@@ -176,7 +185,7 @@ module.exports = class extends Command {
 						spacer = false;
 						return acc + comma + role.name;
 					}
-				} else { return acc; }
+				} else return acc;
 			}, '');
 
 		if (roles.size) {
@@ -188,7 +197,10 @@ module.exports = class extends Command {
 
 		const warnings = member.settings.get('warnings');
 		if (warnings.length) {
-			for (const { moderator } of warnings) await this.client.users.fetch(moderator);
+			await Promise.all(warnings
+				.map(warning => warning.moderator)
+				.map(moderator => this.client.users.fetch(moderator))
+			);
 			embed.addField(
 				`• ${msg.language.get('COMMAND_INFO_USER_WARNINGS')} (${warnings.filter(warn => warn.active).length})`,
 				warnings.map((warn, idx) => `${idx + 1}. ${!warn.active ? '~~' : ''}**${warn.reason}** | ${this.client.users.cache.get(warn.moderator).tag}${!warn.active ? '~~' : ''}`)
@@ -196,7 +208,10 @@ module.exports = class extends Command {
 		}
 		const notes = member.settings.get('notes');
 		if (notes.length) {
-			for (const { moderator } of notes) await this.client.users.fetch(moderator);
+			await Promise.all(notes
+				.map(note => note.moderator)
+				.map(moderator => this.client.users.fetch(moderator))
+			);
 			embed.addField(
 				`• ${msg.language.get('COMMAND_INFO_USER_NOTES')} (${notes.length})`,
 				notes.map((note, idx) => `${idx + 1}. **${note.reason}** | ${this.client.users.cache.get(note.moderator).tag}`)
@@ -206,65 +221,36 @@ module.exports = class extends Command {
 		return embed;
 	}
 
-	async _addSecurity(msg, user, embed) {
-		const KSoftBan = await this.client.ksoft.bans?.info(user.id).catch(() => null);
-		const DRepInfraction = await this.client.drep?.infractions(user.id).catch(() => null);
-		const DRepReputation = await this.client.drep?.rep(user.id).catch(() => ({ reputation: 0, staff: false })) ?? { reputation: 0, staff: false };
-		const DRepProfile = `https://discordrep.com/u/${user.id}`;
-		const CWProfile = await this.client.chatwatch?.profile?.(user.id)?.catch(() => ({ whitelisted: false, score: 50 })) ?? { whitelisted: false, score: 50 };
-		const RiversideWhitelisted = await this.client.riverside.whitelist().then(whitelist => whitelist.includes(user.id));
-		const RiversideProfile = await this.client.riverside.check(user.id);
-		const rating = KSoftBan?.active || CWProfile.blacklisted
-			? 'COMMAND_INFO_TRUST_VERYLOW'
-			: DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || DRepReputation.reputation < 0 || CWProfile.score > 50
-				? 'COMMAND_INFO_TRUST_LOW'
-				: this.client.owners.has(user) || CWProfile.whitelisted
-					? 'COMMAND_INFO_TRUST_VERYHIGH'
-					: 'COMMAND_INFO_TRUST_HIGH';
-		const cwRating = CWProfile.whitelisted
-			? 'COMMAND_INFO_USER_CWWHITELISTED'
-			: CWProfile.blacklisted
-				? 'COMMAND_INFO_USER_CWBANNED'
-				: CWProfile.score < 50
-					? 'COMMAND_INFO_USER_CWGOOD'
-					: CWProfile.score === 50
-						? 'COMMAND_INFO_USER_CWNEUTRAL'
-						: 'COMMAND_INFO_USER_CWBAD';
-		const riversideRating = RiversideProfile.score === 0
-			? 'COMMAND_INFO_USER_RIVERSIDEGOOD'
-			: RiversideProfile.score < 50
-				? 'COMMAND_INFO_USER_RIVERSIDESUSPICIOUS'
-				: 'COMMAND_INFO_USER_RIVERSIDEBAD';
+	async _addSecurity(msg, user, embed, bans, trust, whitelists, sentinel, rep) {
+		let content = [
+			...bans.map(ban =>
+				msg.language.get('COMMAND_INFO_USER_BANNED',
+					providerMap[ban.provider] || ban.provider,
+					ban.reason || 'unknown reason'
+				)
+			),
+			...whitelists.map(entry => msg.language.get('COMMAND_INFO_USER_WHITELISTED', providerMap[entry.provider] || entry.provider))
+		];
 
-		const KSoftBansProfile = `${KSoftBans}?user=${user.id}`;
-		const RiversideLink = `https://discord.riverside.rocks/check?id=${user.id}&ref=aero`
+		if (!content.length) {
+			content = rep
+				.map(entry => {
+					if (entry.score === 0.5) entry.orientation = 'neutral';
+					else if (entry.score > 0.5) entry.orientation = 'positive';
+					else if (entry.score < 0.5) entry.orientation = 'negative';
 
-		embed.addField(`• Trust (${msg.language.get(rating)})`, [
-			KSoftBan?.active
-				? msg.language.get('COMMAND_INFO_USER_KSOFTBANNED', KSoftBan.reason, KSoftBan.proof, KSoftBansProfile)
-				: CWProfile.whitelisted
-					? msg.language.get('COMMAND_INFO_USER_KSOFTSTAFF', KSoftBansProfile)
-					: msg.language.get('COMMAND_INFO_USER_KSOFTCLEAN', KSoftBansProfile),
-			msg.language.get(cwRating, KSoftBansProfile, CWProfile.blacklisted_reason),
-			DRepInfraction instanceof Ban
-				? msg.language.get('COMMAND_INFO_USER_DREPBANNED', DRepInfraction.reason)
-				: DRepInfraction instanceof Warn
-					? msg.language.get('COMMAND_INFO_USER_DREPWARNED', DRepInfraction.reason)
-					: DRepReputation.reputation === 0
-						? msg.language.get('COMMAND_INFO_USER_DREPNEUTRAL', DRepProfile)
-						: DRepReputation.reputation > 0
-							? DRepReputation.staff
-								? msg.language.get('COMMAND_INFO_USER_DREPSTAFF', DRepProfile)
-								: msg.language.get('COMMAND_INFO_USER_DREPPOSITIVE', DRepProfile)
-							: msg.language.get('COMMAND_INFO_USER_DREPNEGATIVE', DRepProfile),
-			RiversideWhitelisted
-				? msg.language.get('COMMAND_INFO_USER_RIVERSIDEWHITELISTED', RiversideLink)
-				: msg.language.get(riversideRating, RiversideProfile.reportCount, RiversideLink)
-		].join('\n'));
+					return entry;
+				})
+				.map(entry => msg.language.get(`COMMAND_INFO_USER_REP_${entry.orientation.toUpperCase()}`, providerMap[entry.provider] || entry.provider));
+		}
 
-		DRepInfraction instanceof Ban || DRepInfraction instanceof Warn || KSoftBan?.active || CWProfile.blacklisted || CWProfile.score > 80
-			? embed.setColor(VERY_NEGATIVE)
-			: embed.setColor(POSITIVE);
+		if (sentinel.verified) content = [msg.language.get('COMMAND_INFO_USER_SENTINEL')].concat(content);
+
+		embed.addField(`• Trust (${trust.label})`, content.length ? content.join('\n') : msg.language.get('COMMAND_INFO_USER_NEUTRAL'));
+
+		if (trust.level === 3) embed.setColor(INFORMATION);
+		else if (trust.level < 3) embed.setColor(VERY_NEGATIVE);
+		else if (trust.level > 3) embed.setColor(POSITIVE);
 
 		return embed;
 	}
@@ -296,7 +282,6 @@ module.exports = class extends Command {
 
 	async serverinfo(msg) {
 		const { guild } = msg;
-		const toxicity = guild.settings.get('stats.toxicity');
 		await msg.guild.members.fetch(msg.guild.ownerID);
 		const embed = new MessageEmbed()
 			.setAuthor(`${guild.name} [${guild.id}]`, guild.iconURL())
@@ -304,7 +289,6 @@ module.exports = class extends Command {
 			.addField('• Members', `${guild.memberCount} (cached: ${guild.members.cache.size})`, true)
 			.addField('• Voice region', this.regions[msg.guild.region], true)
 			.addField('• Owner', `${guild.owner.user.tag} ${guild.owner.toString()} [${guild.ownerID}]`)
-			.addField('• Statistics', `${guild.settings.get('stats.messages')} messages ${toxicity !== 0 ? `with an average toxicity of ${Math.round(toxicity * 100)}%` : ''} sent`)
 			.addField('• Security', [
 				`Verification level: ${this.verificationLevels[msg.guild.verificationLevel]}`,
 				`Explicit filter: ${this.filterLevels[msg.guild.explicitContentFilter]}`
@@ -314,11 +298,16 @@ module.exports = class extends Command {
 		return msg.sendEmbed(embed);
 	}
 
-	botinfo(msg) {
+	async botinfo(msg) {
 		if (msg.guild && !msg.guild.me.permissions.has(FLAGS.EMBED_LINKS)) return msg.sendLocale('COMMAND_INFO_BOT');
+		const dominant = await req(this.client.config.colorgenURL)
+			.path('dominant')
+			.query('image', this.client.user.displayAvatarURL({ dynamic: false, format: 'png' }))
+			.text();
 		return msg.sendEmbed(new MessageEmbed()
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL({ dynamic: true }))
 			.setDescription(msg.language.get('COMMAND_INFO_BOT'))
+			.setColor(dominant)
 		);
 	}
 

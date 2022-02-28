@@ -6,7 +6,7 @@
 const { Command } = require('@aero/klasa');
 const { Canvas } = require('canvas-constructor');
 const { readFile } = require('fs').promises;
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Command {
 
@@ -24,7 +24,7 @@ module.exports = class extends Command {
 
 		if (!member) return msg.responder.error('COMMAND_PROFILE_NOTMEMBER');
 		await member.settings.sync(true);
-		const avatarURL = user.displayAvatarURL({ format: 'png' });
+		const avatarURL = member.customAvatar ? member.customAvatarURL({ format: 'png' }) : user.displayAvatarURL({ format: 'png' });
 		const points = member.settings.get('points');
 		const level = member.settings.get('level');
 		const nextLevel = this.client.monitors.get('points').xpNeeded(level + 1);

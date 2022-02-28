@@ -4,7 +4,7 @@
  * Credit example: Credit goes to [Stitch07](https://github.com/Stitch07) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2021
  */
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const BASE_URL = 'https://api.urbandictionary.com/v0';
 
 module.exports = class extends Command {
@@ -35,6 +35,8 @@ module.exports = class extends Command {
 			.query('term', search)
 			.json();
 		if (resultNum > 1) resultNum--;
+
+		if (!body.list) throw 'COMMAND_URBAN_NODEF';
 
 		const result = body.list[resultNum];
 		if (!result) throw msg.language.get('COMMAND_URBAN_MAX', body.list.length);

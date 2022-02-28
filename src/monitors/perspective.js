@@ -1,6 +1,7 @@
 const { Monitor } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const { PerspectiveAPI } = require('../../lib/util/constants').url;
+const { createHash } = require('crypto');
 
 module.exports = class extends Monitor {
 
@@ -15,23 +16,27 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if(!msg.guild || (!msg.guild.settings.get('mod.anti.toxicity') && !msg.guild.settings.get('mod.anti.profanity')) || msg.exempt) return;
+		if (!msg.guild || (!msg.guild.settings.get('mod.anti.toxicity') && !msg.guild.settings.get('mod.anti.profanity')) || msg.exempt) return;
 
-		const scores = await req(PerspectiveAPI, 'POST')
+		const communityId = createHash('sha256')
+			.update(msg.guild.id)
+			.digest('hex');
+
+		const scores = await req(PerspectiveAPI)
+			.post()
 			.path('comments:analyze')
 			.query('key', process.env.PERSPECTIVE_TOKEN)
 			.body({
 				comment: {
-					text: msg.content
+					text: msg.content.toLowerCase()
 				},
 				languages: ['en'],
 				requestedAttributes: { SEVERE_TOXICITY: {}, IDENTITY_ATTACK: {}, TOXICITY: {}, SEXUALLY_EXPLICIT: {}, THREAT: {}, INSULT: {}, PROFANITY: {} },
-				communityId: msg.guild.id,
-				sessionId: msg.channel.id
+				communityId
 			}, 'json')
 			.header('user-agent', `${this.client.user.username}/${this.client.config.version}`)
-			.send()
-			.then(res => res.json.attributeScores);
+			.json()
+			.then(res => res.attributeScores);
 		if (!scores) return;
 		const IDENTITY_ATTACK = scores.IDENTITY_ATTACK.summaryScore.value;
 		const SEVERE_TOXICITY = scores.SEVERE_TOXICITY.summaryScore.value;
@@ -41,11 +46,10 @@ module.exports = class extends Monitor {
 		const PROFANITY = scores.PROFANITY.summaryScore.value;
 
 		if (
-			(msg.guild.settings.get('mod.anti.toxicity') && (IDENTITY_ATTACK > 0.9 || SEVERE_TOXICITY > 0.9)) ||
-			(msg.guild.settings.get('mod.anti.profanity') && (SEXUALLY_EXPLICIT > 0.9 || THREAT > 0.9 || INSULT > 0.9 || PROFANITY > 0.9))
-		) {
+			(msg.guild.settings.get('mod.anti.toxicity') && (IDENTITY_ATTACK > 0.9 || SEVERE_TOXICITY > 0.9))
+			|| (msg.guild.settings.get('mod.anti.profanity') && (SEXUALLY_EXPLICIT > 0.9 || THREAT > 0.9 || INSULT > 0.9 || PROFANITY > 0.9))
+		)
 			msg.delete({ reason: msg.language.get('EVENT_PERSPECTIVE_DELETEREASON') });
-		}
 
 
 		/*

@@ -22,8 +22,9 @@ module.exports = class extends Command {
 		const warnable = await this.getModeratable(msg.member, members, true);
 		if (!warnable.length) return msg.responder.error('COMMAND_WARN_NOPERMS', members.length > 1);
 
+		await Promise.all(warnable.map(member => member.settings.sync()));
+
 		for (const member of warnable) {
-			await member.settings.sync();
 			member.settings.update('warnings', { reason, moderator: msg.member.id, active: true }, { arrayAction: 'add' });
 
 			const embed = new MessageEmbed()

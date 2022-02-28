@@ -1,11 +1,24 @@
+# ---------------------------------------- #
+#                  Required                #
+# ---------------------------------------- #
+
 # MongoDB credentials
 MONGO_USER=
 MONGO_PASS=
 MONGO_HOST=
 MONGO_PORT=
+# OR
+MONGO_URI=
 
 # Discord Bot token
 DISCORD_TOKEN=
+
+# Token for ravy.org/api
+RAVY_TOKEN=
+
+# ---------------------------------------- #
+#          Optional integrations           #
+# ---------------------------------------- #
 
 # KSoft.Si token (https://api.ksoft.si/)
 KSOFT_TOKEN=
@@ -19,6 +32,37 @@ DREP_TOKEN=
 
 # Imgur token (https://imgur.com)
 IMGUR_TOKEN=
+
+# Whether to disable exposing /metrics for 
+METRICS_DISABLED="false"
+
+# Phisherman API key from phisherman.gg. User is the user ID of the one who registered the token.
+PHISHERMAN_TOKEN=
+PHISHERMAN_USER=
+
+# Ngrok token for custom subdomains
+NGROK_TOKEN=
+
+# random string of characters used for authenticating remote access
+REMOTE_TOKEN=
+
+# Aero Sentinel token
+SENTINEL_TOKEN=
+
+# Token for the Wolfram|Alpha API
+WOLFRAM_TOKEN=
+
+# Token for Shlink, incase you configured that in config/aero
+SHLINK_TOKEN=
+
+# Sentry DSN, for error tracing
+SENTRY_TOKEN=
+
+# ---------------------------------------- #
+#               don't touch                #
+# ---------------------------------------- #
+
+AERO_ENV="development"
 
 # Whether to boot a single shard. Only set to false when running kubernetes.
 BOOT_SINGLE="true"

@@ -107,7 +107,7 @@ module.exports = class extends Event {
 		const isLemonChannel = channelID === lemonChannelID;
 		if (userID === this.client.user.id) return false;
 
-		if ('🍋' !== emoji?.name) return false;
+		if (emoji?.name !== '🍋') return false;
 
 		const threshold = guild.settings.get('lemonboard.trigger');
 
@@ -138,7 +138,7 @@ module.exports = class extends Event {
 		if (!starMessage) return false;
 		votes = await syncLemonVotes(message, starMessage);
 		this.client.emit('lemonUpdated', message, { votes, starMessage });
-	
+
 		return true;
 	}
 

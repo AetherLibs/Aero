@@ -1,6 +1,6 @@
 const { Command } = require('@aero/klasa');
 const { MessageAttachment } = require('discord.js');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const BASE_URL = 'https://http.cat';
 
 module.exports = class extends Command {

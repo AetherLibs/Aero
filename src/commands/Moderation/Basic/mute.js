@@ -1,5 +1,6 @@
 const Command = require('../../../../lib/structures/MultiModerationCommand');
 const { Permissions: { FLAGS } } = require('discord.js');
+const { dateDiffDays } = require('~/lib/util/util');
 
 module.exports = class extends Command {
 
@@ -8,7 +9,7 @@ module.exports = class extends Command {
 			enabled: true,
 			runIn: ['text'],
 			requiredPermissions: ['MANAGE_ROLES'],
-			aliases: ['m', 'silence', '403'],
+			aliases: ['m', 'silence', '403', 'timeout'],
 			description: language => language.get('COMMAND_MUTE_DESCRIPTION'),
 			usage: '<user  or  users:members> [duration:time] [reason:...string]',
 			usageDelim: ' '
@@ -30,12 +31,15 @@ module.exports = class extends Command {
 	}
 
 	async executeMutes(users, reason, guild, moderator, muterole, duration) {
+		const formattedReason = `${moderator.tag} | ${reason || guild.language.get('COMMAND_MUTE_NOREASON')}`;
 		for (const member of users) {
 			guild.modCache.add(member.id);
-			member.mute(`${moderator.tag} | ${reason || guild.language.get('COMMAND_MUTE_NOREASON')}`, muterole);
+			if (duration && dateDiffDays(new Date(), duration) <= 28) member.muteTimed(formattedReason, duration);
+			else member.mute(formattedReason, muterole);
+
 			if (!duration) this.updateSchedule(member);
 		}
-		if (duration) this.client.schedule.create('endTempmute', duration, { data: { users: users.map(user => user.id), guild: guild.id } });
+		if (duration && dateDiffDays(new Date(), duration) > 28) this.client.schedule.create('endTempmute', duration, { data: { users: users.map(user => user.id), guild: guild.id } });
 	}
 
 	updateSchedule(user) {
@@ -44,7 +48,7 @@ module.exports = class extends Command {
 		const { time, data } = unmuteTask;
 		this.client.schedule.delete(unmuteTask.id);
 		data.users = data.users.filter(id => id !== user.id);
-		if (data.users.length !== 0) { this.client.schedule.create('endTempmute', time, { data }); }
+		if (data.users.length !== 0) this.client.schedule.create('endTempmute', time, { data });
 	}
 
 

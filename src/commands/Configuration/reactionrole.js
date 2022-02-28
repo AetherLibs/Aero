@@ -72,11 +72,10 @@ module.exports = class extends Command {
 
 			const collector = new GuildReactionCollector(msg, filter, { time: 30000, max: 1 });
 			collector.on('end', collected => {
-				if (collected.size > 0) {
+				if (collected.size > 0)
 					resolve(collected.first());
-				} else {
+				else
 					reject('COMMAND_REACTIONROLE_NOEMOJI');
-				}
 			});
 		});
 	}

@@ -1,3 +1,6 @@
 {
-	"extends": "@aero"
+	"extends": "@aero",
+	"rules": {
+		"brace-style": "off"
+	}
 }

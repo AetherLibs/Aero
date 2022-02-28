@@ -29,19 +29,34 @@ module.exports = class extends Command {
 					.setDescription(msg.language.get('COMMAND_HELP_USAGE', msg.guild.settings.get('prefix')).join('\n'))
 				);
 			}
-			return msg.sendEmbed(embed
+
+			const restrictions = [];
+
+			if (command.permissionLevel >= 9)
+				restrictions.push(msg.language.get('COMMAND_HELP_OWNERONLY'));
+			else if (command.permissionLevel >= 7)
+				restrictions.push(msg.language.get('COMMAND_HELP_OWNERGUILDONLY'));
+
+			if (!command.runIn.includes('dm')) restrictions.push(msg.language.get('COMMAND_HELP_SERVERONLY'));
+
+			embed
 				.addField(`${command.name} ${command.aliases.length ? `(${command.aliases.join(', ')})` : ''}`,
 					isFunction(command.description)
 						? command.description(msg.language)
 						: command.description)
-				.addField(`• Usage${command.runIn.includes('dm') ? '' : ` (${msg.language.get('COMMAND_HELP_SERVERONLY')})`}`, this.buildUsage(command, msg.guild.settings.get('prefix')))
-				.addField('• Permission Node', code`${command.category.toLowerCase()}.${command.name}`));
+				.addField(`• Usage${restrictions.length ? ` (${restrictions.join(', ')})` : ''}`, this.buildUsage(command, msg.guild.settings.get('prefix')))
+				.addField('• Permission Node', code`${command.category.toLowerCase()}.${command.name}`);
+
+			if (command.examples?.length) embed.addField('• Examples', this.buildExamples(command, msg.guild.settings.get('prefix'), command.examples));
+
+			return msg.sendEmbed(embed);
 		}
 
 		const categories = this.buildHelp();
-		for (const category in categories) {
+		for (const category in categories)
 			embed.addField(category, categories[category].sort().map(cmd => code`${cmd}`).join(', '));
-		}
+
+		embed.setDescription(`[Terms](https://aero.bot/terms) | [Privacy](https://aero.bot/privacy)`);
 		embed.setFooter(msg.language.get('COMMAND_HELP_FOOTER', msg.guild.settings.get('prefix')));
 		return msg.sendEmbed(embed);
 	}
@@ -66,6 +81,10 @@ module.exports = class extends Command {
 			const options = tag.possibles.map(possible => possible.name).join(' | ');
 			return `  ${brackets[0]} ${options} ${brackets[1]}`;
 		}).join('')}`;
+	}
+
+	buildExamples(command, prefix, examples) {
+		return examples.map(example => `${prefix}${command.name} ${example}`).join('\n');
 	}
 
 };

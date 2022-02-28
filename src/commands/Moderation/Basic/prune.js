@@ -19,15 +19,16 @@ module.exports = class extends Command {
 
 	async run(msg, [limit = 1, filter = null]) {
 		let messages = await msg.channel.messages.fetch({ limit: 100 });
+		messages = messages.filter(mes => !mes.pinned);
 		if (filter) {
 			const user = typeof filter !== 'string' ? filter : null;
 			const type = typeof filter === 'string' ? filter : 'user';
-			messages = messages.filter(this.getFilter(msg, type, user)).filter(mes => !mes.pinned);
+			messages = messages.filter(this.getFilter(msg, type, user));
 		}
 		if (messages.has(msg.id)) limit++;
 		messages = messages.keyArray().slice(0, limit);
 		if (!messages.includes(msg.id)) messages.push(msg.id);
-		return msg.channel.bulkDelete(messages)
+		return msg.channel.bulkDelete(messages, true)
 			.then(async () => {
 				const message = await msg.responder.success('COMMAND_PRUNE_RESPONSE', messages.length - 1);
 				message.delete({ timeout: 1500 }).catch(() => null);

@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			enabled: true,
 			runIn: ['text'],
 			requiredPermissions: ['MANAGE_ROLES'],
-			aliases: ['um', 'release'],
+			aliases: ['um', 'release', 'untimeout', 'cleartimeout', 'removetimeout'],
 			description: language => language.get('COMMAND_UNMUTE_DESCRIPTION'),
 			usage: '<user  or  users:members> [reason:...string]',
 			usageDelim: ' '
@@ -41,7 +41,7 @@ module.exports = class extends Command {
 		const { time, data } = unmuteTask;
 		this.client.schedule.delete(unmuteTask.id);
 		data.users = data.users.filter(id => id !== user.id);
-		if (data.users.length !== 0) { this.client.schedule.create('endTempmute', time, { data }); }
+		if (data.users.length !== 0) this.client.schedule.create('endTempmute', time, { data });
 	}
 
 

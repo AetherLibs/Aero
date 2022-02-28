@@ -1,6 +1,7 @@
 const { Event } = require('@aero/klasa');
-
 const { FLAGS } = require('discord.js').Permissions;
+
+const req = require('@aero/http');
 
 module.exports = class extends Event {
 
@@ -9,6 +10,15 @@ module.exports = class extends Event {
 			enabled: true,
 			once: false
 		});
+
+		this.bannedMemberNames = [
+			/(mod(erator)?('s)?|hypesquad|developer)\s+(academy|message)/i,
+			/discord\s+hypesquad/i,
+			/(hypesquad|discord)\s+(events|academy)/i,
+			/discord\s+(developers|api|bots|message)?/i,
+			/^discord\s+moderator$/i,
+			/^academy\s+staff/i
+		];
 	}
 
 	async run(member) {
@@ -19,7 +29,10 @@ module.exports = class extends Event {
 
 		// persistency
 		const botsHighestRole = member.guild.me.roles.highest;
-		const persistroles = member.settings.get('persistRoles').filter(id => !autoroles.includes(id)).filter(id => botsHighestRole.comparePositionTo(id) > 0);
+		const persistroles = member.settings.get('persistRoles')
+			.filter(id => !autoroles.includes(id))
+			.filter(id => botsHighestRole.comparePositionTo(id) > 0)
+			.filter(id => id !== member.guild.id);
 		const persistnick = member.settings.get('persistNick');
 		if (persistnick) await member.setNickname(persistnick);
 
@@ -27,13 +40,13 @@ module.exports = class extends Event {
 		if (member.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
 			let roles = persistroles;
 
-			if (autoroles.length && !member.user.bot && !member.pending) {
+			if (autoroles.length && !member.user.bot && !member.pending)
 				roles = roles.concat(autoroles);
-			} else if (member.user.bot && botrole) {
+			else if (member.user.bot && botrole)
 				roles.push(botrole);
-			}
 
-			member.roles.add(roles);
+
+			member.addRoles(roles);
 		}
 
 		// raid prevention
@@ -53,10 +66,32 @@ module.exports = class extends Event {
 		// logging
 		await member.guild.log.memberJoined({ member });
 
-		// global ban check
-		const globalBanned = await this.client.ksoft.bans.check(member.id);
-		if (globalBanned) this.client.emit('globalBan', member);
+		if (member.guild.settings.get('mod.shield')) {
+			// global ban check
+			const { trust, bans } = await req('https://ravy.org/api/v1/')
+				.path('/users')
+				.path(member.id)
+				.path('/bans')
+				.header('Authorization', process.env.RAVY_TOKEN)
+				.json();
+			if (trust.level <= 2) this.client.emit('globalBan', member, bans);
 
+			// username check
+			if (this.bannedMemberNames.reduce((acc, cur) => acc || cur.test(member.user.username), false))
+				member.guild.members.ban(member.id, { reason: 'Probable spambot, matched suspicious username' });
+
+
+			// avatar check
+			if (member.user.avatar) {
+				const { matched, key } = await req('https://ravy.org/api/v1/')
+					.path('/avatars')
+					.query('avatar', member.user.avatarURL())
+					.header('Authorization', process.env.RAVY_TOKEN)
+					.json();
+				if (matched)
+					member.guild.members.ban(member.id, { reason: `Probable spambot, matched suspicious avatar [${key}]` });
+			}
+		}
 		return member;
 	}
 

@@ -10,7 +10,7 @@ module.exports = class extends Command {
 			requiredPermissions: ['MANAGE_MESSAGES'],
 			aliases: ['unignore'],
 			description: language => language.get('COMMAND_UNEXEMPT_DESCRIPTION'),
-			usage: '<user:user|role:role|channel:textchannel>'
+			usage: '<user:user|role:role|channel:textChannel>'
 		});
 
 		this.defaultPermissions = FLAGS.ADMINISTRATOR;
@@ -23,7 +23,7 @@ module.exports = class extends Command {
 				? 'roles'
 				: 'channels';
 		await msg.guild.settings.sync();
-		await msg.guild.settings.update(`mod.ignored.${type}`, target, { arrayAction: 'remove' });
+		if (msg.guild.settings.get(`mod.ignored.${type}`).includes(target.id)) await msg.guild.settings.update(`mod.ignored.${type}`, target, { arrayAction: 'remove' });
 		return msg.responder.success();
 	}
 

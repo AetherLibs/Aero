@@ -11,7 +11,13 @@ module.exports = class extends Command {
 			aliases: ['b', 'bean', '410', 'yeet', 'banish', 'begone', 'perish'],
 			description: language => language.get('COMMAND_BAN_DESCRIPTION').join('\n'),
 			usage: '<user  or  users:users|username:membername> [duration:time] [purge|p|soft|s] [reason:...string]',
-			usageDelim: ' '
+			usageDelim: ' ',
+			examples: [
+				'@user purge Spammed a lot of messages.',
+				'@user1 @user2 @user3 14d Violating several server rules',
+				'@user soft Unacceptable messages, initial offense',
+				'643945264868098049 Known to cause trouble'
+			]
 		});
 
 		this.defaultPermissions = FLAGS.BAN_MEMBERS;
@@ -43,12 +49,14 @@ module.exports = class extends Command {
 		for (const user of users) {
 			guild.modCache.add(user.id);
 			if (!duration) this.updateSchedule(user);
-			await guild.members.ban(user.id, { reason: `${duration ? `[temp]` : ''} ${moderator.tag} | ${reason || guild.language.get('COMMAND_BAN_NOREASON')}`, days: purge ? 1 : 0 })
+			guild.members.ban(user.id, { reason: `${duration ? `[temp]` : ''} ${moderator.tag} | ${reason || guild.language.get('COMMAND_BAN_NOREASON')}`, days: purge ? 1 : 0 })
+				.then(() => {
+					if (soft) {
+						guild.modCache.add(user.id);
+						guild.members.unban(user.id, guild.language.get('COMMAND_BAN_SOFTBANRELEASED'));
+					}
+				})
 				.catch((err) => msg.responder.newError('COMMAND_BAN_ERROR', user, err.message));
-			if (soft) {
-				guild.modCache.add(user.id);
-				await guild.members.unban(user.id, guild.language.get('COMMAND_BAN_SOFTBANRELEASED'));
-			}
 		}
 		if (duration) this.client.schedule.create('endTempban', duration, { data: { users: users.map(user => user.id), guild: guild.id } });
 	}
@@ -59,7 +67,7 @@ module.exports = class extends Command {
 		const { time, data } = unbanTask;
 		this.client.schedule.delete(unbanTask.id);
 		data.users = data.users.filter(id => id !== user.id);
-		if (data.users.length !== 0) { this.client.schedule.create('endTempban', time, { data }); }
+		if (data.users.length !== 0) this.client.schedule.create('endTempban', time, { data });
 	}
 
 

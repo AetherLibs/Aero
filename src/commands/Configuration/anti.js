@@ -20,6 +20,7 @@ module.exports = class extends Command {
 	async run(msg, [type, action]) {
 		if (!action) return this.displaySettings(msg, type);
 		if (!type) return msg.responder.error('COMMAND_ANTI_NOTYPE');
+		if (action === 'enable') this.checkMutex(msg.guild, type);
 		await msg.guild.settings.sync();
 		await msg.guild.settings.update(`mod.anti.${type}`, action === 'enable');
 		return msg.responder.success('COMMAND_ANTI_SUCCESS', type, action === 'enable', ['hoisting', 'unmentionable'].includes(type));
@@ -46,6 +47,11 @@ module.exports = class extends Command {
 			}
 			return msg.send(out.join('\n'));
 		}
+	}
+
+	checkMutex(guild, type) {
+		if (type === 'unmentionable' && guild.settings.get('mod.anti.hoisting')) throw 'COMMAND_ANTI_MUTEX_HOISTING';
+		if (type === 'hoisting' && guild.settings.get('mod.anti.unmentionable')) throw 'COMMAND_ANTI_MUTEX_UNMENTIONABLE';
 	}
 
 

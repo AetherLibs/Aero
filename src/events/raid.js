@@ -10,9 +10,9 @@ module.exports = class extends Event {
 	}
 
 	async run(guild, members) {
-		for (const member of members) {
+		for (const member of members)
 			guild.raiderCache.add(member);
-		}
+
 		if (!guild.settings.get('raid.channel')) return false;
 		return guild.raidConfirmation
 			? guild.updateRaidMessage()

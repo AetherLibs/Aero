@@ -19,11 +19,11 @@ module.exports = class extends Command {
 
 		const graph = await this.client.coronagraphs.graph(country).catch(() => null);
 
-		if (graph) {
+		if (graph)
 			await msg.channel.sendFile(graph, 'plot.png');
-		} else {
+		else
 			await msg.responder.error('COMMAND_CORONAGRAPH_INVALID');
-		}
+
 
 		return loading.delete();
 	}

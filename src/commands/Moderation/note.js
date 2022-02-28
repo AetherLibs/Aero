@@ -21,10 +21,10 @@ module.exports = class extends Command {
 		const moderatable = await this.getModeratable(msg.member, members, true);
 		if (!moderatable.length) return msg.responder.error('COMMAND_NOTE_NOPERMS', members.length > 1);
 
-		for (const member of moderatable) {
-			await member.settings.sync();
+		await Promise.all(moderatable.map(member => member.settings.sync()));
+
+		for (const member of moderatable)
 			member.settings.update('notes', { reason, moderator: msg.member.id }, { arrayAction: 'add' });
-		}
 
 		return msg.responder.success();
 	}

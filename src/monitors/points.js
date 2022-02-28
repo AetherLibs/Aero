@@ -35,9 +35,8 @@ module.exports = class extends Monitor {
 				await msg.channel.send(util.randomArray(msg.language.get('LEVEL_MESSAGES'))
 					.replace(/{level}/g, newLevel).replace(/{user}/g, msg.author.username));
 			}
-		} else {
+		} else
 			await msg.member.settings.update('points', newXP);
-		}
 	}
 
 	xpNeeded(level) {

@@ -1,5 +1,5 @@
 const { Monitor } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Monitor {
 
@@ -27,7 +27,7 @@ module.exports = class extends Monitor {
 			const { code } = this.codeRegex.exec(msg.content).groups;
 
 			const img = await req(this.client.config.carbonURL)
-				.method('POST')
+				.post()
 				.path('/api/cook')
 				.body({
 					code,
@@ -45,12 +45,10 @@ module.exports = class extends Monitor {
 			if (!img.toString().startsWith('An error occurred')) {
 				await msg.delete();
 				return msg.channel.sendFile(img, 'code.png');
-			} else {
+			} else
 				return msg.responder.error();
-			}
-		} else {
+		} else
 			return false;
-		}
 	}
 
 };
