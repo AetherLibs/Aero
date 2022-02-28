@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 			.json()
 			.catch(() => ({}));
 
-		this.client.console.log(`[PluralKit] not converting ${msg.author.id}: ${JSON.stringify(res)}`);
+		this.client.console.log(`[PluralKit] not converting ${msg.author.id} [${msg.guild.id}]: ${res.message}`);
 
 		if (!res.sender) return;
 
