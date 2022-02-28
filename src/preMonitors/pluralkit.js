@@ -28,12 +28,11 @@ module.exports = class extends Monitor {
 			hasPk = await msg.guild.members.fetch(PK_ID).catch(() => false) && true;
 			this.gCache.set(msg.guild.id, hasPk);
 		}
-
 		if (!hasPk) return;
 
 		let sender;
 
-		if (this.cache.has(msg.author.id)) sender = this.cache.get(msg.author.id)
+		if (this.cache.has(msg.author.id)) sender = this.cache.get(msg.author.id);
 		else {
 			const res = await req(PK_BASE)
 				.path('/messages', msg.id)
@@ -46,7 +45,8 @@ module.exports = class extends Monitor {
 				this.client.console.log(`[PluralKit] not converting ${msg.author.id} [${msg.guild.id}]: ${res.message}`);
 				return;
 			}
-			sender = res.sender;
+
+			sender = res.sender; /* eslint-disable-line prefer-destructuring */
 		}
 
 		if (sender === false) return;
