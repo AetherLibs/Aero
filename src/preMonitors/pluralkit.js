@@ -24,11 +24,15 @@ module.exports = class extends Monitor {
 
 		if (!res.sender) return;
 
+		this.client.console.log(`[PluralKit] converting ${msg.author.id} --> ${res.sender}`);
+
 		/* eslint-disable require-atomic-updates */
 		msg.originalAuthor = msg.author;
 		msg.webhookID = null;
 		msg.author = await this.client.users.fetch(res.sender);
 		/* eslint-enable require-atomic-updates */
+
+		return;
 	}
 
 };
