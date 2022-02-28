@@ -1,5 +1,5 @@
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const url = 'https://www.conversationstarters.com/random.php';
 
 module.exports = class extends Command {

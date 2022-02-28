@@ -1,6 +1,6 @@
-const { PostMonitor } = require('@aero/klasa');
+const { Monitor } = require('@aero/klasa');
 
-module.exports = class extends PostMonitor {
+module.exports = class extends Monitor {
 
 	constructor(...args) {
 		super(...args, {

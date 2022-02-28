@@ -1,5 +1,5 @@
 const { Monitor } = require('@aero/klasa');
-const centra = require('@aero/centra');
+const http = require('@aero/http');
 const leven = require('js-levenshtein');
 const sanitize = require('@aero/sanitizer');
 
@@ -126,7 +126,7 @@ module.exports = class extends Monitor {
 
 	async isFraudulentByAPI(links, authorId, msg) {
 		const statuses = await Promise.all(links.map(async link => {
-			const req = centra('https://ravy.org/api/v1')
+			const req = http('https://ravy.org/api/v1')
 				.header('Authorization', process.env.RAVY_TOKEN)
 				.query('author', authorId)
 				.path('/urls')
@@ -143,10 +143,13 @@ module.exports = class extends Monitor {
 
 			const res = await req.json();
 
-			return res;
+			return { ...res, domain: link.hostname };
 		}));
 
-		return statuses.reduce((acc, cur) => acc || cur.isFraudulent, false);
+		return statuses.reduce((acc, cur) => {
+			if (cur.isFraudulent && this.client.aggregator.metricsEnabled) this.client.aggregator.registerScamDomain(cur.domain);
+			return acc || cur.isFraudulent;
+		}, false);
 	}
 
 };

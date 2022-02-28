@@ -12,6 +12,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user]) {
+		if (user.bot) return msg.responder.error('COMMAND_DOWNVOTE_BOT');
 		const res = await this.client.drep.vote('down', msg.author.id, user.id);
 
 		return res.success

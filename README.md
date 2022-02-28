@@ -13,6 +13,11 @@ Our goal is to make advanced moderation and anti-raid as intuitive and easy to u
 If you're currently using a bot like Dyno, Carl, Mee6, or any of the major multiuse bots, there's a high chance that Aero can fully replace them, while more effectively protecting you and your members from raids, spam, or just known baddies.
 
 
+## Docs
+
+You can find Aero's community documentation at https://aero.bot/docs
+
+
 ## Legal
 
 By inviting, using, selfhosting, or distributing Aero or the source code or binary form of Aero or its parts, or our website you agree to Aero's [Terms of Service](https://aero.bot/terms).
@@ -25,8 +30,14 @@ If you're taking code from this project, or are working on a project inspired by
 
 ## Services and tools we use and appreciate
 
-On its own, Aero is pretty cool. But there's some tools we use to extend this even further. Those are:
-- [The KSoft.Si API](https://api.ksoft.si) - A swiss-army-knife for images, a huge yet transparent global ban list, and a lot of utilities
+We make use of several amazing services which support us with open-source licenses:
+- [JetBrains](https://jetbrains.com/) is the company behind IntelliJ, the main IDE we use to develop Aero
+- [ngrok](https://ngrok.com/) provides easy tunnels to localhost, we use them to simplify getting slash commands from Discord to Aero
+- [Cloudflare](https://cloudflare.com/) keeps our services safe from attacks and speeds up our websites
+- [GitLab](https://about.gitlab.com/) is what we use to host all of the source code, as well as run automated CI actions
+
+On its own, Aero is pretty cool. But there are some tools we use to extend this even further. Those are:
+- [The ravy.org API](https://ravy.org/api) - A swiss-army-knife for anything security-related
 - [Perspective](https://www.perspectiveapi.com/) - An API using machine learning to reduce toxicity online
 - [DiscordRep](https://discordrep.com) - An online fraud prevention project
 - [Dank Memer Imgen](https://dankmemer.services/) - An image generation API for generating memes and more
@@ -35,7 +46,6 @@ On its own, Aero is pretty cool. But there's some tools we use to extend this ev
 Aero isn't built from scratch, there's a few libraries that we used to build Aero. The most important are:
 - [Klasa](https://klasa.js.org) - An object-oriented framework around discord.js which saves us from writing all the basics
 - [discord.js](https://discord.js.org) - A powerful and easy to use wrapper around the Discord API
-- [centra](https://github.com/ethanent/centra) - A powerful wrapper around http.request with a beautiful syntax
 - [MongoDB](https://www.mongodb.com/) - A general purpose, document-based, distributed NoSQL database
 
 

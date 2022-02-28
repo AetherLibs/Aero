@@ -1,7 +1,7 @@
 const { Command } = require('@aero/klasa');
 const { PerspectiveAPI: url } = require('~/lib/util/constants').url;
 const { ansi } = require('~/lib/util/util');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Command {
 
@@ -15,7 +15,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [text]) {
-		const res = await req(url, 'POST')
+		const res = await req(url)
+			.post()
 			.path('comments:analyze')
 			.query('key', process.env.PERSPECTIVE_TOKEN)
 			.body({

@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions: { FLAGS } } = require('discord.js');
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Command {
 

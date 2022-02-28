@@ -1,5 +1,5 @@
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const { constants: { TIME } } = require('@aero/klasa');
 
 module.exports = class extends Command {

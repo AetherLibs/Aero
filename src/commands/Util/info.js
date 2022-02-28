@@ -6,7 +6,7 @@ const {
 	badges,
 	userInfo: { providers: providerMap }
 } = require('../../../lib/util/constants');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 
 module.exports = class extends Command {
 
@@ -112,7 +112,13 @@ module.exports = class extends Command {
 			.path(user.id)
 			.header('Authorization', process.env.RAVY_TOKEN)
 			.json();
-		embed = await this._addBaseData(user, embed, pronouns);
+
+		let system;
+
+		if (msg.author.id === user.id && msg.originalAuthor)
+			system = msg.originalAuthor;
+
+		embed = await this._addBaseData(user, embed, pronouns, system);
 		embed = await this._addBadges(user, embed);
 		embed = await this._addMemberData(msg, user, embed);
 		embed = await this._addSecurity(msg, user, embed, bans, trust, whitelists, sentinel, rep);
@@ -120,13 +126,14 @@ module.exports = class extends Command {
 		return loading.delete();
 	}
 
-	async _addBaseData(user, embed, pronouns) {
-		let authorString = `${user.tag} [${user.id}]`;
+	async _addBaseData(user, embed, pronouns, system) {
+		const effectiveUser = system || user;
+		let authorString = `${system?.username || user.tag} [${user.id}] ${system ? `(system of ${user.tag})` : ''}`;
 		if (pronouns !== 'unknown pronouns') authorString += ` (${pronouns})`;
 		return embed
 			.setAuthor(authorString
-				, user.displayAvatarURL({ dynamic: true }))
-			.setThumbnail(user.displayAvatarURL({ dynamic: true }));
+				, effectiveUser.displayAvatarURL({ dynamic: true }))
+			.setThumbnail(effectiveUser.displayAvatarURL({ dynamic: true }));
 	}
 
 	async _addBadges(user, embed) {
@@ -291,11 +298,16 @@ module.exports = class extends Command {
 		return msg.sendEmbed(embed);
 	}
 
-	botinfo(msg) {
+	async botinfo(msg) {
 		if (msg.guild && !msg.guild.me.permissions.has(FLAGS.EMBED_LINKS)) return msg.sendLocale('COMMAND_INFO_BOT');
+		const dominant = await req(this.client.config.colorgenURL)
+			.path('dominant')
+			.query('image', this.client.user.displayAvatarURL({ dynamic: false, format: 'png' }))
+			.text();
 		return msg.sendEmbed(new MessageEmbed()
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL({ dynamic: true }))
 			.setDescription(msg.language.get('COMMAND_INFO_BOT'))
+			.setColor(dominant)
 		);
 	}
 

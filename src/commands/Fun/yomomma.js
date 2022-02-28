@@ -4,7 +4,7 @@
  * Credit example: Credit goes to [Stitch07](https://github.com/Stitch07) and [ravy](https://ravy.pink). (c) [The Aero Team](https://aero.bot) 2021
  */
 const { Command } = require('@aero/klasa');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const { bold } = require('discord-md-tags');
 
 module.exports = class extends Command {

@@ -6,7 +6,7 @@
  */
 const { Command, Stopwatch, Type, util } = require('@aero/klasa');
 const { inspect } = require('util');
-const req = require('@aero/centra'); /* eslint-disable-line no-unused-vars */
+const req = require('@aero/http'); /* eslint-disable-line no-unused-vars */
 
 module.exports = class extends Command {
 
@@ -31,7 +31,8 @@ module.exports = class extends Command {
 
 		// Handle too-long-messages
 		if (output.length > 2000) {
-			const { key } = await req(this.client.config.hasteURL, 'POST')
+			const { key } = await req(this.client.config.hasteURL)
+				.post()
 				.path('documents')
 				.body(result)
 				.json();

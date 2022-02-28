@@ -1,6 +1,6 @@
 const { Command } = require('@aero/klasa');
 const { MessageAttachment } = require('discord.js');
-const req = require('@aero/centra');
+const req = require('@aero/http');
 const BASE_URL = 'http://api.wolframalpha.com/v1';
 
 module.exports = class extends Command {
@@ -21,13 +21,15 @@ module.exports = class extends Command {
 
 		if (msg.flagArgs.graphical) return this.graphical(msg, query);
 
-		const { statusCode, text } = await req(BASE_URL)
+		const res = await req(BASE_URL)
 			.path('result')
 			.query('appid', process.env.WOLFRAM_TOKEN)
 			.query('i', query)
 			.send();
 
-		if (statusCode !== 200) return msg.responder.error('COMMAND_WOLFRAM_ERROR');
+		const text = await res.body.text();
+
+		if (res.statusCode !== 200) return msg.responder.error('COMMAND_WOLFRAM_ERROR');
 		if (text.length <= 2000) return msg.send(text);
 		else return msg.responder.error('COMMAND_WOLFRAM_LENGTH', `https://www.wolframalpha.com/input/?i=${encodeURIComponent(query).replace(/\s+/, '+')}`);
 	}
