@@ -25,7 +25,7 @@ module.exports = class extends Monitor {
 
 		if (this.gCache.has(msg.guild.id)) hasPk = this.gCache.get(msg.guild.id);
 		else {
-			hasPk = await msg.guild.members.fetch(PK_ID).catch(() => false);
+			hasPk = await msg.guild.members.fetch(PK_ID).catch(() => false) && true;
 			this.gCache.set(msg.guild.id, hasPk);
 		}
 
