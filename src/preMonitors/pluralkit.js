@@ -33,8 +33,6 @@ module.exports = class extends Monitor {
 
 		if (this.cache.has(msg.author.id)) sender = this.cache.get(msg.author.id)
 		else {
-			if (sender === false) return;
-
 			const res = await req(PK_BASE)
 				.path('/messages', msg.id)
 				.json()
@@ -47,6 +45,8 @@ module.exports = class extends Monitor {
 				return;
 			}
 		}
+
+		if (sender === false) return;
 
 		this.client.console.log(`[PluralKit] converting ${msg.author.id} --> ${sender}`);
 
