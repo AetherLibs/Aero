@@ -29,6 +29,8 @@ module.exports = class extends Monitor {
 			this.gCache.set(msg.guild.id, hasPk);
 		}
 
+		if (!hasPk) return;
+
 		let sender;
 
 		if (this.cache.has(msg.author.id)) sender = this.cache.get(msg.author.id)
