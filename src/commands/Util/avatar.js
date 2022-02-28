@@ -13,6 +13,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user = msg.author]) {
+		if (msg.flagArgs.proxy && msg.originalAuthor && user.id === msg.author.id) user = msg.originalAuthor;
+
 		const embed = new MessageEmbed()
 			.setAuthor(user.tag, user.displayAvatarURL())
 			.setImage(user.displayAvatarURL({ size: 2048, dynamic: true }))
