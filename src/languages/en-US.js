@@ -159,6 +159,10 @@ module.exports = class extends Language {
 				'To begin configuring it, just re-run this command and specify a channel.'
 			].join(' '),
 			COMMAND_LEMONBOARD_NOCHANNEL: 'Please configure a channel for your lemonboard first.',
+			COMMAND_MUTEROLE_DESCRIPTION: 'Sets up the role given to users when muted for a long time.',
+			COMMAND_MUTEROLE_SET: name => `Now assigning ${bold`${name}`} to muted users.`,
+			COMMAND_MUTEROLE_NONE: 'No mute role set up',
+			COMMAND_MUTEROLE_DISPLAY: name => `Users are currently assigned ${bold`${name}`} when muted.`,
 
 			// fun commands
 			COMMAND_8BALL_DESCRIPTION: 'Magic 8-Ball, does exactly what the toy does.',
