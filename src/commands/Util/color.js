@@ -27,8 +27,8 @@ module.exports = class extends Command {
 		if (colorData._format === false) return msg.responder.error('COMMAND_COLOR_INVALIDCOLOR');
 		const img = await this.draw(colorData.toHex());
 		return msg.channel.sendFile(img, 'color.png', [
-			`**${await this.getName(colorData.toHex())}**`,
-			`Hex: ${colorData.toHexString()}`,
+			`**${colorData.toHexString()}**`,
+			'',
 			`RGB: ${colorData.toRgbString()}`,
 			`HSV: ${colorData.toHsvString()}`,
 			`HSL: ${colorData.toHslString()}`
@@ -46,13 +46,6 @@ module.exports = class extends Command {
 			.query({ color })
 			.send();
 		return body;
-	}
-
-	async getName(color) {
-		const { name } = await req('https://colornames.org/search/json/')
-			.query('hex', color)
-			.json();
-		return name || 'Unnamed';
 	}
 
 };
