@@ -1,6 +1,10 @@
 // derived from klasa-pieces, (c) 2017-2019 dirigeants / MIT license.
 const { Command } = require('@aero/klasa');
 const { Permissions: { FLAGS } } = require('discord.js');
+const req = require('@aero/http');
+const dayjs = require('dayjs');
+const advancedFormat = require('dayjs/plugin/advancedFormat');
+dayjs.extend(advancedFormat);
 
 module.exports = class extends Command {
 
@@ -26,14 +30,29 @@ module.exports = class extends Command {
 			messages = messages.filter(this.getFilter(msg, type, user));
 		}
 		if (messages.has(msg.id)) limit++;
+
+		const hastedMessages = messages
+			.map(message => `--- ${message.author.tag}, ${dayjs(message.createdAt).format('Do MMM YYYY HH:mm')} ---\n${message.content}\n`)
+			.slice(0, limit);
+
 		messages = messages.keyArray().slice(0, limit);
 		if (!messages.includes(msg.id)) messages.push(msg.id);
-		return msg.channel.bulkDelete(messages, true)
+		msg.channel.bulkDelete(messages, true)
 			.then(async () => {
 				const message = await msg.responder.success('COMMAND_PRUNE_RESPONSE', messages.length - 1);
 				message.delete({ timeout: 1500 }).catch(() => null);
 			})
 			.catch(err => msg.responder.error('ERROR_SHORT', err.message));
+
+		const { key } = await req(this.client.config.hasteURL)
+			.post()
+			.path('documents')
+			.body(hastedMessages.join('\n'))
+			.json();
+
+		const haste = `${this.client.config.hasteURL}/${key}`;
+
+		msg.guild.log.messagesPurged({ content: haste, channel: msg.channel, moderator: msg.author });
 	}
 
 	getFilter(msg, filter, user) {

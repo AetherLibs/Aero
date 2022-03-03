@@ -37,6 +37,7 @@
 		"@sentry/node": "^5.15.4",
 		"canvas": "^2.8.0",
 		"canvas-constructor": "^3.2.0",
+		"dayjs": "^1.10.8",
 		"discord-md-tags": "^0.0.6",
 		"discord.js": "^12.5.3",
 		"dotenv": "^8.2.0",
