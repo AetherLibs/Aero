@@ -6,7 +6,6 @@ const { infinity, success, error, minus } = require('~/lib/util/constants').emoj
 
 module.exports = class extends Command {
 
-
 	constructor(...args) {
 		super(...args, {
 			description: language => language.get('COMMAND_MEASURE_DESCRIPTION'),

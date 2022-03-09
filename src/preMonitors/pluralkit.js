@@ -15,48 +15,37 @@ module.exports = class extends Monitor {
 		});
 
 		this.cache = new Map();
-		this.gCache = new Map();
 	}
 
 	async run(msg) {
-		if (!msg.webhookID || !msg.guild) return;
+		if (!msg.pk || !msg.webhookID || !msg.guild) return;
 
-		let hasPk;
+		let senderId;
 
-		if (this.gCache.has(msg.guild.id)) hasPk = this.gCache.get(msg.guild.id);
-		else {
-			hasPk = await msg.guild.members.fetch(PK_ID).catch(() => false) && true;
-			this.gCache.set(msg.guild.id, hasPk);
-		}
-
-		if (!hasPk) return;
-
-		let sender;
-
-		if (this.cache.has(msg.author.id)) sender = this.cache.get(msg.author.id)
+		if (this.cache.has(msg.author.id)) senderId = this.cache.get(msg.author.id);
 		else {
 			const res = await req(PK_BASE)
 				.path('/messages', msg.id)
 				.json()
 				.catch(() => ({}));
 
-			this.cache.set(msg.author.id, res.sender ?? false);
+			this.cache.set(msg.author.id, res.sender);
 
 			if (!res.sender) {
 				this.client.console.log(`[PluralKit] not converting ${msg.author.id} [${msg.guild.id}]: ${res.message}`);
 				return;
 			}
-			sender = res.sender;
+
+			/* eslint-disable-next-line prefer-destructuring */
+			senderId = res.sender;
 		}
 
-		if (sender === false) return;
-
-		this.client.console.log(`[PluralKit] converting ${msg.author.id} --> ${sender}`);
+		this.client.console.log(`[PluralKit] converting ${msg.author.id} --> ${senderId}`);
 
 		/* eslint-disable require-atomic-updates */
 		msg.originalAuthor = msg.author;
 		msg.webhookID = null;
-		msg.author = await this.client.users.fetch(sender);
+		msg.author = await this.client.users.fetch(senderId);
 		/* eslint-enable require-atomic-updates */
 
 		return;

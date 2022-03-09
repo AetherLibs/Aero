@@ -14,7 +14,7 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if (!msg.guild || !msg.guild.settings.get('mod.anti.duplicates') || msg.exempt) return;
+		if (!msg.guild || !msg.guild.settings.get('mod.anti.duplicates') || msg.exempt || msg.pk) return;
 
 		if (!msg.member.prevMessageContent) return;
 
