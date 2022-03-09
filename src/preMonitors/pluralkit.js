@@ -1,7 +1,6 @@
 const { Monitor } = require('@aero/klasa');
 const req = require('@aero/http');
 const PK_BASE = 'https://api.pluralkit.me/v2/';
-const PK_ID = '466378653216014359';
 
 module.exports = class extends Monitor {
 

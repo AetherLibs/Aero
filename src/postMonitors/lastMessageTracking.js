@@ -13,7 +13,7 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if (msg.exempt) return;
+		if (msg.exempt || msg.pk) return;
 
 		msg.member.prevMessageContent = msg.content;
 		msg.member.prevChannelID = msg.channel.id;
