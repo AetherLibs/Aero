@@ -1,5 +1,9 @@
 const Command = require('../../../../lib/structures/MultiModerationCommand');
 const { Permissions: { FLAGS } } = require('discord.js');
+const req = require('@aero/http');
+const dayjs = require('dayjs');
+const advancedFormat = require('dayjs/plugin/advancedFormat');
+dayjs.extend(advancedFormat);
 
 module.exports = class extends Command {
 
@@ -30,6 +34,28 @@ module.exports = class extends Command {
 
 		const soft = ['soft', 's'].includes(purge);
 		if (duration && soft) return msg.responder.error('COMMAND_BAN_CONFLICT');
+
+		if (purge && msg.guild?.log) {
+			/* eslint-disable no-await-in-loop */
+			for (const user of users) {
+				const channel = user.lastMessageChannelID ? await this.client.channels.fetch(user.lastMessageChannelID).catch(() => null) : msg.channel;
+				const _messages = await channel.messages.fetch();
+				const messages = _messages
+					.filter(message => message.author.id === user.id)
+					.filter(message => !!message.content)
+					.map(message => `--- ${message.author.tag}, ${dayjs(message.createdAt).format('Do MMM YYYY HH:mm')} ---\n${message.content}\n`);
+				const { key } = await req(this.client.config.hasteURL)
+					.post()
+					.path('documents')
+					.body(messages.join('\n'))
+					.json();
+
+				const haste = `${this.client.config.hasteURL}/${key}`;
+
+				msg.guild.log.messagesPurged({ user, content: haste, channel, reason: `[ban] ${reason}`, moderator: msg.author });
+			}
+			/* eslint-enable no-await-in-loop */
+		}
 
 		await this.executeBans(bannable, duration, reason, purge, soft, msg.guild, msg.author, msg);
 

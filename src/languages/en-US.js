@@ -864,6 +864,7 @@ module.exports = class extends Language {
 			LOG_ACTION_MESSAGEEDITED: 'message edited',
 			LOG_ACTION_MESSAGEDELETED: 'message deleted',
 			LOG_ACTION_INVITEDELETED: 'invite deleted',
+			LOG_ACTION_MESSAGESPURGED: 'messages purged',
 
 			LOG_ACTION_MEMBERJOINED: 'member joined',
 			LOG_ACTION_MEMBERLEFT: 'member left',
@@ -891,6 +892,7 @@ module.exports = class extends Language {
 					: null
 			].filter(item => item !== null).join('\n'),
 			LOG_ARGS_INVITEDELETED: (name, memberCount) => `**invite:** ${name} (${memberCount} members)`,
+			LOG_ARGS_CONTENT: content => `**content:** ${content}`,
 
 			LEVEL_MESSAGES
 
