@@ -12,9 +12,9 @@ module.exports = class extends Event {
 		});
 
 		this.bannedMemberNames = [
-			/(mod(erator)?('s)?|hypesquad|developer)\s+(academy|message)/i,
-			/discord\s+hypesquad/i,
-			/(hypesquad|discord)\s+(events|academy)/i,
+			/(mod(erator)?('s)?|hype\s*squad|developer)\s+(academy|message|exam)/i,
+			/discord\s+hype\s*squad/i,
+			/(hype\s*squad|discord)\s+(events?|academy)/i,
 			/discord\s+(developers|api|bots|message)?/i,
 			/^discord\s+moderator$/i,
 			/^academy\s+staff/i
